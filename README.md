@@ -17,7 +17,7 @@
 
 <p align="center">
   <a href="https://github.com/DAVOE75/KarooBBrakers/releases/latest"><img src="https://img.shields.io/github/v/release/DAVOE75/KarooBBrakers?style=flat-square&logo=android&logoColor=white&label=Version&color=00C853" alt="Latest Version" /></a>
-  <a href="https://github.com/DAVOE75/KarooBBrakers/releases"><img src="https://img.shields.io/github/downloads/DAVOE75/KarooBBrakers/total?style=flat-square&logo=github&logoColor=white&label=Downloads&color=0091EA&_v=1" alt="Total Downloads" /></a>
+  <a href="https://github.com/DAVOE75/KarooBBrakers/releases"><img src="https://flat.badgen.net/github/assets-dl/DAVOE75/KarooBBrakers?label=Downloads&color=0091EA&icon=github" alt="Total Downloads" /></a>
   <img src="https://img.shields.io/badge/Device-Karoo_2_•_Karoo_3-1B1B1B?style=flat-square&logo=googlemaps&logoColor=00E676" alt="Karoo Compatibility" />
   <a href="https://github.com/DAVOE75/KarooBBrakers/blob/main/LICENSE"><img src="https://img.shields.io/github/license/DAVOE75/KarooBBrakers?style=flat-square&label=License&color=455A64" alt="License" /></a>
   <a href="https://buymeacoffee.com/hesiox"><img src="https://img.shields.io/badge/Donate-Buy_Me_a_Coffee-FF813F?style=flat-square&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me A Coffee" /></a>
