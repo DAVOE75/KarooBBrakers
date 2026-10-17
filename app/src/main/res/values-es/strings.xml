@@ -2,32 +2,32 @@
 <resources>
     <string name="app_name">Karoo BBrakers</string>
     <string name="extension_name">Karoo BBrakers</string>
-    <string name="tagline">Telemetría de Frenada, Seguridad Dinámica y Análisis de Desgaste</string>
+    <string name="tagline">Telemetría de Frenada, Seguridad Dinámica y Desgaste</string>
 
     <!-- Tipos de Datos -->
     <string name="type_current_decel">Fuerza de Frenada</string>
-    <string name="desc_current_decel">Desaceleración instantánea en m/s² o G</string>
+    <string name="desc_current_decel">Fuerza de desaceleración instantánea en m/s², G o ft/s²</string>
 
     <string name="type_braking_power">Potencia de Frenada</string>
-    <string name="desc_braking_power">Potencia cinética real disipada por los frenos en Vatios (W)</string>
+    <string name="desc_braking_power">Potencia cinética disipada por los frenos en vatios (W)</string>
 
-    <string name="type_max_decel">Pico de Frenada (G)</string>
+    <string name="type_max_decel">Pico de Frenada G</string>
     <string name="desc_max_decel">Máxima desaceleración registrada durante la ruta</string>
 
     <string name="type_brake_events">Eventos de Frenada</string>
-    <string name="desc_brake_events">Número total de frenadas detectadas en la salida</string>
+    <string name="desc_brake_events">Número total de toques y frenadas detectadas</string>
 
     <string name="type_brake_energy">Energía Disipada</string>
     <string name="desc_brake_energy">Energía cinética total absorbida por los frenos en kJ</string>
 
-    <string name="type_pad_wear">Desgaste de Pastillas</string>
-    <string name="desc_pad_wear">Índice acumulado de desgaste según energía disipada y tipo de freno</string>
+    <string name="type_pad_wear">Desgaste Estimado</string>
+    <string name="desc_pad_wear">Índice acumulado según energía, peso y compuesto de frenos</string>
 
-    <string name="type_brake_temperature">Temperatura de Frenada</string>
-    <string name="desc_brake_temperature">Temperatura aproximada en tiempo real de la pista/rotor en °C</string>
+    <string name="type_brake_temperature">Temperatura de Frenos</string>
+    <string name="desc_brake_temperature">Temperatura estimada en tiempo real de pista/disco en °C o °F</string>
 
-    <string name="type_graphical_brake">Indicador Gráfico de Frenada</string>
-    <string name="desc_graphical_brake">Barra dinámica con código de colores que muestra la intensidad de frenada</string>
+    <string name="type_graphical_brake">Medidor Gráfico</string>
+    <string name="desc_graphical_brake">Espectro dinámico de Blanco a Rojo según la intensidad de frenada</string>
 
     <!-- Configuración -->
     <string name="title_brake_type">Tipo de Sistema de Frenos</string>
@@ -46,41 +46,59 @@
     <string name="surface_gravel">Gravel / Pavé / Tierra</string>
     <string name="surface_mtb">Montaña / Sendero Técnico</string>
 
+    <!-- Sistema de Unidades Regionales (UK, USA, Alemania, España) -->
+    <string name="title_unit_system">Sistema de Unidades Regional</string>
+    <string name="desc_unit_system">Configuración adaptada a UK, Estados Unidos, Alemania y Europa</string>
+    <string name="unit_system_metric">Métrico (Alemania, España, Europa)</string>
+    <string name="unit_system_metric_desc">kg, °C, m/s², km/h</string>
+    <string name="unit_system_imperial">Imperial (Reino Unido y EE.UU.)</string>
+    <string name="unit_system_imperial_desc">lbs, °F, G / ft/s², mph</string>
+
+    <string name="title_temperature_unit">Unidad de Temperatura</string>
+    <string name="unit_celsius">Celsius (°C)</string>
+    <string name="unit_fahrenheit">Fahrenheit (°F)</string>
+
+    <string name="title_weight_unit">Unidad de Peso</string>
+    <string name="unit_kg">Kilogramos (kg)</string>
+    <string name="unit_lbs">Libras (lbs)</string>
+
     <string name="title_unit">Unidad de Desaceleración</string>
     <string name="unit_decel_ms2">m/s²</string>
     <string name="unit_decel_g">Fuerza G (G)</string>
+    <string name="unit_decel_fts2">Pies/seg² (ft/s²)</string>
 
-    <string name="title_pedaling_filter">Filtro Inteligente de Pedaleo y Rampas</string>
-    <string name="desc_pedaling_filter">Si hay cadencia &gt; 0 o potencia &gt; 25W se bloquea la frenada para no confundir desaceleración por pendiente con frenos</string>
+    <string name="title_pedaling_filter">Filtro Inteligente de Pedaleo y Pendientes</string>
+    <string name="desc_pedaling_filter">Si hay pedaleo se bloquea la frenada para no confundir pérdida de velocidad por inercia o rampa con frenada</string>
+    <string name="coasting_active">Inercia / Rodar Libre (Resistencia aerodinámica filtrada)</string>
 
     <string name="title_safety_alerts">Alertas de Seguridad</string>
     <string name="alert_hard_braking">Alarma de Frenada Brusca</string>
     <string name="desc_hard_braking">Aviso acústico y parpadeo visual en detenciones repentinas (&gt; 4.2 m/s²)</string>
     <string name="alert_thermal">Alerta de Fatiga Térmica / Sobrecalentamiento</string>
     <string name="desc_thermal">Avisa de calentamiento excesivo en bajadas largas y pronunciadas</string>
-    <string name="alert_beeper">Zumbador Interno del Karoo</string>
-    <string name="desc_beeper">Utiliza el beeper físico del ciclocomputador para tonos de aviso</string>
+    <string name="alert_beeper">Zumbador Hardware del Karoo</string>
+    <string name="desc_beeper">Utiliza el altavoz interno del ciclocomputador para emitir avisos</string>
 
     <!-- Alertas en Ruta -->
-    <string name="alert_hard_braking_title">¡FRENADA BRUSCA DETECTADA!</string>
-    <string name="alert_hard_braking_detail">Pico de desaceleración: %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_hard_braking_title">¡FRENADA DE EMERGENCIA!</string>
+    <string name="alert_hard_braking_detail">Desaceleración pico: %1$s (%2$s)</string>
     <string name="alert_thermal_title">RIESGO DE SOBRECALENTAMIENTO</string>
-    <string name="alert_thermal_detail">¡Calentamiento crítico en %1$s (%2$.0f°C)! Suelta frenos intermitentemente para evitar delaminación de resina.</string>
+    <string name="alert_thermal_detail">Calentamiento crítico en %1$s (%2$s). ¡Suelta frenos intermitentemente para evitar daños en la resina!</string>
 
-    <!-- Pestañas de la Interfaz -->
+    <!-- UI y Diagnóstico -->
     <string name="tab_dashboard">Telemetría</string>
-    <string name="tab_settings">Ajustes</string>
-    <string name="tab_guide">Instrucciones</string>
+    <string name="tab_settings">Configuración</string>
+    <string name="tab_guide">Guía de Uso</string>
     <string name="sensor_active">Sensores Activos</string>
-    <string name="pedaling_active">Pedaleando (Frenada Desactivada)</string>
-    <string name="live_test_title">Diagnóstico en Tiempo Real</string>
+    <string name="pedaling_active">Pedaleo Activo (Frenada Bloqueada)</string>
+    <string name="live_test_title">Diagnóstico de Sensores en Vivo</string>
     <string name="live_test_desc">Inclina la bicicleta o frena para verificar la respuesta del sensor</string>
     <string name="btn_save">Guardar Configuración</string>
     <string name="toast_saved">¡Configuración guardada correctamente!</string>
 
-    <!-- Guía de Uso -->
-    <string name="guide_step1">1. Ve a los ajustes de Perfil de Ruta en tu Karoo.</string>
-    <string name="guide_step2">2. Edita una pantalla de datos y selecciona un campo libre.</string>
-    <string name="guide_step3">3. En la sección \'Karoo BBrakers\', elige la métrica numérica o gráfica deseada.</string>
-    <string name="guide_step4">4. Los datos se guardan en el archivo .FIT para analizar la telemetría en Strava o Intervals.icu.</string>
+    <!-- Guía de Usuario -->
+    <string name="guide_step1">1. Entra en los Ajustes de Perfiles de Ruta de tu Karoo.</string>
+    <string name="guide_step2">2. Edita una página de datos y toca un hueco libre.</string>
+    <string name="guide_step3">3. En la categoría \'Karoo BBrakers\', añade el campo numérico o gráfico.</string>
+    <string name="guide_step4">4. Los datos de desaceleración y temperatura se graban en el archivo FIT para Strava e Intervals.icu.</string>
 </resources>

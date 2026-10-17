@@ -13,6 +13,7 @@ data class BrakeMetrics(
     val currentBrakingPowerWatts: Double = 0.0,
     val isBraking: Boolean = false,
     val isPedalingActive: Boolean = false,
+    val isCoasting: Boolean = false,
     val peakDecelMs2: Double = 0.0,
     val peakGForce: Double = 0.0,
     val totalBrakeEvents: Int = 0,
@@ -28,4 +29,13 @@ data class BrakeMetrics(
 ) {
     val brakingIntensityPercent: Int
         get() = ((currentDecelMs2 / 5.0) * 100.0).coerceIn(0.0, 100.0).toInt()
+
+    val estimatedTempFahrenheit: Double
+        get() = estimatedTempCelsius * 1.8 + 32.0
+
+    val peakTempFahrenheit: Double
+        get() = peakTempCelsius * 1.8 + 32.0
+
+    val currentDecelFtS2: Double
+        get() = currentDecelMs2 * 3.2808399
 }

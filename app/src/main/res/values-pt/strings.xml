@@ -6,81 +6,99 @@
 
     <!-- Tipos de Dados -->
     <string name="type_current_decel">Força de Travagem</string>
-    <string name="desc_current_decel">Desaceleração instantânea em m/s² ou G</string>
+    <string name="desc_current_decel">Desaceleração instantânea em m/s², G ou ft/s²</string>
 
     <string name="type_braking_power">Potência de Travagem</string>
     <string name="desc_braking_power">Potência cinética real dissipada pelos travões em Watts</string>
 
     <string name="type_max_decel">Pico de Travagem (G)</string>
-    <string name="desc_max_decel">Desaceleração máxima registada durante o percurso</string>
+    <string name="desc_max_decel">Desaceleração máxima registada durante a volta</string>
 
     <string name="type_brake_events">Eventos de Travagem</string>
-    <string name="desc_brake_events">Número total de travagens detetadas na volta</string>
+    <string name="desc_brake_events">Número total de travagens detetadas na atividade</string>
 
     <string name="type_brake_energy">Energia Dissipada</string>
     <string name="desc_brake_energy">Energia cinética total absorvida pelos travões em kJ</string>
 
     <string name="type_pad_wear">Desgaste das Pastilhas</string>
-    <string name="desc_pad_wear">Índice cumulativo de desgaste segundo energia e tipo de travão</string>
+    <string name="desc_pad_wear">Índice cumulativo de desgaste com base na energia e composto</string>
 
-    <string name="type_brake_temperature">Temperatura de Travagem</string>
-    <string name="desc_brake_temperature">Temperatura estimada em tempo real da pista/disco em °C</string>
+    <string name="type_brake_temperature">Temperatura dos Travões</string>
+    <string name="desc_brake_temperature">Temperatura estimada em tempo real da pista/disco em °C ou °F</string>
 
-    <string name="type_graphical_brake">Indicador Gráfico de Travagem</string>
-    <string name="desc_graphical_brake">Barra dinâmica a cores com intensidade e pico de travagem</string>
+    <string name="type_graphical_brake">Indicador Gráfico</string>
+    <string name="desc_graphical_brake">Espetro dinâmico de Branco a Vermelho conforme a intensidade</string>
 
     <!-- Configuração -->
     <string name="title_brake_type">Tipo de Sistema de Travagem</string>
-    <string name="desc_brake_type">Define o coeficiente de atrito, limites térmicos e desgaste</string>
-    <string name="brake_type_disc">Travões de Disco (Hidráulico / Mecânico)</string>
-    <string name="brake_type_rim_alu">Travões de Aro - Pista de Alumínio</string>
-    <string name="brake_type_rim_carbon">Travões de Aro - Pista de Carbono</string>
+    <string name="desc_brake_type">Define o coeficiente de atrito, limites térmicos e taxa de desgaste</string>
+    <string name="brake_type_disc">Travões de Disco (Hidráulicos / Mecânicos)</string>
+    <string name="brake_type_rim_alu">Travões de Calço - Pista de Alumínio</string>
+    <string name="brake_type_rim_carbon">Travões de Calço - Pista de Carbono</string>
 
     <string name="title_total_weight">Peso Total (Ciclista + Bicicleta + Equipamento)</string>
-    <string name="desc_total_weight">Essencial para calcular a potência cinética real (P = m·a·v)</string>
+    <string name="desc_total_weight">Fundamental para calcular a potência cinética real (P = m·a·v)</string>
     <string name="weight_unit">kg</string>
 
-    <string name="title_surface">Perfil de Terreno / Superfície</string>
-    <string name="desc_surface">Filtra vibrações de buracos, paralelo e terra para evitar falsos alarmes</string>
+    <string name="title_surface">Perfil de Superfície / Terreno</string>
+    <string name="desc_surface">Filtra vibrações, buracos e empedrado para evitar falsos positivos</string>
     <string name="surface_road">Estrada / Asfalto</string>
-    <string name="surface_gravel">Gravel / Paralelo / Terra</string>
+    <string name="surface_gravel">Gravel / Calçada / Terra</string>
     <string name="surface_mtb">BTT / Trilho Técnico</string>
+
+    <!-- Sistema de Unidades Regionais (UK, USA, Portugal, Europa) -->
+    <string name="title_unit_system">Sistema de Unidades Regional</string>
+    <string name="desc_unit_system">Medições configuradas para Portugal, Reino Unido, EUA e Europa</string>
+    <string name="unit_system_metric">Métrico (Portugal, Espanha, Europa)</string>
+    <string name="unit_system_metric_desc">kg, °C, m/s², km/h</string>
+    <string name="unit_system_imperial">Imperial (Reino Unido e EUA)</string>
+    <string name="unit_system_imperial_desc">lbs, °F, G / ft/s², mph</string>
+
+    <string name="title_temperature_unit">Unidade de Temperatura</string>
+    <string name="unit_celsius">Celsius (°C)</string>
+    <string name="unit_fahrenheit">Fahrenheit (°F)</string>
+
+    <string name="title_weight_unit">Unidade de Peso</string>
+    <string name="unit_kg">Quilogramas (kg)</string>
+    <string name="unit_lbs">Libras (lbs)</string>
 
     <string name="title_unit">Unidade de Desaceleração</string>
     <string name="unit_decel_ms2">m/s²</string>
     <string name="unit_decel_g">Força G (G)</string>
+    <string name="unit_decel_fts2">Pés/seg² (ft/s²)</string>
 
-    <string name="title_pedaling_filter">Filtro Inteligente de Pedalada e Subida</string>
-    <string name="desc_pedaling_filter">A travagem é bloqueada se cadência &gt; 0 ou potência &gt; 25W para não confundir subidas com travões</string>
+    <string name="title_pedaling_filter">Filtro Inteligente de Pedalada &amp; Subidas</string>
+    <string name="desc_pedaling_filter">A travagem é bloqueada durante a pedalada para não confundir inércia ou subidas com travagem</string>
+    <string name="coasting_active">Inércia / Roda Livre (Arrasto aerodinâmico filtrado)</string>
 
     <string name="title_safety_alerts">Alertas de Segurança</string>
     <string name="alert_hard_braking">Alarme de Travagem Brusca</string>
-    <string name="desc_hard_braking">Aviso sonoro e flash no ecrã em paragens súbitas (&gt; 4.2 m/s²)</string>
+    <string name="desc_hard_braking">Aviso sonoro e flash no ecrã para desacelerações bruscas (&gt; 4.2 m/s²)</string>
     <string name="alert_thermal">Aviso de Sobreaquecimento</string>
-    <string name="desc_thermal">Avisa de aquecimento excessivo em descidas longas e íngremes</string>
-    <string name="alert_beeper">Bip Físico do Karoo</string>
-    <string name="desc_beeper">Utiliza o beeper interno do Karoo para alertas sonoros</string>
+    <string name="desc_thermal">Avisa sobre o risco de fadiga térmica em descidas longas e íngremes</string>
+    <string name="alert_beeper">Sinalizador Karoo</string>
+    <string name="desc_beeper">Utiliza o altifalante interno do ciclocomputador para emitir avisos</string>
 
     <!-- Alertas em Rota -->
-    <string name="alert_hard_braking_title">TRAVAGEM BRUSCA DETETADA!</string>
-    <string name="alert_hard_braking_detail">Desaceleração máxima: %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_hard_braking_title">TRAVAGEM DE EMERGÊNCIA DETETADA!</string>
+    <string name="alert_hard_braking_detail">Desaceleração de pico: %1$s (%2$s)</string>
     <string name="alert_thermal_title">RISCO DE SOBREAQUECIMENTO DOS TRAVÕES</string>
-    <string name="alert_thermal_detail">Aquecimento crítico em %1$s (%2$.0f°C)! Solte os travões periodicamente para evitar delaminação da resina.</string>
+    <string name="alert_thermal_detail">Calor crítico em %1$s (%2$s)! Solte os travões intermitentemente para proteger a resina.</string>
 
-    <!-- Interface & Diagnóstico -->
+    <!-- UI & Diagnóstico -->
     <string name="tab_dashboard">Telemetria</string>
-    <string name="tab_settings">Definições</string>
+    <string name="tab_settings">Configurações</string>
     <string name="tab_guide">Guia</string>
     <string name="sensor_active">Sensores Ativos</string>
-    <string name="pedaling_active">A Pedalar (Travagem Bloqueada)</string>
-    <string name="live_test_title">Diagnóstico de Sensores em Tempo Real</string>
+    <string name="pedaling_active">Pedalada Ativa (Travagem Bloqueada)</string>
+    <string name="live_test_title">Diagnóstico de Sensores em Direto</string>
     <string name="live_test_desc">Incline a bicicleta ou trave para testar a resposta dos sensores</string>
-    <string name="btn_save">Guardar Definições</string>
-    <string name="toast_saved">Definições guardadas com sucesso!</string>
+    <string name="btn_save">Guardar Configuração</string>
+    <string name="toast_saved">Configuração guardada com sucesso!</string>
 
-    <!-- Guia de Utilização -->
-    <string name="guide_step1">1. Abra um Perfil de Corrida nas definições do Karoo.</string>
-    <string name="guide_step2">2. Edite um ecrã de dados e toque num espaço vazio.</string>
-    <string name="guide_step3">3. Na secção \'Karoo BBrakers\', selecione a métrica desejada.</string>
-    <string name="guide_step4">4. Os dados são gravados nos ficheiros FIT para análise no Strava e Intervals.icu.</string>
+    <!-- Guia do Utilizador -->
+    <string name="guide_step1">1. Aceda aos Perfis de Volta nas definições do Karoo.</string>
+    <string name="guide_step2">2. Edite um ecrã de dados e selecione um espaço livre.</string>
+    <string name="guide_step3">3. Na categoria \'Karoo BBrakers\', escolha o campo numérico ou gráfico.</string>
+    <string name="guide_step4">4. Os dados são guardados no ficheiro FIT para análise no Strava e Intervals.icu.</string>
 </resources>

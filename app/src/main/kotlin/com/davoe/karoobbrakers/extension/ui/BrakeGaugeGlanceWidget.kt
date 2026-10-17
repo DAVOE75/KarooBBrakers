@@ -31,19 +31,19 @@ fun BrakeGaugeGlanceWidget(
     isPedaling: Boolean,
     peakG: Double,
 ) {
-    // Determine dynamic accent color: Green -> Amber -> Bright Red
-    val barColor = when {
-        isPedaling -> Color(0xFF455A64) // Grayed out if pedaling
-        !isBraking -> Color(0xFF263238)
-        intensityPercent > 70 -> Color(0xFFFF1744) // Severe brake red
-        intensityPercent > 40 -> Color(0xFFFF9100) // Moderate brake amber
-        else -> Color(0xFF00E676) // Light brake green
-    }
+    // Progressive spectrum colors from White -> Pale Yellow -> Yellow -> Orange -> Red
+    val spectrumColors = listOf(
+        Color(0xFFFFFFFF), // 1. Initial bite: Pure White
+        Color(0xFFFFF176), // 2. Light decel: Pale Yellow
+        Color(0xFFFFD600), // 3. Medium decel: Pure Yellow
+        Color(0xFFFF6D00), // 4. Strong decel: Pure Orange
+        Color(0xFFD50000), // 5. Severe/Emergency: Fiery Red
+    )
 
     val statusText = when {
         isPedaling -> "PEDAL"
         isBraking -> "BRAKE"
-        else -> "ROLL"
+        else -> "ARMED"
     }
 
     val statusColor = when {
@@ -55,7 +55,7 @@ fun BrakeGaugeGlanceWidget(
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
-            .background(Color(0xFF0B0E14))
+            .background(Color(0xFF0D1017))
             .padding(horizontal = 6.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalAlignment = Alignment.CenterVertically,
@@ -112,7 +112,7 @@ fun BrakeGaugeGlanceWidget(
 
         Spacer(modifier = GlanceModifier.height(4.dp))
 
-        // Dynamic 5-segment Braking Intensity Meter Bar
+        // Dynamic 5-segment Progressive Intensity Spectrum (White -> Yellow -> Orange -> Red)
         Row(
             modifier = GlanceModifier
                 .fillMaxWidth()
@@ -120,13 +120,15 @@ fun BrakeGaugeGlanceWidget(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val segments = 5
-            val filledSegments = if (isBraking) {
+            val filledSegments = if (isPedaling) {
+                0
+            } else if (isBraking) {
                 ((intensityPercent / 100.0) * segments).toInt().coerceIn(1, segments)
             } else 0
 
             for (i in 0 until segments) {
                 val isActive = i < filledSegments
-                val segmentColor = if (isActive) barColor else Color(0xFF1E2530)
+                val segmentColor = if (isActive) spectrumColors[i] else Color(0xFF1E2530)
 
                 Box(
                     modifier = GlanceModifier

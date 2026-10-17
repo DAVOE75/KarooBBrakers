@@ -2,7 +2,6 @@ package com.davoe.karoobbrakers.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,7 +25,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -57,7 +55,11 @@ import com.davoe.karoobbrakers.R
 import com.davoe.karoobbrakers.data.BrakePreferences
 import com.davoe.karoobbrakers.model.BrakeMetrics
 import com.davoe.karoobbrakers.model.BrakeType
+import com.davoe.karoobbrakers.model.DecelUnit
 import com.davoe.karoobbrakers.model.SurfaceProfile
+import com.davoe.karoobbrakers.model.TemperatureUnit
+import com.davoe.karoobbrakers.model.UnitSystem
+import com.davoe.karoobbrakers.model.WeightUnit
 import com.davoe.karoobbrakers.ui.theme.AccentCyan
 import com.davoe.karoobbrakers.ui.theme.AccentGreen
 import com.davoe.karoobbrakers.ui.theme.AccentOrange
@@ -85,7 +87,7 @@ fun MainScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // App Header with Logo & Status
+        // App Header with Carbon Badge & Real-time State
         HeaderView(metrics = metrics)
 
         // Tab Navigation
@@ -145,7 +147,7 @@ fun HeaderView(metrics: BrakeMetrics) {
             modifier = Modifier
                 .size(38.dp)
                 .clip(CircleShape)
-                .background(DarkCard)
+                .background(Color(0xFF14171D))
                 .border(1.5.dp, AccentOrange, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
@@ -174,11 +176,12 @@ fun HeaderView(metrics: BrakeMetrics) {
             )
         }
 
-        // Status badge: Pedaling (Blue) vs Ready/Braking
+        // Status badge: BRAKING (Red) vs PEDALING (Cyan) vs COASTING (Slate) vs ARMED (Green)
         val badgeColor by animateColorAsState(
             targetValue = when {
                 metrics.isBraking -> AccentRed
                 metrics.isPedalingActive -> AccentCyan
+                metrics.isCoasting -> Color(0xFF90A4AE)
                 else -> AccentGreen
             },
             label = "badgeColor"
@@ -186,6 +189,7 @@ fun HeaderView(metrics: BrakeMetrics) {
         val badgeText = when {
             metrics.isBraking -> "BRAKING"
             metrics.isPedalingActive -> "PEDALING"
+            metrics.isCoasting -> "COASTING"
             else -> "ARMED"
         }
 
@@ -213,9 +217,24 @@ fun TelemetryTab(
     metrics: BrakeMetrics,
 ) {
     val scrollState = rememberScrollState()
-    val isUnitG = preferences.unitGForceFlow.collectAsState().value
-    val displayDecel = if (isUnitG) metrics.currentGForce else metrics.currentDecelMs2
-    val unitLabel = if (isUnitG) "G" else "m/s²"
+    val decelUnit by preferences.decelUnitFlow.collectAsState()
+    val tempUnit by preferences.temperatureUnitFlow.collectAsState()
+
+    val displayDecel = decelUnit.fromMs2(metrics.currentDecelMs2)
+    val unitLabel = decelUnit.symbol
+
+    val displayPeakDecel = decelUnit.fromMs2(metrics.peakDecelMs2)
+    val displayTemp = tempUnit.fromCelsius(metrics.estimatedTempCelsius)
+    val displayPeakTemp = tempUnit.fromCelsius(metrics.peakTempCelsius)
+
+    // Progressive Spectrum Colors: White -> Pale Yellow -> Yellow -> Orange -> Red
+    val spectrumColors = listOf(
+        Color(0xFFFFFFFF), // 1. Initial bite: Pure White
+        Color(0xFFFFF176), // 2. Light decel: Pale Yellow
+        Color(0xFFFFD600), // 3. Medium decel: Pure Yellow
+        Color(0xFFFF6D00), // 4. Strong decel: Pure Orange
+        Color(0xFFD50000), // 5. Emergency: Fiery Red
+    )
 
     Column(
         modifier = Modifier
@@ -269,36 +288,53 @@ fun TelemetryTab(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                // Braking Intensity Bar
-                val barProgress = (metrics.brakingIntensityPercent / 100f).coerceIn(0f, 1f)
-                val barColor = when {
-                    metrics.isPedalingActive -> Color(0xFF455A64)
-                    barProgress > 0.7f -> AccentRed
-                    barProgress > 0.35f -> AccentOrange
-                    else -> AccentGreen
-                }
-
-                LinearProgressIndicator(
-                    progress = { barProgress },
+                // 5-Segment Dynamic Intensity Spectrum Bar: White -> Yellow -> Orange -> Red
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(10.dp)
                         .clip(RoundedCornerShape(5.dp)),
-                    color = barColor,
-                    trackColor = DarkSurface,
-                )
+                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                ) {
+                    val segments = 5
+                    val filledSegments = if (metrics.isPedalingActive) {
+                        0
+                    } else if (metrics.isBraking) {
+                        ((metrics.brakingIntensityPercent / 100.0) * segments).toInt().coerceIn(1, segments)
+                    } else 0
+
+                    for (i in 0 until segments) {
+                        val isActive = i < filledSegments
+                        val segmentColor = if (isActive) spectrumColors[i] else DarkSurface
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(10.dp)
+                                .background(segmentColor)
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Pedaling Lockout Indicator
+                // Dynamic Status Notes
                 AnimatedVisibility(visible = metrics.isPedalingActive) {
                     Text(
                         text = stringResource(R.string.pedaling_active),
                         fontSize = 11.sp,
                         color = AccentCyan,
                         fontWeight = FontWeight.Medium,
+                    )
+                }
+
+                AnimatedVisibility(visible = metrics.isCoasting) {
+                    Text(
+                        text = stringResource(R.string.coasting_active),
+                        fontSize = 11.sp,
+                        color = Color(0xFF90A4AE),
+                        fontWeight = FontWeight.Normal,
                     )
                 }
             }
@@ -312,14 +348,14 @@ fun TelemetryTab(
             MetricCard(
                 title = stringResource(R.string.type_braking_power),
                 value = String.format(Locale.US, "%.0f W", metrics.currentBrakingPowerWatts),
-                subtitle = "Instantaneous Power",
+                subtitle = "Dissipated Power",
                 color = AccentCyan,
                 modifier = Modifier.weight(1f),
             )
             MetricCard(
                 title = stringResource(R.string.type_max_decel),
-                value = String.format(Locale.US, "%.2f G", metrics.peakGForce),
-                subtitle = "Peak G in Ride",
+                value = String.format(Locale.US, "%.2f %s", displayPeakDecel, unitLabel),
+                subtitle = "Peak Decel in Ride",
                 color = AccentOrange,
                 modifier = Modifier.weight(1f),
             )
@@ -332,7 +368,7 @@ fun TelemetryTab(
             MetricCard(
                 title = stringResource(R.string.type_brake_events),
                 value = "${metrics.totalBrakeEvents}",
-                subtitle = "Total Stops",
+                subtitle = "Total Brake Stops",
                 color = AccentGreen,
                 modifier = Modifier.weight(1f),
             )
@@ -446,21 +482,22 @@ fun TelemetryTab(
                 ) {
                     Column {
                         Text(
-                            text = String.format(Locale.US, "%.0f°C", metrics.estimatedTempCelsius),
+                            text = String.format(Locale.US, "%.0f%s", displayTemp, tempUnit.symbol),
                             fontSize = 28.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = tempColor,
                         )
                         Text(
-                            text = String.format(Locale.US, "Peak: %.0f°C", metrics.peakTempCelsius),
+                            text = String.format(Locale.US, "Peak: %.0f%s", displayPeakTemp, tempUnit.symbol),
                             fontSize = 11.sp,
                             color = TextSecondary,
                         )
                     }
 
                     val brakeType = preferences.getBrakeType()
+                    val criticalDisplay = tempUnit.fromCelsius(brakeType.criticalTempCelsius)
                     Text(
-                        text = "Limit: ${brakeType.criticalTempCelsius.toInt()}°C (${brakeType.name})",
+                        text = "Limit: ${criticalDisplay.toInt()}${tempUnit.symbol} (${brakeType.name})",
                         fontSize = 10.sp,
                         color = if (metrics.tempStatus == com.davoe.karoobbrakers.model.TempStatus.CRITICAL) AccentRed else TextSecondary,
                         fontWeight = if (metrics.tempStatus == com.davoe.karoobbrakers.model.TempStatus.CRITICAL) FontWeight.Bold else FontWeight.Normal,
@@ -515,7 +552,10 @@ fun SettingsTab(preferences: BrakePreferences) {
     val brakeType by preferences.brakeTypeFlow.collectAsState()
     val weightKg by preferences.weightFlow.collectAsState()
     val surfaceProfile by preferences.surfaceFlow.collectAsState()
-    val isUnitG by preferences.unitGForceFlow.collectAsState()
+    val unitSystem by preferences.unitSystemFlow.collectAsState()
+    val tempUnit by preferences.temperatureUnitFlow.collectAsState()
+    val weightUnit by preferences.weightUnitFlow.collectAsState()
+    val decelUnit by preferences.decelUnitFlow.collectAsState()
     val hardBrakeAlert by preferences.hardBrakeAlertFlow.collectAsState()
     val beeperEnabled by preferences.beeperEnabledFlow.collectAsState()
     val thermalWarning by preferences.thermalWarningFlow.collectAsState()
@@ -526,7 +566,97 @@ fun SettingsTab(preferences: BrakePreferences) {
             .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        // 1. Brake Type Selector
+        // 1. Regional Units System Preset (UK, USA, Germany, Spain, Europe)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = DarkCard),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Column(modifier = Modifier.padding(14.dp)) {
+                Text(
+                    text = stringResource(R.string.title_unit_system),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AccentCyan,
+                )
+                Text(
+                    text = stringResource(R.string.desc_unit_system),
+                    fontSize = 11.sp,
+                    color = TextSecondary,
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    // Metric Button
+                    val isMetric = unitSystem == UnitSystem.METRIC
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(if (isMetric) AccentCyan.copy(alpha = 0.15f) else DarkSurface)
+                            .border(
+                                width = if (isMetric) 1.5.dp else 1.dp,
+                                color = if (isMetric) AccentCyan else Color(0xFF2C3440),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable { preferences.setUnitSystem(UnitSystem.METRIC) }
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "Metric (EU / DE)",
+                                fontSize = 12.sp,
+                                fontWeight = if (isMetric) FontWeight.Bold else FontWeight.Normal,
+                                color = if (isMetric) TextPrimary else TextSecondary,
+                            )
+                            Text(
+                                text = "kg, °C, m/s²",
+                                fontSize = 10.sp,
+                                color = if (isMetric) AccentCyan else TextSecondary.copy(alpha = 0.7f),
+                            )
+                        }
+                    }
+
+                    // Imperial Button
+                    val isImperial = unitSystem == UnitSystem.IMPERIAL
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(if (isImperial) AccentOrange.copy(alpha = 0.15f) else DarkSurface)
+                            .border(
+                                width = if (isImperial) 1.5.dp else 1.dp,
+                                color = if (isImperial) AccentOrange else Color(0xFF2C3440),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable { preferences.setUnitSystem(UnitSystem.IMPERIAL) }
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "Imperial (UK / US)",
+                                fontSize = 12.sp,
+                                fontWeight = if (isImperial) FontWeight.Bold else FontWeight.Normal,
+                                color = if (isImperial) TextPrimary else TextSecondary,
+                            )
+                            Text(
+                                text = "lbs, °F, G / ft/s²",
+                                fontSize = 10.sp,
+                                color = if (isImperial) AccentOrange else TextSecondary.copy(alpha = 0.7f),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // 2. Brake Type Selector
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = DarkCard),
@@ -575,8 +705,9 @@ fun SettingsTab(preferences: BrakePreferences) {
                                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                                     color = if (isSelected) TextPrimary else TextSecondary,
                                 )
+                                val limitDisplay = tempUnit.fromCelsius(type.criticalTempCelsius)
                                 Text(
-                                    text = "Wear Factor: ${type.wearFactor}x | Thermal Limit: ${type.maxContinuousEnergyKj} kJ",
+                                    text = "Wear Factor: ${type.wearFactor}x | Limit: ${limitDisplay.toInt()}${tempUnit.symbol}",
                                     fontSize = 10.sp,
                                     color = if (isSelected) AccentCyan else TextSecondary.copy(alpha = 0.7f),
                                 )
@@ -595,13 +726,16 @@ fun SettingsTab(preferences: BrakePreferences) {
             }
         }
 
-        // 2. Total Weight Stepper / Slider
+        // 3. Total Weight Stepper & Slider (Adaptive for kg or lbs)
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = DarkCard),
             shape = RoundedCornerShape(12.dp),
         ) {
             Column(modifier = Modifier.padding(14.dp)) {
+                val isLbs = weightUnit == WeightUnit.LBS
+                val displayWeight = if (isLbs) weightKg * 2.20462262f else weightKg
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -621,7 +755,7 @@ fun SettingsTab(preferences: BrakePreferences) {
                         )
                     }
                     Text(
-                        text = "${weightKg.toInt()} kg",
+                        text = "${displayWeight.toInt()} ${weightUnit.symbol}",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = AccentCyan,
@@ -630,49 +764,176 @@ fun SettingsTab(preferences: BrakePreferences) {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Slider(
-                    value = weightKg,
-                    onValueChange = { preferences.setTotalWeightKg(it) },
-                    valueRange = 45f..150f,
-                    steps = 104,
-                    colors = SliderDefaults.colors(
-                        thumbColor = AccentCyan,
-                        activeTrackColor = AccentCyan,
-                        inactiveTrackColor = DarkSurface,
-                    ),
-                )
-
-                // Quick step buttons
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                ) {
-                    Button(
-                        onClick = { preferences.setTotalWeightKg(weightKg - 5f) },
-                        colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
-                        modifier = Modifier.height(34.dp),
+                if (isLbs) {
+                    Slider(
+                        value = displayWeight,
+                        onValueChange = { preferences.setTotalWeightKg(it / 2.20462262f) },
+                        valueRange = 90f..350f,
+                        steps = 260,
+                        colors = SliderDefaults.colors(
+                            thumbColor = AccentCyan,
+                            activeTrackColor = AccentCyan,
+                            inactiveTrackColor = DarkSurface,
+                        ),
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
-                        Text("-5 kg", fontSize = 11.sp, color = TextPrimary)
+                        Button(
+                            onClick = { preferences.setTotalWeightKg((displayWeight - 10f) / 2.20462262f) },
+                            colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
+                            modifier = Modifier.height(34.dp),
+                        ) {
+                            Text("-10 lbs", fontSize = 11.sp, color = TextPrimary)
+                        }
+                        Button(
+                            onClick = { preferences.setTotalWeightKg(80f) }, // ~176 lbs
+                            colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
+                            modifier = Modifier.height(34.dp),
+                        ) {
+                            Text("Default (175 lbs)", fontSize = 11.sp, color = AccentCyan)
+                        }
+                        Button(
+                            onClick = { preferences.setTotalWeightKg((displayWeight + 10f) / 2.20462262f) },
+                            colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
+                            modifier = Modifier.height(34.dp),
+                        ) {
+                            Text("+10 lbs", fontSize = 11.sp, color = TextPrimary)
+                        }
                     }
-                    Button(
-                        onClick = { preferences.setTotalWeightKg(80f) },
-                        colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
-                        modifier = Modifier.height(34.dp),
+                } else {
+                    Slider(
+                        value = weightKg,
+                        onValueChange = { preferences.setTotalWeightKg(it) },
+                        valueRange = 40f..160f,
+                        steps = 120,
+                        colors = SliderDefaults.colors(
+                            thumbColor = AccentCyan,
+                            activeTrackColor = AccentCyan,
+                            inactiveTrackColor = DarkSurface,
+                        ),
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
-                        Text("Default (80)", fontSize = 11.sp, color = AccentCyan)
-                    }
-                    Button(
-                        onClick = { preferences.setTotalWeightKg(weightKg + 5f) },
-                        colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
-                        modifier = Modifier.height(34.dp),
-                    ) {
-                        Text("+5 kg", fontSize = 11.sp, color = TextPrimary)
+                        Button(
+                            onClick = { preferences.setTotalWeightKg(weightKg - 5f) },
+                            colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
+                            modifier = Modifier.height(34.dp),
+                        ) {
+                            Text("-5 kg", fontSize = 11.sp, color = TextPrimary)
+                        }
+                        Button(
+                            onClick = { preferences.setTotalWeightKg(80f) },
+                            colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
+                            modifier = Modifier.height(34.dp),
+                        ) {
+                            Text("Default (80 kg)", fontSize = 11.sp, color = AccentCyan)
+                        }
+                        Button(
+                            onClick = { preferences.setTotalWeightKg(weightKg + 5f) },
+                            colors = ButtonDefaults.buttonColors(containerColor = DarkSurface),
+                            modifier = Modifier.height(34.dp),
+                        ) {
+                            Text("+5 kg", fontSize = 11.sp, color = TextPrimary)
+                        }
                     }
                 }
             }
         }
 
-        // 3. Surface Profile Selector
+        // 4. Detailed Unit Overrides (Temperature, Weight, Deceleration)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = DarkCard),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text(
+                    text = "Custom Unit Preferences",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AccentGreen,
+                )
+
+                // Temperature Unit Toggle
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = stringResource(R.string.title_temperature_unit), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
+                        Text(text = "Choose Celsius or Fahrenheit", fontSize = 10.sp, color = TextSecondary)
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Button(
+                            onClick = { preferences.setTemperatureUnit(TemperatureUnit.CELSIUS) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (tempUnit == TemperatureUnit.CELSIUS) AccentGreen else DarkSurface
+                            ),
+                            modifier = Modifier.height(32.dp),
+                        ) {
+                            Text("°C", fontSize = 11.sp, color = TextPrimary)
+                        }
+                        Button(
+                            onClick = { preferences.setTemperatureUnit(TemperatureUnit.FAHRENHEIT) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (tempUnit == TemperatureUnit.FAHRENHEIT) AccentGreen else DarkSurface
+                            ),
+                            modifier = Modifier.height(32.dp),
+                        ) {
+                            Text("°F", fontSize = 11.sp, color = TextPrimary)
+                        }
+                    }
+                }
+
+                // Deceleration Unit Selector
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = stringResource(R.string.title_unit), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = TextPrimary)
+                        Text(text = "m/s², G-Force or ft/s²", fontSize = 10.sp, color = TextSecondary)
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Button(
+                            onClick = { preferences.setDecelUnit(DecelUnit.MS2) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (decelUnit == DecelUnit.MS2) AccentCyan else DarkSurface
+                            ),
+                            modifier = Modifier.height(32.dp),
+                        ) {
+                            Text("m/s²", fontSize = 10.sp, color = TextPrimary)
+                        }
+                        Button(
+                            onClick = { preferences.setDecelUnit(DecelUnit.G_FORCE) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (decelUnit == DecelUnit.G_FORCE) AccentCyan else DarkSurface
+                            ),
+                            modifier = Modifier.height(32.dp),
+                        ) {
+                            Text("G", fontSize = 10.sp, color = TextPrimary)
+                        }
+                        Button(
+                            onClick = { preferences.setDecelUnit(DecelUnit.FT_S2) },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (decelUnit == DecelUnit.FT_S2) AccentCyan else DarkSurface
+                            ),
+                            modifier = Modifier.height(32.dp),
+                        ) {
+                            Text("ft/s²", fontSize = 10.sp, color = TextPrimary)
+                        }
+                    }
+                }
+            }
+        }
+
+        // 5. Surface Profile Selector
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = DarkCard),
@@ -726,7 +987,7 @@ fun SettingsTab(preferences: BrakePreferences) {
             }
         }
 
-        // 4. Pedaling & Incline Logic Info Card
+        // 6. Pedaling & Incline Logic Info Card
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = DarkCard),
@@ -748,21 +1009,13 @@ fun SettingsTab(preferences: BrakePreferences) {
             }
         }
 
-        // 5. Unit & Safety Alert Switches
+        // 7. Safety Alert Switches
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = DarkCard),
             shape = RoundedCornerShape(12.dp),
         ) {
             Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                // Unit Toggle
-                SettingSwitchRow(
-                    title = stringResource(R.string.title_unit),
-                    subtitle = if (isUnitG) "Displaying in G-Force" else "Displaying in m/s²",
-                    checked = isUnitG,
-                    onCheckedChange = { preferences.setUnitGForce(it) },
-                )
-
                 // Hard Braking Alarm
                 SettingSwitchRow(
                     title = stringResource(R.string.alert_hard_braking),
@@ -885,14 +1138,14 @@ fun GuideTab() {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                DataFieldItem("Braking Force", "Instantaneous deceleration (m/s² or G)")
-                DataFieldItem("Braking Power", "Kinetic energy dissipation rate in Watts (P = m·a·v)")
+                DataFieldItem("Braking Force", "Instantaneous deceleration (m/s², G or ft/s²)")
+                DataFieldItem("Braking Power", "Kinetic energy dissipation rate in Watts (P = m·a_net·v)")
                 DataFieldItem("Peak Brake G", "Maximum braking force recorded in ride")
                 DataFieldItem("Braking Events", "Count of distinct brake applications")
                 DataFieldItem("Brake Energy", "Total absorbed thermal energy in kJ")
                 DataFieldItem("Pad Wear Score", "Wear index taking into account disc vs carbon rim")
-                DataFieldItem("Brake Temperature", "Estimated real-time rim/rotor temperature in °C with carbon overheat alert")
-                DataFieldItem("Brake Gauge (Graphical)", "Dynamic colored bar with peak marker")
+                DataFieldItem("Brake Temperature", "Estimated real-time rim/rotor temperature in °C or °F with carbon overheat alert")
+                DataFieldItem("Brake Gauge (Graphical)", "Dynamic White to Red spectrum meter with peak marker")
             }
         }
     }

@@ -106,7 +106,7 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
             BrakeEventsCountDataType(extension, sensorFusion),
             BrakeEnergyDataType(extension, sensorFusion),
             PadWearDataType(extension, sensorFusion),
-            BrakeTemperatureDataType(extension, sensorFusion),
+            BrakeTemperatureDataType(extension, sensorFusion, preferences),
             BrakeGraphicalDataType(extension, sensorFusion, preferences),
         )
     }
@@ -257,7 +257,9 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
         }
 
         val title = getString(R.string.alert_hard_braking_title)
-        val detail = String.format(Locale.getDefault(), getString(R.string.alert_hard_braking_detail), peakDecel, gForce)
+        val decelStr = String.format(Locale.US, "%.1f %s", preferences.formatDecelValue(peakDecel), preferences.getDecelSymbol())
+        val gStr = String.format(Locale.US, "%.2f G", gForce)
+        val detail = String.format(Locale.getDefault(), getString(R.string.alert_hard_braking_detail), decelStr, gStr)
 
         karooSystem.dispatch(
             InRideAlert(
@@ -286,7 +288,8 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
         }
 
         val title = getString(R.string.alert_thermal_title)
-        val detail = String.format(Locale.getDefault(), getString(R.string.alert_thermal_detail), brakeTypeName, tempCelsius)
+        val tempDisplay = preferences.formatTemperature(tempCelsius)
+        val detail = String.format(Locale.getDefault(), getString(R.string.alert_thermal_detail), brakeTypeName, tempDisplay)
 
         karooSystem.dispatch(
             InRideAlert(

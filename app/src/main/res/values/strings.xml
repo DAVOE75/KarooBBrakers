@@ -6,7 +6,7 @@
 
     <!-- Data Types -->
     <string name="type_current_decel">Braking Force</string>
-    <string name="desc_current_decel">Instantaneous deceleration force in m/s² or G</string>
+    <string name="desc_current_decel">Instantaneous deceleration force in m/s², G or ft/s²</string>
 
     <string name="type_braking_power">Braking Power</string>
     <string name="desc_braking_power">Real-time kinetic power dissipated by brakes in Watts</string>
@@ -24,10 +24,10 @@
     <string name="desc_pad_wear">Cumulative pad wear index based on energy &amp; brake compound</string>
 
     <string name="type_brake_temperature">Brake Temperature</string>
-    <string name="desc_brake_temperature">Estimated real-time brake track/rotor temperature in °C</string>
+    <string name="desc_brake_temperature">Estimated real-time brake track/rotor temperature in °C or °F</string>
 
     <string name="type_graphical_brake">Brake Gauge</string>
-    <string name="desc_graphical_brake">Dynamic graphical meter showing braking intensity and peak</string>
+    <string name="desc_graphical_brake">Dynamic graphical meter with White to Red brake intensity spectrum</string>
 
     <!-- Settings & Configuration -->
     <string name="title_brake_type">Brake System Type</string>
@@ -46,12 +46,30 @@
     <string name="surface_gravel">Gravel / Cobblestones</string>
     <string name="surface_mtb">Mountain Bike / Trail</string>
 
+    <!-- Regional Units System (UK, US, Germany, Continental Europe) -->
+    <string name="title_unit_system">Regional Units System</string>
+    <string name="desc_unit_system">Preset measurements tailored for UK, USA, Germany and Europe</string>
+    <string name="unit_system_metric">Metric (Germany, Spain, Europe)</string>
+    <string name="unit_system_metric_desc">kg, °C, m/s², km/h</string>
+    <string name="unit_system_imperial">Imperial (UK &amp; USA)</string>
+    <string name="unit_system_imperial_desc">lbs, °F, G / ft/s², mph</string>
+
+    <string name="title_temperature_unit">Temperature Unit</string>
+    <string name="unit_celsius">Celsius (°C)</string>
+    <string name="unit_fahrenheit">Fahrenheit (°F)</string>
+
+    <string name="title_weight_unit">Weight Unit</string>
+    <string name="unit_kg">Kilograms (kg)</string>
+    <string name="unit_lbs">Pounds (lbs)</string>
+
     <string name="title_unit">Deceleration Unit</string>
     <string name="unit_decel_ms2">m/s²</string>
     <string name="unit_decel_g">G-Force (G)</string>
+    <string name="unit_decel_fts2">ft/s²</string>
 
     <string name="title_pedaling_filter">Smart Pedaling &amp; Incline Rejection</string>
     <string name="desc_pedaling_filter">Braking is strictly suppressed when cadence &gt; 0 or power &gt; 25W to prevent false positives on uphill ramps</string>
+    <string name="coasting_active">Coasting / Inertia (Aerodynamic drag filtered)</string>
 
     <string name="title_safety_alerts">Safety &amp; Warning Alerts</string>
     <string name="alert_hard_braking">Emergency Braking Alarm</string>
@@ -63,9 +81,9 @@
 
     <!-- In-Ride Alerts -->
     <string name="alert_hard_braking_title">EMERGENCY BRAKING</string>
-    <string name="alert_hard_braking_detail">Peak deceleration: %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_hard_braking_detail">Peak deceleration: %1$s (%2$s)</string>
     <string name="alert_thermal_title">BRAKE OVERHEATING RISK</string>
-    <string name="alert_thermal_detail">High thermal buildup on %1$s (%2$.0f°C). Release brakes periodically to avoid resin damage!</string>
+    <string name="alert_thermal_detail">High thermal buildup on %1$s (%2$s). Release brakes periodically to avoid resin damage!</string>
 
     <!-- UI Tabs & Diagnostic -->
     <string name="tab_dashboard">Telemetry</string>

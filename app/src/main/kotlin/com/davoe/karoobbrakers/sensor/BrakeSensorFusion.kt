@@ -7,11 +7,14 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.davoe.karoobbrakers.data.BrakePreferences
 import com.davoe.karoobbrakers.model.BrakeMetrics
+import com.davoe.karoobbrakers.model.SurfaceProfile
 import com.davoe.karoobbrakers.model.TempStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -31,19 +34,30 @@ class BrakeSensorFusion(
     private var currentSpeedMs: Double = 0.0
     private var lastSpeedMs: Double = 0.0
     private var lastSpeedTimestampNs: Long = 0L
+    private var speedDropDecelEstimate: Double = 0.0
     private var currentCadenceRpm: Double = 0.0
     private var currentPowerWatts: Double = 0.0
 
-    // Filter states
+    // Filter & Sensor states
     private var filteredDecelMs2: Double = 0.0
+    private var previousDecelMs2: Double = 0.0
     private var gravityEstimate = FloatArray(3) { 0f }
     private var lastAccelTimestampNs: Long = 0L
 
-    // Event tracking
+    // Jerk (da/dt) calculation rolling history
+    private val jerkHistorySize = 6
+    private val recentDecels = DoubleArray(jerkHistorySize) { 0.0 }
+    private val recentTimestampsNs = LongArray(jerkHistorySize) { 0L }
+    private var historyIndex = 0
+    private var historyCount = 0
+
+    // Brake State Machine
     private var isCurrentlyBraking = false
+    private var brakeBiteConfirmed = false
+    private var eventStartTimeMs = 0L
+    private var minBrakeHoldDurationMs = 120L // Debounce against road chatter
     private var currentEventPeakDecelMs2 = 0.0
     private var currentEventEnergyJoules = 0.0
-    private var eventStartTimeMs = 0L
     private var totalBrakeEventsCount = 0
     private var totalBrakingTimeAccumulatedMs = 0L
     private var totalEnergyAccumulatedKj = 0.0
@@ -61,6 +75,9 @@ class BrakeSensorFusion(
     fun start() {
         gravityEstimate = FloatArray(3) { 0f }
         filteredDecelMs2 = 0.0
+        previousDecelMs2 = 0.0
+        historyIndex = 0
+        historyCount = 0
 
         if (linearAccelSensor != null) {
             sensorManager?.registerListener(this, linearAccelSensor, SensorManager.SENSOR_DELAY_GAME)
@@ -75,14 +92,19 @@ class BrakeSensorFusion(
 
     fun onSpeedUpdate(speedMps: Double) {
         val now = System.nanoTime()
-        if (lastSpeedTimestampNs > 0 && now > lastSpeedTimestampNs) {
+        if (lastSpeedTimestampNs > 0L && now > lastSpeedTimestampNs) {
             val dt = (now - lastSpeedTimestampNs) / 1_000_000_000.0
-            if (dt in 0.05..2.0) {
-                // Kinematic acceleration from speed derivative
+            if (dt in 0.04..2.0) {
+                // Kinematic acceleration (negative = speed dropping)
                 val kinematicAccel = (speedMps - lastSpeedMs) / dt
-                // If speed is increasing significantly, cyclist is accelerating
-                if (kinematicAccel > 0.5) {
-                    filteredDecelMs2 = 0.0
+                if (kinematicAccel < -0.1) {
+                    speedDropDecelEstimate = -kinematicAccel
+                } else {
+                    speedDropDecelEstimate = 0.0
+                    // If speed is accelerating significantly, cyclist cannot be braking
+                    if (kinematicAccel > 0.4 && isCurrentlyBraking) {
+                        endBrakeEvent()
+                    }
                 }
             }
         }
@@ -93,7 +115,7 @@ class BrakeSensorFusion(
 
     fun onCadenceUpdate(cadenceRpm: Double) {
         currentCadenceRpm = max(0.0, cadenceRpm)
-        // Pedaling lockout: If actively pedaling, force decel to 0
+        // Pedaling lockout: Actively pedaling means zero braking
         if (currentCadenceRpm > 5.0 && isCurrentlyBraking) {
             endBrakeEvent()
         }
@@ -114,7 +136,34 @@ class BrakeSensorFusion(
         currentEventEnergyJoules = 0.0
         currentEstimatedTempCelsius = ambientTempCelsius
         peakEstimatedTempCelsius = ambientTempCelsius
+        isCurrentlyBraking = false
+        brakeBiteConfirmed = false
         _metrics.value = BrakeMetrics()
+    }
+
+    /**
+     * Estimates natural aerodynamic drag and rolling resistance deceleration (m/s²).
+     * Any deceleration less than or equal to this value is pure coasting due to inertia!
+     */
+    private fun calculateCoastingDrag(speedMs: Double, weightKg: Double, surface: SurfaceProfile): Double {
+        if (speedMs < 0.2) return 0.0
+
+        // Rolling resistance coefficient Crr
+        val crr = when (surface) {
+            SurfaceProfile.ROAD -> 0.0042
+            SurfaceProfile.GRAVEL -> 0.0070
+            SurfaceProfile.MTB -> 0.0095
+        }
+        val rollingDragDecel = crr * 9.80665
+
+        // Aerodynamic drag: Faero = 0.5 * rho * CdA * v^2
+        // CdA ~ 0.35 m^2 (hoods/drops endurance), air density ~ 1.205 kg/m^3
+        val rho = 1.205
+        val cdA = 0.35
+        val aeroForceNewtons = 0.5 * rho * cdA * speedMs.pow(2)
+        val aeroDragDecel = aeroForceNewtons / weightKg.coerceAtLeast(40.0)
+
+        return rollingDragDecel + aeroDragDecel
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
@@ -129,68 +178,104 @@ class BrakeSensorFusion(
         lastAccelTimestampNs = nowNs
 
         val surfaceProfile = preferences.getSurfaceProfile()
-        val alpha = surfaceProfile.filterAlpha.toDouble()
-        val triggerThreshold = surfaceProfile.triggerThresholdMs2.toDouble()
         val totalWeightKg = preferences.getTotalWeightKg().toDouble()
         val brakeType = preferences.getBrakeType()
 
-        // 1. Compute raw linear forward deceleration
+        // 1. Decouple Dynamic Linear Deceleration from Gravity & Incline
         val rawForwardDecel: Double = if (event.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
-            val yAccel = -event.values[1].toDouble()
-            val totalLinMag = sqrt(
-                event.values[0] * event.values[0] +
-                event.values[1] * event.values[1] +
-                event.values[2] * event.values[2]
-            ).toDouble()
-            if (yAccel > 0) yAccel else (totalLinMag * 0.7)
+            // Forward axis on standard Karoo stem mount is -Y or +Z depending on pitch
+            val forwardLinear = -event.values[1].toDouble()
+            forwardLinear
         } else {
-            val beta = 0.8f
+            // Low-pass filter to extract static gravity tilt (incline compensation)
+            val beta = 0.94f
             gravityEstimate[0] = beta * gravityEstimate[0] + (1 - beta) * event.values[0]
             gravityEstimate[1] = beta * gravityEstimate[1] + (1 - beta) * event.values[1]
             gravityEstimate[2] = beta * gravityEstimate[2] + (1 - beta) * event.values[2]
 
+            // Dynamic deceleration along forward axis with incline tilt cancelled
             val linY = -(event.values[1] - gravityEstimate[1]).toDouble()
-            max(0.0, linY)
+            linY
         }
 
-        // 2. Pedaling & Ramp Rejection:
-        // If pedaling cadence > 5 RPM or power > 25W, or stationary (< 0.6 m/s), lock out brake
+        // 2. Pedaling & Stationary Lockout
         val isPedaling = currentCadenceRpm > 5.0 || currentPowerWatts > 25.0
-        val isMoving = currentSpeedMs > 0.6
+        val isMoving = currentSpeedMs > 0.8 // Bike moving at least ~2.9 km/h
 
-        val effectiveDecelInput = if (isPedaling || !isMoving) {
+        val rawDecelNonNegative = if (isPedaling || !isMoving) {
             0.0
         } else {
-            rawForwardDecel
+            max(0.0, rawForwardDecel)
         }
 
-        // 3. Low-Pass Exponential Smoothing (Cobblestone / vibration rejection)
-        filteredDecelMs2 = alpha * effectiveDecelInput + (1.0 - alpha) * filteredDecelMs2
-        if (filteredDecelMs2 < 0.15) filteredDecelMs2 = 0.0
+        // 3. Two-Stage Filtering (Fast Attack, Road Chatter Rejection)
+        val alpha = surfaceProfile.filterAlpha.toDouble()
+        // Fast attack when deceleration increases rapidly (brake bite), smoother decay
+        val effectiveAlpha = if (rawDecelNonNegative > filteredDecelMs2) min(0.40, alpha * 1.8) else alpha
+        filteredDecelMs2 = effectiveAlpha * rawDecelNonNegative + (1.0 - effectiveAlpha) * filteredDecelMs2
 
-        // 4. Braking State Machine
+        // 4. Coasting Inertia Drag Baseline Subtraction
+        // Calculate the passive deceleration caused purely by wind resistance and tire rolling
+        val coastingDragMs2 = calculateCoastingDrag(currentSpeedMs, totalWeightKg, surfaceProfile)
+        val netBrakeDecelMs2 = max(0.0, filteredDecelMs2 - coastingDragMs2)
+
+        // 5. Jerk (da/dt) Calculation: Detect Lever Touch ("Bite") vs Lever Release ("Soltar")
+        recentDecels[historyIndex] = filteredDecelMs2
+        recentTimestampsNs[historyIndex] = nowNs
+        historyIndex = (historyIndex + 1) % jerkHistorySize
+        if (historyCount < jerkHistorySize) historyCount++
+
+        val jerkMs3: Double = if (historyCount >= 3) {
+            val oldestIdx = if (historyCount < jerkHistorySize) 0 else historyIndex
+            val deltaA = filteredDecelMs2 - recentDecels[oldestIdx]
+            val deltaT = (nowNs - recentTimestampsNs[oldestIdx]) / 1_000_000_000.0
+            if (deltaT > 0.02) deltaA / deltaT else 0.0
+        } else {
+            0.0
+        }
+
+        // 6. Fine-Tuned State Machine: Brake Bite vs Coasting Inertia vs Brake Release
         val nowMs = System.currentTimeMillis()
-        val isDecelAboveThreshold = filteredDecelMs2 >= triggerThreshold
 
-        var instantaneousPowerWatts = 0.0
+        // Threshold for initial pad contact ("toque de freno")
+        val biteThreshold = when (surfaceProfile) {
+            SurfaceProfile.ROAD -> 0.40   // 0.04G net above aerodynamic drag
+            SurfaceProfile.GRAVEL -> 0.55 // 0.056G
+            SurfaceProfile.MTB -> 0.70    // 0.071G
+        }
 
-        if (!isCurrentlyBraking && isDecelAboveThreshold && !isPedaling && isMoving) {
-            isCurrentlyBraking = true
-            eventStartTimeMs = nowMs
-            currentEventPeakDecelMs2 = filteredDecelMs2
-            currentEventEnergyJoules = 0.0
-            totalBrakeEventsCount++
-        } else if (isCurrentlyBraking) {
-            if (filteredDecelMs2 > currentEventPeakDecelMs2) {
-                currentEventPeakDecelMs2 = filteredDecelMs2
+        // Threshold for releasing brake lever ("soltar el freno")
+        val releaseThreshold = biteThreshold * 0.35
+
+        val isDecelAboveBite = netBrakeDecelMs2 >= biteThreshold
+        val hasBiteJerk = jerkMs3 > 0.65 // Positive impulse on pad contact
+        val isSpeedDropping = speedDropDecelEstimate > 0.15
+
+        if (!isCurrentlyBraking) {
+            // Trigger braking ONLY when:
+            // - Net deceleration exceeds natural coasting drag
+            // - Either sudden positive jerk (lever bite) OR confirmed GPS speed drop
+            // - Cyclist is not pedaling and is actually moving
+            if (isDecelAboveBite && (hasBiteJerk || isSpeedDropping) && !isPedaling && isMoving) {
+                isCurrentlyBraking = true
+                brakeBiteConfirmed = true
+                eventStartTimeMs = nowMs
+                currentEventPeakDecelMs2 = netBrakeDecelMs2
+                currentEventEnergyJoules = 0.0
+                totalBrakeEventsCount++
+            }
+        } else {
+            // Cyclist is currently modulating brakes
+            if (netBrakeDecelMs2 > currentEventPeakDecelMs2) {
+                currentEventPeakDecelMs2 = netBrakeDecelMs2
             }
             if (currentEventPeakDecelMs2 > maxRideDecelMs2) {
                 maxRideDecelMs2 = currentEventPeakDecelMs2
             }
 
-            // Power = Force * Velocity = (M * a) * v
-            val brakingForceNewtons = totalWeightKg * filteredDecelMs2
-            instantaneousPowerWatts = brakingForceNewtons * currentSpeedMs
+            // Power = Force * Velocity = (m * a_net) * v
+            val brakingForceNewtons = totalWeightKg * netBrakeDecelMs2
+            val instantaneousPowerWatts = brakingForceNewtons * currentSpeedMs
             val deltaEnergyJoules = instantaneousPowerWatts * dt
             currentEventEnergyJoules += deltaEnergyJoules
             totalEnergyAccumulatedKj += (deltaEnergyJoules / 1000.0)
@@ -201,16 +286,32 @@ class BrakeSensorFusion(
                 onHardBrakeDetected?.invoke(currentEventPeakDecelMs2, currentEventPeakDecelMs2 / 9.80665)
             }
 
-            // Exit conditions
-            if (isPedaling || filteredDecelMs2 < (triggerThreshold * 0.4) || !isMoving) {
+            // Detection of "Soltar el freno" (Brake Lever Release):
+            // - Net deceleration drops below release threshold
+            // - OR sharp negative jerk (jerk < -1.2 m/s³) indicating sudden lever opening
+            // - OR rider resumed pedaling or came to full stop
+            val hasReleaseJerk = jerkMs3 < -1.2
+            val isDebounced = (nowMs - eventStartTimeMs) >= minBrakeHoldDurationMs
+
+            val shouldRelease = isPedaling || !isMoving || (isDebounced && (netBrakeDecelMs2 < releaseThreshold || (hasReleaseJerk && netBrakeDecelMs2 < biteThreshold)))
+
+            if (shouldRelease) {
                 endBrakeEvent()
             }
         }
 
-        // 5. Thermodynamic Model Integration
-        // Qin: 80% of braking mechanical power turns into brake track heat
-        val heatInWatts = if (isCurrentlyBraking) 0.80 * instantaneousPowerWatts else 0.0
-        // Qout: Convective cooling proportional to speed airflow and temperature gradient
+        previousDecelMs2 = filteredDecelMs2
+
+        // 7. Instantaneous Braking Power
+        val activeBrakeDecel = if (isCurrentlyBraking) netBrakeDecelMs2 else 0.0
+        val instantaneousPowerWatts = if (isCurrentlyBraking) {
+            totalWeightKg * activeBrakeDecel * currentSpeedMs
+        } else {
+            0.0
+        }
+
+        // 8. Thermodynamic Thermal Model (Continuous Heat Generation & Air Cooling)
+        val heatInWatts = if (isCurrentlyBraking) 0.82 * instantaneousPowerWatts else 0.0
         val airSpeedMultiplier = currentSpeedMs.coerceAtLeast(0.0).pow(0.75)
         val coolingCapacity = brakeType.coolingFactorBase + (brakeType.coolingFactorVelocity * airSpeedMultiplier)
         val heatOutWatts = coolingCapacity * (currentEstimatedTempCelsius - ambientTempCelsius).coerceAtLeast(0.0)
@@ -234,16 +335,20 @@ class BrakeSensorFusion(
             onThermalWarningDetected?.invoke(brakeType.id, currentEstimatedTempCelsius)
         }
 
-        // 6. Emit updated metrics
-        val currentG = filteredDecelMs2 / 9.80665
+        // 9. Differentiate Coasting (Freewheeling by inertia) from Braking
+        val isCoasting = !isCurrentlyBraking && !isPedaling && isMoving
+
+        // 10. Emit Updated Metrics
+        val currentG = activeBrakeDecel / 9.80665
         val padWearScore = (totalEnergyAccumulatedKj * brakeType.wearFactor) / 10.0
 
         _metrics.value = BrakeMetrics(
-            currentDecelMs2 = if (isCurrentlyBraking) filteredDecelMs2 else 0.0,
-            currentGForce = if (isCurrentlyBraking) currentG else 0.0,
+            currentDecelMs2 = activeBrakeDecel,
+            currentGForce = currentG,
             currentBrakingPowerWatts = instantaneousPowerWatts,
             isBraking = isCurrentlyBraking,
             isPedalingActive = isPedaling,
+            isCoasting = isCoasting,
             peakDecelMs2 = maxRideDecelMs2,
             peakGForce = maxRideDecelMs2 / 9.80665,
             totalBrakeEvents = totalBrakeEventsCount,
@@ -266,6 +371,7 @@ class BrakeSensorFusion(
             totalBrakingTimeAccumulatedMs += (nowMs - eventStartTimeMs)
         }
         isCurrentlyBraking = false
+        brakeBiteConfirmed = false
         currentEventEnergyJoules = 0.0
         currentEventPeakDecelMs2 = 0.0
         eventStartTimeMs = 0L

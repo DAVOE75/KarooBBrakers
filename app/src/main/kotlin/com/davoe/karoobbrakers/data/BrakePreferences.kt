@@ -3,10 +3,15 @@ package com.davoe.karoobbrakers.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.davoe.karoobbrakers.model.BrakeType
+import com.davoe.karoobbrakers.model.DecelUnit
 import com.davoe.karoobbrakers.model.SurfaceProfile
+import com.davoe.karoobbrakers.model.TemperatureUnit
+import com.davoe.karoobbrakers.model.UnitSystem
+import com.davoe.karoobbrakers.model.WeightUnit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Locale
 
 class BrakePreferences(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -19,6 +24,18 @@ class BrakePreferences(context: Context) {
 
     private val _surfaceFlow = MutableStateFlow(loadSurfaceProfile())
     val surfaceFlow: StateFlow<SurfaceProfile> = _surfaceFlow.asStateFlow()
+
+    private val _unitSystemFlow = MutableStateFlow(loadUnitSystem())
+    val unitSystemFlow: StateFlow<UnitSystem> = _unitSystemFlow.asStateFlow()
+
+    private val _temperatureUnitFlow = MutableStateFlow(loadTemperatureUnit())
+    val temperatureUnitFlow: StateFlow<TemperatureUnit> = _temperatureUnitFlow.asStateFlow()
+
+    private val _weightUnitFlow = MutableStateFlow(loadWeightUnit())
+    val weightUnitFlow: StateFlow<WeightUnit> = _weightUnitFlow.asStateFlow()
+
+    private val _decelUnitFlow = MutableStateFlow(loadDecelUnit())
+    val decelUnitFlow: StateFlow<DecelUnit> = _decelUnitFlow.asStateFlow()
 
     private val _unitGForceFlow = MutableStateFlow(loadUnitGForce())
     val unitGForceFlow: StateFlow<Boolean> = _unitGForceFlow.asStateFlow()
@@ -35,6 +52,10 @@ class BrakePreferences(context: Context) {
     fun getBrakeType(): BrakeType = _brakeTypeFlow.value
     fun getTotalWeightKg(): Float = _weightFlow.value
     fun getSurfaceProfile(): SurfaceProfile = _surfaceFlow.value
+    fun getUnitSystem(): UnitSystem = _unitSystemFlow.value
+    fun getTemperatureUnit(): TemperatureUnit = _temperatureUnitFlow.value
+    fun getWeightUnit(): WeightUnit = _weightUnitFlow.value
+    fun getDecelUnit(): DecelUnit = _decelUnitFlow.value
     fun isUnitGForce(): Boolean = _unitGForceFlow.value
     fun isHardBrakeAlertEnabled(): Boolean = _hardBrakeAlertFlow.value
     fun getHardBrakeThresholdMs2(): Float = prefs.getFloat(KEY_HARD_BRAKE_THRESHOLD, 4.2f)
@@ -57,9 +78,54 @@ class BrakePreferences(context: Context) {
         _surfaceFlow.value = profile
     }
 
+    fun setUnitSystem(system: UnitSystem) {
+        prefs.edit().putString(KEY_UNIT_SYSTEM, system.id).apply()
+        _unitSystemFlow.value = system
+
+        // Sync individual units to system defaults
+        when (system) {
+            UnitSystem.METRIC -> {
+                setTemperatureUnit(TemperatureUnit.CELSIUS)
+                setWeightUnit(WeightUnit.KG)
+                setDecelUnit(DecelUnit.MS2)
+                setUnitGForce(false)
+            }
+            UnitSystem.IMPERIAL -> {
+                setTemperatureUnit(TemperatureUnit.FAHRENHEIT)
+                setWeightUnit(WeightUnit.LBS)
+                setDecelUnit(DecelUnit.G_FORCE)
+                setUnitGForce(true)
+            }
+        }
+    }
+
+    fun setTemperatureUnit(unit: TemperatureUnit) {
+        prefs.edit().putString(KEY_TEMP_UNIT, unit.id).apply()
+        _temperatureUnitFlow.value = unit
+    }
+
+    fun setWeightUnit(unit: WeightUnit) {
+        prefs.edit().putString(KEY_WEIGHT_UNIT, unit.id).apply()
+        _weightUnitFlow.value = unit
+    }
+
+    fun setDecelUnit(unit: DecelUnit) {
+        prefs.edit().putString(KEY_DECEL_UNIT, unit.id).apply()
+        _decelUnitFlow.value = unit
+        setUnitGForce(unit == DecelUnit.G_FORCE)
+    }
+
     fun setUnitGForce(gForce: Boolean) {
         prefs.edit().putBoolean(KEY_UNIT_G_FORCE, gForce).apply()
         _unitGForceFlow.value = gForce
+        if (gForce && _decelUnitFlow.value != DecelUnit.G_FORCE) {
+            _decelUnitFlow.value = DecelUnit.G_FORCE
+            prefs.edit().putString(KEY_DECEL_UNIT, DecelUnit.G_FORCE.id).apply()
+        } else if (!gForce && _decelUnitFlow.value == DecelUnit.G_FORCE) {
+            val fallback = if (_unitSystemFlow.value == UnitSystem.IMPERIAL) DecelUnit.FT_S2 else DecelUnit.MS2
+            _decelUnitFlow.value = fallback
+            prefs.edit().putString(KEY_DECEL_UNIT, fallback.id).apply()
+        }
     }
 
     fun setHardBrakeAlertEnabled(enabled: Boolean) {
@@ -77,6 +143,21 @@ class BrakePreferences(context: Context) {
         _thermalWarningFlow.value = enabled
     }
 
+    // Format helpers
+    fun formatTemperature(tempCelsius: Double): String {
+        val unit = _temperatureUnitFlow.value
+        val displayVal = unit.fromCelsius(tempCelsius)
+        return String.format(Locale.US, "%.0f%s", displayVal, unit.symbol)
+    }
+
+    fun formatDecelValue(decelMs2: Double): Double {
+        return _decelUnitFlow.value.fromMs2(decelMs2)
+    }
+
+    fun getDecelSymbol(): String = _decelUnitFlow.value.symbol
+    fun getTemperatureSymbol(): String = _temperatureUnitFlow.value.symbol
+    fun getWeightSymbol(): String = _weightUnitFlow.value.symbol
+
     private fun loadBrakeType(): BrakeType {
         val id = prefs.getString(KEY_BRAKE_TYPE, BrakeType.DISC.id) ?: BrakeType.DISC.id
         return BrakeType.fromId(id)
@@ -89,7 +170,40 @@ class BrakePreferences(context: Context) {
         return SurfaceProfile.fromId(id)
     }
 
-    private fun loadUnitGForce(): Boolean = prefs.getBoolean(KEY_UNIT_G_FORCE, false)
+    private fun detectDefaultImperial(): Boolean {
+        val country = Locale.getDefault().country.uppercase(Locale.ROOT)
+        return country in listOf("US", "GB", "LR", "MM")
+    }
+
+    private fun loadUnitSystem(): UnitSystem {
+        val defaultSystem = if (detectDefaultImperial()) UnitSystem.IMPERIAL else UnitSystem.METRIC
+        val id = prefs.getString(KEY_UNIT_SYSTEM, defaultSystem.id) ?: defaultSystem.id
+        return UnitSystem.fromId(id)
+    }
+
+    private fun loadTemperatureUnit(): TemperatureUnit {
+        val defaultUnit = if (detectDefaultImperial()) TemperatureUnit.FAHRENHEIT else TemperatureUnit.CELSIUS
+        val id = prefs.getString(KEY_TEMP_UNIT, defaultUnit.id) ?: defaultUnit.id
+        return TemperatureUnit.fromId(id)
+    }
+
+    private fun loadWeightUnit(): WeightUnit {
+        val defaultUnit = if (detectDefaultImperial()) WeightUnit.LBS else WeightUnit.KG
+        val id = prefs.getString(KEY_WEIGHT_UNIT, defaultUnit.id) ?: defaultUnit.id
+        return WeightUnit.fromId(id)
+    }
+
+    private fun loadDecelUnit(): DecelUnit {
+        val legacyG = prefs.getBoolean(KEY_UNIT_G_FORCE, detectDefaultImperial())
+        val defaultUnit = if (legacyG) DecelUnit.G_FORCE else DecelUnit.MS2
+        val id = prefs.getString(KEY_DECEL_UNIT, defaultUnit.id) ?: defaultUnit.id
+        return DecelUnit.fromId(id)
+    }
+
+    private fun loadUnitGForce(): Boolean {
+        return prefs.getBoolean(KEY_UNIT_G_FORCE, detectDefaultImperial())
+    }
+
     private fun loadHardBrakeAlertEnabled(): Boolean = prefs.getBoolean(KEY_HARD_BRAKE_ALERT, true)
     private fun loadBeeperEnabled(): Boolean = prefs.getBoolean(KEY_BEEPER_ENABLED, true)
     private fun loadThermalWarningEnabled(): Boolean = prefs.getBoolean(KEY_THERMAL_WARNING, true)
@@ -99,6 +213,10 @@ class BrakePreferences(context: Context) {
         private const val KEY_BRAKE_TYPE = "brake_type"
         private const val KEY_TOTAL_WEIGHT = "total_weight_kg"
         private const val KEY_SURFACE_PROFILE = "surface_profile"
+        private const val KEY_UNIT_SYSTEM = "unit_system"
+        private const val KEY_TEMP_UNIT = "temp_unit"
+        private const val KEY_WEIGHT_UNIT = "weight_unit"
+        private const val KEY_DECEL_UNIT = "decel_unit"
         private const val KEY_UNIT_G_FORCE = "unit_g_force"
         private const val KEY_HARD_BRAKE_ALERT = "hard_brake_alert"
         private const val KEY_HARD_BRAKE_THRESHOLD = "hard_brake_threshold"

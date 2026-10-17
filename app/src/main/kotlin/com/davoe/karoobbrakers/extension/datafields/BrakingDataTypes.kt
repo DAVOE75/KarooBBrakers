@@ -29,11 +29,7 @@ class CurrentBrakeDataType(
     override fun startStream(emitter: Emitter<StreamState>) {
         val job = CoroutineScope(Dispatchers.Default).launch {
             sensorFusion.metrics.collect { metrics ->
-                val value = if (preferences.isUnitGForce()) {
-                    metrics.currentGForce
-                } else {
-                    metrics.currentDecelMs2
-                }
+                val value = preferences.formatDecelValue(metrics.currentDecelMs2)
                 emitter.onNext(
                     StreamState.Streaming(
                         DataPoint(
@@ -87,11 +83,7 @@ class MaxBrakeDataType(
     override fun startStream(emitter: Emitter<StreamState>) {
         val job = CoroutineScope(Dispatchers.Default).launch {
             sensorFusion.metrics.collect { metrics ->
-                val value = if (preferences.isUnitGForce()) {
-                    metrics.peakGForce
-                } else {
-                    metrics.peakDecelMs2
-                }
+                val value = preferences.formatDecelValue(metrics.peakDecelMs2)
                 emitter.onNext(
                     StreamState.Streaming(
                         DataPoint(
@@ -191,16 +183,18 @@ class PadWearDataType(
 class BrakeTemperatureDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
         val job = CoroutineScope(Dispatchers.Default).launch {
             sensorFusion.metrics.collect { metrics ->
+                val tempVal = preferences.getTemperatureUnit().fromCelsius(metrics.estimatedTempCelsius)
                 emitter.onNext(
                     StreamState.Streaming(
                         DataPoint(
                             dataTypeId = dataTypeId,
-                            values = mapOf(DataType.Field.SINGLE to metrics.estimatedTempCelsius),
+                            values = mapOf(DataType.Field.SINGLE to tempVal),
                         )
                     )
                 )
@@ -225,11 +219,7 @@ class BrakeGraphicalDataType(
     override fun startStream(emitter: Emitter<StreamState>) {
         val job = CoroutineScope(Dispatchers.Default).launch {
             sensorFusion.metrics.collect { metrics ->
-                val value = if (preferences.isUnitGForce()) {
-                    metrics.currentGForce
-                } else {
-                    metrics.currentDecelMs2
-                }
+                val value = preferences.formatDecelValue(metrics.currentDecelMs2)
                 emitter.onNext(
                     StreamState.Streaming(
                         DataPoint(
@@ -251,8 +241,8 @@ class BrakeGraphicalDataType(
 
         viewJob = scope.launch {
             sensorFusion.metrics.collect { metrics ->
-                val unitLabel = if (preferences.isUnitGForce()) "G" else "m/s²"
-                val displayVal = if (preferences.isUnitGForce()) metrics.currentGForce else metrics.currentDecelMs2
+                val unitLabel = preferences.getDecelSymbol()
+                val displayVal = preferences.formatDecelValue(metrics.currentDecelMs2)
 
                 val result = glance.compose(context, DpSize.Unspecified) {
                     BrakeGaugeGlanceWidget(

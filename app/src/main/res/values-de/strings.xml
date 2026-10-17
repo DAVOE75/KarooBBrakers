@@ -6,7 +6,7 @@
 
     <!-- Datentypen -->
     <string name="type_current_decel">Bremskraft</string>
-    <string name="desc_current_decel">Momentane Verzögerungskraft in m/s² oder G</string>
+    <string name="desc_current_decel">Momentane Verzögerungskraft in m/s², G oder ft/s²</string>
 
     <string name="type_braking_power">Bremsleistung</string>
     <string name="desc_braking_power">Echte kinetische Bremsleistung in Watt (W)</string>
@@ -24,10 +24,10 @@
     <string name="desc_pad_wear">Kumulierter Verschleißindex basierend auf Energie &amp; Bremsentyp</string>
 
     <string name="type_brake_temperature">Bremstemperatur</string>
-    <string name="desc_brake_temperature">Geschätzte Echtzeit-Temperatur der Bremsflanke/Scheibe in °C</string>
+    <string name="desc_brake_temperature">Geschätzte Echtzeit-Temperatur der Bremsflanke/Scheibe in °C oder °F</string>
 
     <string name="type_graphical_brake">Bremsanzeige-Grafik</string>
-    <string name="desc_graphical_brake">Dynamische Farbanzeige für Bremsintensität und Spitzenwert</string>
+    <string name="desc_graphical_brake">Dynamisches Spektrum von Weiß bis Rot zur Anzeige der Bremsintensität</string>
 
     <!-- Einstellungen & Konfiguration -->
     <string name="title_brake_type">Bremssystemtyp</string>
@@ -46,12 +46,30 @@
     <string name="surface_gravel">Gravel / Kopfsteinpflaster / Schotter</string>
     <string name="surface_mtb">Mountainbike / Technischer Trail</string>
 
+    <!-- Regionale Einheitensysteme (Deutschland, UK, USA) -->
+    <string name="title_unit_system">Regionales Einheitensystem</string>
+    <string name="desc_unit_system">Maßeinheiten angepasst für Deutschland, UK, USA und Europa</string>
+    <string name="unit_system_metric">Metrisch (Deutschland, Spanien, Europa)</string>
+    <string name="unit_system_metric_desc">kg, °C, m/s², km/h</string>
+    <string name="unit_system_imperial">Imperial (UK &amp; USA)</string>
+    <string name="unit_system_imperial_desc">lbs, °F, G / ft/s², mph</string>
+
+    <string name="title_temperature_unit">Temperatureinheit</string>
+    <string name="unit_celsius">Celsius (°C)</string>
+    <string name="unit_fahrenheit">Fahrenheit (°F)</string>
+
+    <string name="title_weight_unit">Gewichtseinheit</string>
+    <string name="unit_kg">Kilogramm (kg)</string>
+    <string name="unit_lbs">Pfund (lbs)</string>
+
     <string name="title_unit">Verzögerungseinheit</string>
     <string name="unit_decel_ms2">m/s²</string>
     <string name="unit_decel_g">G-Kraft (G)</string>
+    <string name="unit_decel_fts2">Fuß/Sek² (ft/s²)</string>
 
     <string name="title_pedaling_filter">Intelligenter Tret- &amp; Steigungsfilter</string>
-    <string name="desc_pedaling_filter">Bremsen wird gesperrt wenn Trittfrequenz &gt; 0 oder Leistung &gt; 25W, um Steigungen nicht als Bremsen zu werten</string>
+    <string name="desc_pedaling_filter">Bremsen wird gesperrt wenn getreten wird, um Trägheitsausrollen oder Steigungen nicht als Bremsen zu werten</string>
+    <string name="coasting_active">Rollen / Trägheit (Luftwiderstand gefiltert)</string>
 
     <string name="title_safety_alerts">Sicherheitswarnungen</string>
     <string name="alert_hard_braking">Notbremsungs-Alarm</string>
@@ -63,9 +81,9 @@
 
     <!-- Warnmeldungen während der Fahrt -->
     <string name="alert_hard_braking_title">NOTBREMSUNG ERKANNT!</string>
-    <string name="alert_hard_braking_detail">Spitzenverzögerung: %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_hard_braking_detail">Spitzenverzögerung: %1$s (%2$s)</string>
     <string name="alert_thermal_title">GEFAHR DER BREMSÜBERHITZUNG</string>
-    <string name="alert_thermal_detail">Kritische Hitze an %1$s (%2$.0f°C)! Bremsen zur Kühlung zeitweise lösen, um Harzschäden zu vermeiden.</string>
+    <string name="alert_thermal_detail">Kritische Hitze an %1$s (%2$s)! Bremsen zur Kühlung zeitweise lösen, um Harzschäden zu vermeiden.</string>
 
     <!-- UI & Diagnose -->
     <string name="tab_dashboard">Telemetrie</string>
