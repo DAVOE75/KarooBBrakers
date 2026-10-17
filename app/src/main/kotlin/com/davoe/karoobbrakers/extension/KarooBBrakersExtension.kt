@@ -43,7 +43,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.2.0") {
+class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.2.1") {
 
     private val karooSystem by lazy { KarooSystemService(this) }
     private val preferences by lazy { BrakePreferences(this) }

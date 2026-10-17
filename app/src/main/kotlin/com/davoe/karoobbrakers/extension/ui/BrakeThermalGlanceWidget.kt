@@ -54,6 +54,8 @@ fun BrakeThermalGlanceWidget(
     frontLabel: String = "FRONT",
     rearLabel: String = "REAR",
     safetyLimitLabel: String = "Limit",
+    frontTempBitmap: android.graphics.Bitmap? = null,
+    rearTempBitmap: android.graphics.Bitmap? = null,
 ) {
     fun colorForStatus(status: TempStatus): Color = when (status) {
         TempStatus.NORMAL -> Color(0xFF00E676)   // Emerald green
@@ -131,15 +133,23 @@ fun BrakeThermalGlanceWidget(
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
-                Text(
-                    text = String.format(Locale.US, "%.0f%s", frontTemp, unitSymbol),
-                    style = TextStyle(
-                        color = ColorProvider(frontColor),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = DataScreenFontCondensed,
-                    ),
-                )
+                if (frontTempBitmap != null) {
+                    androidx.glance.Image(
+                        provider = androidx.glance.ImageProvider(frontTempBitmap),
+                        contentDescription = null,
+                        modifier = GlanceModifier.height(20.dp),
+                    )
+                } else {
+                    Text(
+                        text = String.format(Locale.US, "%.0f%s", frontTemp, unitSymbol),
+                        style = TextStyle(
+                            color = ColorProvider(frontColor),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = DataScreenFontCondensed,
+                        ),
+                    )
+                }
             }
 
             // Vertical divider
@@ -164,15 +174,23 @@ fun BrakeThermalGlanceWidget(
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
-                Text(
-                    text = String.format(Locale.US, "%.0f%s", rearTemp, unitSymbol),
-                    style = TextStyle(
-                        color = ColorProvider(rearColor),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = DataScreenFontCondensed,
-                    ),
-                )
+                if (rearTempBitmap != null) {
+                    androidx.glance.Image(
+                        provider = androidx.glance.ImageProvider(rearTempBitmap),
+                        contentDescription = null,
+                        modifier = GlanceModifier.height(20.dp),
+                    )
+                } else {
+                    Text(
+                        text = String.format(Locale.US, "%.0f%s", rearTemp, unitSymbol),
+                        style = TextStyle(
+                            color = ColorProvider(rearColor),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = DataScreenFontCondensed,
+                        ),
+                    )
+                }
             }
         }
 

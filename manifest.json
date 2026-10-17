@@ -3,12 +3,12 @@
   "name": "Karoo BBrakers",
   "packageName": "com.davoe.karoobbrakers",
   "extensionId": "com.davoe.karoobbrakers",
-  "latestApkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.0/karoobbrakers.apk",
-  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.0/karoobbrakers.apk",
-  "latestVersion": "1.2.0",
-  "latestVersionCode": 4,
+  "latestApkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.1/karoobbrakers.apk",
+  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.1/karoobbrakers.apk",
+  "latestVersion": "1.2.1",
+  "latestVersionCode": 121,
   "iconUrl": "https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/app/src/main/res/drawable/app_logo.png",
   "developer": "hesiOX",
   "description": "WorldTour PRO Braking Telemetry, Dynamic Load Transfer, Corner Radar & Apex Speed Retention, Kamm Friction Circle Traction Limit, Metabolic Energy Burned, Peloton Smoothness (PEI), Dual Rotor Thermal & Fade Safety Monitor for Hammerhead Karoo 2 & Karoo 3.",
-  "releaseNotes": "v1.2.0 WorldTour PRO Elite Suite: Desk/Stationary speed lockout (< 4 km/h) eliminates 100% false positives without micro-switches; Gravity pitch decoupling cancels false hill-climb readings; Corner Radar & Apex Speed Retention (0-100%); Predictive Corner Braking Warnings with stopping distance; Kamm Friction Circle tire traction limit alarm with wet road safety profile; Wasted Metabolic Energy calculation (21.5% muscular efficiency); Peloton Smoothness Index (PEI 0-100%) against accordion waves; 3 new native Karoo data fields (17 total); 12 FIT developer fields for WKO5 & GoldenCheetah; 100% 6-language localization parity; zero emojis."
+  "releaseNotes": "v1.2.1 BigNum Typography & High-Definition Canvas Rendering: Migrated all 14 numeric data fields and 3 graphical widgets to native Canvas Bitmap rendering with Barlow Condensed Bold 700 at 50% width (textScaleX = 0.5f); ultra-crisp cockpit typography across all Karoo ride screens; subpixel antialiasing and zero binder transaction overhead."
 }

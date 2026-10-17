@@ -6,6 +6,8 @@ import androidx.glance.appwidget.ExperimentalGlanceRemoteViewsApi
 import androidx.glance.appwidget.GlanceRemoteViews
 import com.davoe.karoobbrakers.R
 import com.davoe.karoobbrakers.data.BrakePreferences
+import com.davoe.karoobbrakers.extension.render.BrakeFieldRenderer
+import com.davoe.karoobbrakers.extension.render.BrakeFieldRenderer.TelemetryTileData
 import com.davoe.karoobbrakers.extension.ui.BrakeCockpitGlanceWidget
 import com.davoe.karoobbrakers.extension.ui.BrakeGaugeGlanceWidget
 import com.davoe.karoobbrakers.extension.ui.BrakeThermalGlanceWidget
@@ -48,6 +50,25 @@ class CurrentBrakeDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_current_decel)
+        val unit = preferences.getDecelSymbol()
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val value = String.format(Locale.US, "%.1f", preferences.formatDecelValue(metrics.currentDecelMs2))
+            val valColor = if (metrics.isBraking) {
+                if (metrics.currentDecelMs2 > 3.0) 0xFFFF1744.toInt() else 0xFFFFFFFF.toInt()
+            } else 0xFF78909C.toInt()
+            val accentColor = if (metrics.isBraking) 0xFFFF1744.toInt() else 0xFF00E5FF.toInt()
+            TelemetryTileData(
+                label = label,
+                value = value,
+                unit = unit,
+                valueColor = valColor,
+                accentBarColor = accentColor,
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "current_decel"
     }
@@ -56,6 +77,7 @@ class CurrentBrakeDataType(
 class BrakingPowerDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -72,6 +94,22 @@ class BrakingPowerDataType(
             }
         }
         emitter.setCancellable { job.cancel() }
+    }
+
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_braking_power)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val value = String.format(Locale.US, "%.0f", metrics.currentBrakingPowerWatts)
+            val valColor = if (metrics.currentBrakingPowerWatts > 0.0) 0xFFFFFFFF.toInt() else 0xFF78909C.toInt()
+            val accentColor = if (metrics.currentBrakingPowerWatts > 400.0) 0xFFFF3D00.toInt() else 0xFFFF9100.toInt()
+            TelemetryTileData(
+                label = label,
+                value = value,
+                unit = "W",
+                valueColor = valColor,
+                accentBarColor = accentColor,
+            )
+        }
     }
 
     companion object {
@@ -102,6 +140,21 @@ class MaxBrakeDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_max_decel)
+        val unit = preferences.getDecelSymbol()
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val value = String.format(Locale.US, "%.1f", preferences.formatDecelValue(metrics.peakDecelMs2))
+            TelemetryTileData(
+                label = label,
+                value = value,
+                unit = unit,
+                valueColor = 0xFFFFD600.toInt(),
+                accentBarColor = 0xFFFFD600.toInt(),
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "max_decel"
     }
@@ -110,6 +163,7 @@ class MaxBrakeDataType(
 class BrakeEventsCountDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -128,6 +182,19 @@ class BrakeEventsCountDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_brake_events)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            TelemetryTileData(
+                label = label,
+                value = "${metrics.totalBrakeEvents}",
+                unit = "",
+                valueColor = 0xFFFFFFFF.toInt(),
+                accentBarColor = 0xFF00E5FF.toInt(),
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "brake_events"
     }
@@ -136,6 +203,7 @@ class BrakeEventsCountDataType(
 class BrakeEnergyDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -154,6 +222,20 @@ class BrakeEnergyDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_brake_energy)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val value = String.format(Locale.US, "%.1f", metrics.totalEnergyKj)
+            TelemetryTileData(
+                label = label,
+                value = value,
+                unit = "kJ",
+                valueColor = 0xFFFF9100.toInt(),
+                accentBarColor = 0xFFFF9100.toInt(),
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "brake_energy"
     }
@@ -162,6 +244,7 @@ class BrakeEnergyDataType(
 class PadWearDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -180,6 +263,20 @@ class PadWearDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_pad_wear)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val value = String.format(Locale.US, "%.1f", metrics.padWearScore)
+            TelemetryTileData(
+                label = label,
+                value = value,
+                unit = "pts",
+                valueColor = 0xFFFF5252.toInt(),
+                accentBarColor = 0xFFFF5252.toInt(),
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "pad_wear"
     }
@@ -188,6 +285,7 @@ class PadWearDataType(
 class PadLifeDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -206,6 +304,25 @@ class PadLifeDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_pad_life)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val pct = metrics.padLifeRemainingPercent
+            val color = when {
+                pct > 40 -> 0xFF00E676.toInt()
+                pct > 20 -> 0xFFFFD600.toInt()
+                else -> 0xFFFF1744.toInt()
+            }
+            TelemetryTileData(
+                label = label,
+                value = "$pct",
+                unit = "%",
+                valueColor = color,
+                accentBarColor = color,
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "pad_life"
     }
@@ -214,6 +331,7 @@ class PadLifeDataType(
 class DescentEfficiencyDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -232,6 +350,25 @@ class DescentEfficiencyDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_descent_efficiency)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val score = metrics.descentEfficiencyScore
+            val color = when {
+                score >= 80 -> 0xFF00E676.toInt()
+                score >= 60 -> 0xFFFFD600.toInt()
+                else -> 0xFFFF5252.toInt()
+            }
+            TelemetryTileData(
+                label = label,
+                value = "$score",
+                unit = "%",
+                valueColor = color,
+                accentBarColor = color,
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "descent_efficiency"
     }
@@ -240,6 +377,7 @@ class DescentEfficiencyDataType(
 class WastedWattsDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -258,6 +396,20 @@ class WastedWattsDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_wasted_watts)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val value = String.format(Locale.US, "%.0f", metrics.wastedDragWatts)
+            TelemetryTileData(
+                label = label,
+                value = value,
+                unit = "W",
+                valueColor = 0xFFFF5252.toInt(),
+                accentBarColor = 0xFFFF5252.toInt(),
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "wasted_watts"
     }
@@ -266,6 +418,7 @@ class WastedWattsDataType(
 class GripMarginDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -282,6 +435,25 @@ class GripMarginDataType(
             }
         }
         emitter.setCancellable { job.cancel() }
+    }
+
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_grip_margin)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val margin = metrics.gripMarginPercent
+            val color = when {
+                margin >= 40 -> 0xFF00E676.toInt()
+                margin >= 20 -> 0xFFFFD600.toInt()
+                else -> 0xFFFF1744.toInt()
+            }
+            TelemetryTileData(
+                label = label,
+                value = "$margin",
+                unit = "%",
+                valueColor = color,
+                accentBarColor = color,
+            )
+        }
     }
 
     companion object {
@@ -310,6 +482,27 @@ class BrakeTemperatureDataType(
             }
         }
         emitter.setCancellable { job.cancel() }
+    }
+
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_brake_temperature)
+        val tempUnit = preferences.getTemperatureUnit()
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val tempVal = tempUnit.fromCelsius(metrics.estimatedTempCelsius)
+            val color = when (metrics.tempStatus) {
+                TempStatus.NORMAL -> 0xFF00E676.toInt()
+                TempStatus.WARM -> 0xFF00E5FF.toInt()
+                TempStatus.HOT -> 0xFFFF9100.toInt()
+                TempStatus.CRITICAL -> 0xFFFF1744.toInt()
+            }
+            TelemetryTileData(
+                label = label,
+                value = String.format(Locale.US, "%.0f", tempVal),
+                unit = tempUnit.symbol,
+                valueColor = color,
+                accentBarColor = color,
+            )
+        }
     }
 
     companion object {
@@ -369,6 +562,10 @@ class BrakeGraphicalDataType(
                     val frontLabel = context.getString(R.string.label_front_abbr)
                     val rearLabel = context.getString(R.string.label_rear_abbr)
 
+                    val decelText = if (metrics.isBraking) String.format(Locale.US, "%.1f", displayVal) else "0.0"
+                    val decelColor = if (metrics.isBraking) 0xFFFFFFFF.toInt() else 0xFF78909C.toInt()
+                    val decelBitmap = BrakeFieldRenderer.renderNumberBitmap(context, decelText, decelColor, pixelHeight = 56)
+
                     val result = glance.compose(context, DpSize.Unspecified) {
                         BrakeGaugeGlanceWidget(
                             value = displayVal,
@@ -384,6 +581,7 @@ class BrakeGraphicalDataType(
                             peakLabel = peakLabel,
                             frontLabel = frontLabel,
                             rearLabel = rearLabel,
+                            decelBitmap = decelBitmap,
                         )
                     }
                     emitter.updateView(result.remoteViews)
@@ -460,6 +658,26 @@ class BrakeThermalGraphicalDataType(
                     val safetyLimitLabel = context.getString(R.string.label_safety_limit)
                     val localizedBrakeTypeName = context.getString(brakeType.titleRes)
 
+                    fun colorForStatusInt(status: TempStatus): Int = when (status) {
+                        TempStatus.NORMAL -> 0xFF00E676.toInt()
+                        TempStatus.WARM -> 0xFF00E5FF.toInt()
+                        TempStatus.HOT -> 0xFFFF9100.toInt()
+                        TempStatus.CRITICAL -> 0xFFFF1744.toInt()
+                    }
+
+                    val frontBitmap = BrakeFieldRenderer.renderNumberBitmap(
+                        context,
+                        String.format(Locale.US, "%.0f%s", frontTemp, tempUnit.symbol),
+                        colorForStatusInt(metrics.frontTempStatus),
+                        pixelHeight = 44,
+                    )
+                    val rearBitmap = BrakeFieldRenderer.renderNumberBitmap(
+                        context,
+                        String.format(Locale.US, "%.0f%s", rearTemp, tempUnit.symbol),
+                        colorForStatusInt(metrics.rearTempStatus),
+                        pixelHeight = 44,
+                    )
+
                     val result = glance.compose(context, DpSize.Unspecified) {
                         BrakeThermalGlanceWidget(
                             currentTemp = currentTemp,
@@ -479,6 +697,8 @@ class BrakeThermalGraphicalDataType(
                             frontLabel = frontLabel,
                             rearLabel = rearLabel,
                             safetyLimitLabel = safetyLimitLabel,
+                            frontTempBitmap = frontBitmap,
+                            rearTempBitmap = rearBitmap,
                         )
                     }
                     emitter.updateView(result.remoteViews)
@@ -555,6 +775,10 @@ class BrakeCockpitGraphicalDataType(
                     val frontLabel = context.getString(R.string.label_front_abbr)
                     val rearLabel = context.getString(R.string.label_rear_abbr)
 
+                    val decelText = if (metrics.isBraking) String.format(Locale.US, "%.1f", displayDecel) else "0.0"
+                    val decelColor = if (metrics.isBraking) 0xFFFFFFFF.toInt() else 0xFF78909C.toInt()
+                    val decelBitmap = BrakeFieldRenderer.renderNumberBitmap(context, decelText, decelColor, pixelHeight = 52)
+
                     val result = glance.compose(context, DpSize.Unspecified) {
                         BrakeCockpitGlanceWidget(
                             decelValue = displayDecel,
@@ -585,6 +809,7 @@ class BrakeCockpitGraphicalDataType(
                             isDescending = metrics.isDescending,
                             isTrailBraking = metrics.isTrailBraking,
                             padLifeRemainingPercent = metrics.padLifeRemainingPercent,
+                            decelBitmap = decelBitmap,
                         )
                     }
                     emitter.updateView(result.remoteViews)
@@ -605,6 +830,7 @@ class BrakeCockpitGraphicalDataType(
 class CornerRadarDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -624,6 +850,20 @@ class CornerRadarDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_corner_radar)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val speed = if (metrics.apexSpeedKmh > 0.0) metrics.apexSpeedKmh else metrics.cornerEntrySpeedKmh
+            TelemetryTileData(
+                label = label,
+                value = String.format(Locale.US, "%.1f", speed),
+                unit = "km/h",
+                valueColor = 0xFF00E5FF.toInt(),
+                accentBarColor = 0xFF00E5FF.toInt(),
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "corner_radar"
     }
@@ -632,6 +872,7 @@ class CornerRadarDataType(
 class MetabolicBurnDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -650,6 +891,19 @@ class MetabolicBurnDataType(
         emitter.setCancellable { job.cancel() }
     }
 
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_metabolic_burn)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            TelemetryTileData(
+                label = label,
+                value = String.format(Locale.US, "%.1f", metrics.metabolicKjBurned),
+                unit = "kJ",
+                valueColor = 0xFFFF6D00.toInt(),
+                accentBarColor = 0xFFFF6D00.toInt(),
+            )
+        }
+    }
+
     companion object {
         const val TYPE_ID = "metabolic_burn"
     }
@@ -658,6 +912,7 @@ class MetabolicBurnDataType(
 class PelotonSmoothnessDataType(
     extension: String,
     private val sensorFusion: BrakeSensorFusion,
+    private val preferences: BrakePreferences? = null,
 ) : DataTypeImpl(extension, TYPE_ID) {
 
     override fun startStream(emitter: Emitter<StreamState>) {
@@ -674,6 +929,25 @@ class PelotonSmoothnessDataType(
             }
         }
         emitter.setCancellable { job.cancel() }
+    }
+
+    override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
+        val label = context.getString(R.string.type_peloton_smoothness)
+        BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val smoothness = metrics.pelotonSmoothnessIndex
+            val color = when {
+                smoothness >= 75 -> 0xFF00E676.toInt()
+                smoothness >= 50 -> 0xFFFFD600.toInt()
+                else -> 0xFFFF5252.toInt()
+            }
+            TelemetryTileData(
+                label = label,
+                value = "$smoothness",
+                unit = "/100",
+                valueColor = color,
+                accentBarColor = color,
+            )
+        }
     }
 
     companion object {

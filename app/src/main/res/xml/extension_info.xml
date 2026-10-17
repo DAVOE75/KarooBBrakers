@@ -2,7 +2,7 @@
 <ExtensionInfo
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="karoobbrakers"
-    version="1.2.0"
+    version="1.2.1"
     displayName="@string/extension_name"
     icon="@drawable/ic_brake_sense"
     scansDevices="false"
@@ -13,77 +13,77 @@
         displayName="@string/type_current_decel"
         description="@string/desc_current_decel"
         icon="@drawable/ic_brake_sense"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="braking_power"
         displayName="@string/type_braking_power"
         description="@string/desc_braking_power"
         icon="@drawable/ic_brake_power"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="max_decel"
         displayName="@string/type_max_decel"
         description="@string/desc_max_decel"
         icon="@drawable/ic_brake_sense"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="brake_events"
         displayName="@string/type_brake_events"
         description="@string/desc_brake_events"
         icon="@drawable/ic_brake_sense"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="brake_energy"
         displayName="@string/type_brake_energy"
         description="@string/desc_brake_energy"
         icon="@drawable/ic_wear"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="pad_wear"
         displayName="@string/type_pad_wear"
         description="@string/desc_pad_wear"
         icon="@drawable/ic_wear"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="brake_temperature"
         displayName="@string/type_brake_temperature"
         description="@string/desc_brake_temperature"
         icon="@drawable/ic_wear"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="descent_efficiency"
         displayName="@string/type_descent_efficiency"
         description="@string/desc_descent_efficiency"
         icon="@drawable/ic_brake_gauge"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="pad_life"
         displayName="@string/type_pad_life"
         description="@string/desc_pad_life"
         icon="@drawable/ic_wear"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="wasted_watts"
         displayName="@string/type_wasted_watts"
         description="@string/desc_wasted_watts"
         icon="@drawable/ic_brake_power"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="grip_margin"
         displayName="@string/type_grip_margin"
         description="@string/desc_grip_margin"
         icon="@drawable/ic_brake_sense"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="graphical_brake"
@@ -104,21 +104,21 @@
         displayName="@string/type_corner_radar"
         description="@string/desc_corner_radar"
         icon="@drawable/ic_corner_radar"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="metabolic_burn"
         displayName="@string/type_metabolic_burn"
         description="@string/desc_metabolic_burn"
         icon="@drawable/ic_metabolic"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="peloton_smoothness"
         displayName="@string/type_peloton_smoothness"
         description="@string/desc_peloton_smoothness"
         icon="@drawable/ic_peloton"
-        graphical="false" />
+        graphical="true" />
 
     <DataType
         typeId="graphical_cockpit"

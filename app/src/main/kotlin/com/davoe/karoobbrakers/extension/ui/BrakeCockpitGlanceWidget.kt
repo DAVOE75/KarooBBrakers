@@ -69,6 +69,7 @@ fun BrakeCockpitGlanceWidget(
     isDescending: Boolean = false,
     isTrailBraking: Boolean = false,
     padLifeRemainingPercent: Int = 100,
+    decelBitmap: android.graphics.Bitmap? = null,
 ) {
     // 5-Stage Progressive Spectrum Colors (White -> Yellow -> Orange -> Red)
     val spectrumColors = listOf(
@@ -166,20 +167,28 @@ fun BrakeCockpitGlanceWidget(
 
         Spacer(modifier = GlanceModifier.height(1.dp))
 
-        // --- 2. Central High-Contrast Deceleration Readout ---
+        // --- 2. Central High-Contrast Deceleration Readout (Barlow Condensed Bold 700 50% width) ---
         Row(
             verticalAlignment = Alignment.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
-                text = if (isBraking) String.format(Locale.US, "%.1f", decelValue) else "0.0",
-                style = TextStyle(
-                    color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = DataScreenFontCondensed,
-                ),
-            )
+            if (decelBitmap != null) {
+                androidx.glance.Image(
+                    provider = androidx.glance.ImageProvider(decelBitmap),
+                    contentDescription = null,
+                    modifier = GlanceModifier.height(26.dp),
+                )
+            } else {
+                Text(
+                    text = if (isBraking) String.format(Locale.US, "%.1f", decelValue) else "0.0",
+                    style = TextStyle(
+                        color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = DataScreenFontCondensed,
+                    ),
+                )
+            }
             Spacer(modifier = GlanceModifier.width(2.dp))
             Text(
                 text = decelUnit,
