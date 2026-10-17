@@ -11,6 +11,7 @@ import com.davoe.karoobbrakers.extension.datafields.BrakingPowerDataType
 import com.davoe.karoobbrakers.extension.datafields.CurrentBrakeDataType
 import com.davoe.karoobbrakers.extension.datafields.MaxBrakeDataType
 import com.davoe.karoobbrakers.extension.datafields.PadWearDataType
+import com.davoe.karoobbrakers.extension.datafields.BrakeTemperatureDataType
 import com.davoe.karoobbrakers.sensor.BrakeSensorFusion
 import io.hammerhead.karooext.KarooSystemService
 import io.hammerhead.karooext.extension.DataTypeImpl
@@ -90,6 +91,12 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
         fieldName = "PadWearScore",
         units = "score",
     )
+    private val devFieldTemp = DeveloperField(
+        fieldDefinitionNumber = 7,
+        fitBaseTypeId = 136, // Float32
+        fieldName = "BrakeTemperature",
+        units = "deg_c",
+    )
 
     override val types: List<DataTypeImpl> by lazy {
         listOf(
@@ -99,6 +106,7 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
             BrakeEventsCountDataType(extension, sensorFusion),
             BrakeEnergyDataType(extension, sensorFusion),
             PadWearDataType(extension, sensorFusion),
+            BrakeTemperatureDataType(extension, sensorFusion),
             BrakeGraphicalDataType(extension, sensorFusion, preferences),
         )
     }
@@ -116,11 +124,11 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
             }
         }
 
-        sensorFusion.onThermalWarningDetected = { brakeTypeName, energyKj ->
+        sensorFusion.onThermalWarningDetected = { brakeTypeName, tempCelsius ->
             val now = System.currentTimeMillis()
             if (now - lastThermalAlertTimeMs > 15000L) {
                 lastThermalAlertTimeMs = now
-                triggerThermalWarning(brakeTypeName, energyKj)
+                triggerThermalWarning(brakeTypeName, tempCelsius)
             }
         }
 
@@ -217,6 +225,7 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
             FieldValue(devFieldDecel, metrics.currentDecelMs2),
             FieldValue(devFieldPower, metrics.currentBrakingPowerWatts),
             FieldValue(devFieldIsBraking, if (metrics.isBraking) 1.0 else 0.0),
+            FieldValue(devFieldTemp, metrics.estimatedTempCelsius),
         )
         emitter.onNext(WriteToRecordMesg(values))
     }
@@ -263,7 +272,7 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
         )
     }
 
-    private fun triggerThermalWarning(brakeTypeName: String, energyKj: Double) {
+    private fun triggerThermalWarning(brakeTypeName: String, tempCelsius: Double) {
         if (preferences.isBeeperEnabled()) {
             karooSystem.dispatch(
                 PlayBeepPattern(
@@ -277,7 +286,7 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
         }
 
         val title = getString(R.string.alert_thermal_title)
-        val detail = String.format(Locale.getDefault(), getString(R.string.alert_thermal_detail), brakeTypeName)
+        val detail = String.format(Locale.getDefault(), getString(R.string.alert_thermal_detail), brakeTypeName, tempCelsius)
 
         karooSystem.dispatch(
             InRideAlert(

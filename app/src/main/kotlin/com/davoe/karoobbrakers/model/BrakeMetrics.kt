@@ -1,5 +1,12 @@
 package com.davoe.karoobbrakers.model
 
+enum class TempStatus {
+    NORMAL,
+    WARM,
+    HOT,
+    CRITICAL
+}
+
 data class BrakeMetrics(
     val currentDecelMs2: Double = 0.0,
     val currentGForce: Double = 0.0,
@@ -13,6 +20,9 @@ data class BrakeMetrics(
     val totalEnergyKj: Double = 0.0,
     val padWearScore: Double = 0.0,
     val continuousBrakingEnergyKj: Double = 0.0,
+    val estimatedTempCelsius: Double = 22.0,
+    val peakTempCelsius: Double = 22.0,
+    val tempStatus: TempStatus = TempStatus.NORMAL,
     val isThermalWarning: Boolean = false,
     val isHardBrakeAlert: Boolean = false,
 ) {

@@ -23,6 +23,9 @@
     <string name="type_pad_wear">Usure des Plaquettes</string>
     <string name="desc_pad_wear">Indice d\'usure cumulé selon l\'énergie et le type de frein</string>
 
+    <string name="type_brake_temperature">Température de Freinage</string>
+    <string name="desc_brake_temperature">Température estimée en temps réel de la piste/disque en °C</string>
+
     <string name="type_graphical_brake">Jauge de Freinage</string>
     <string name="desc_graphical_brake">Indicateur graphique dynamique avec intensité et pic de freinage</string>
 
@@ -62,7 +65,7 @@
     <string name="alert_hard_braking_title">FREINAGE D\'URGENCE DÉTECTÉ</string>
     <string name="alert_hard_braking_detail">Décélération maximale : %1$.1f m/s² (%2$.2f G)</string>
     <string name="alert_thermal_title">RISQUE DE SURCHAUFFE DES FREINS</string>
-    <string name="alert_thermal_detail">Forte dissipation thermique sur %s. Relâchez régulièrement les freins.</string>
+    <string name="alert_thermal_detail">Échauffement critique sur %1$s (%2$.0f°C) ! Relâchez les freins pour éviter la délamination.</string>
 
     <!-- Onglets UI & Diagnostic -->
     <string name="tab_dashboard">Télémétrie</string>

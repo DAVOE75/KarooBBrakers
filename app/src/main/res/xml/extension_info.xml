@@ -50,6 +50,13 @@
         graphical="false" />
 
     <DataType
+        typeId="brake_temperature"
+        displayName="@string/type_brake_temperature"
+        description="@string/desc_brake_temperature"
+        icon="@drawable/ic_wear"
+        graphical="false" />
+
+    <DataType
         typeId="graphical_brake"
         displayName="@string/type_graphical_brake"
         description="@string/desc_graphical_brake"

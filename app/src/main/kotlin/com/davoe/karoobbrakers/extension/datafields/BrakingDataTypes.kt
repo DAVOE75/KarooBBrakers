@@ -188,6 +188,32 @@ class PadWearDataType(
     }
 }
 
+class BrakeTemperatureDataType(
+    extension: String,
+    private val sensorFusion: BrakeSensorFusion,
+) : DataTypeImpl(extension, TYPE_ID) {
+
+    override fun startStream(emitter: Emitter<StreamState>) {
+        val job = CoroutineScope(Dispatchers.Default).launch {
+            sensorFusion.metrics.collect { metrics ->
+                emitter.onNext(
+                    StreamState.Streaming(
+                        DataPoint(
+                            dataTypeId = dataTypeId,
+                            values = mapOf(DataType.Field.SINGLE to metrics.estimatedTempCelsius),
+                        )
+                    )
+                )
+            }
+        }
+        emitter.setCancellable { job.cancel() }
+    }
+
+    companion object {
+        const val TYPE_ID = "brake_temperature"
+    }
+}
+
 @OptIn(ExperimentalGlanceRemoteViewsApi::class)
 class BrakeGraphicalDataType(
     extension: String,

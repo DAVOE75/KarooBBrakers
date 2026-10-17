@@ -385,6 +385,89 @@ fun TelemetryTab(
                 )
             }
         }
+
+        // Real-Time Brake Temperature Card (Critical for Carbon Rims)
+        val tempColor = when (metrics.tempStatus) {
+            com.davoe.karoobbrakers.model.TempStatus.NORMAL -> AccentGreen
+            com.davoe.karoobbrakers.model.TempStatus.WARM -> AccentCyan
+            com.davoe.karoobbrakers.model.TempStatus.HOT -> AccentOrange
+            com.davoe.karoobbrakers.model.TempStatus.CRITICAL -> AccentRed
+        }
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = DarkCard),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Column(modifier = Modifier.padding(14.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_wear),
+                            contentDescription = null,
+                            tint = tempColor,
+                            modifier = Modifier.size(22.dp),
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.type_brake_temperature),
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextPrimary,
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(tempColor.copy(alpha = 0.2f))
+                            .border(1.dp, tempColor, RoundedCornerShape(8.dp))
+                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = metrics.tempStatus.name,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = tempColor,
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom,
+                ) {
+                    Column {
+                        Text(
+                            text = String.format(Locale.US, "%.0f°C", metrics.estimatedTempCelsius),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = tempColor,
+                        )
+                        Text(
+                            text = String.format(Locale.US, "Peak: %.0f°C", metrics.peakTempCelsius),
+                            fontSize = 11.sp,
+                            color = TextSecondary,
+                        )
+                    }
+
+                    val brakeType = preferences.getBrakeType()
+                    Text(
+                        text = "Limit: ${brakeType.criticalTempCelsius.toInt()}°C (${brakeType.name})",
+                        fontSize = 10.sp,
+                        color = if (metrics.tempStatus == com.davoe.karoobbrakers.model.TempStatus.CRITICAL) AccentRed else TextSecondary,
+                        fontWeight = if (metrics.tempStatus == com.davoe.karoobbrakers.model.TempStatus.CRITICAL) FontWeight.Bold else FontWeight.Normal,
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -808,6 +891,7 @@ fun GuideTab() {
                 DataFieldItem("Braking Events", "Count of distinct brake applications")
                 DataFieldItem("Brake Energy", "Total absorbed thermal energy in kJ")
                 DataFieldItem("Pad Wear Score", "Wear index taking into account disc vs carbon rim")
+                DataFieldItem("Brake Temperature", "Estimated real-time rim/rotor temperature in °C with carbon overheat alert")
                 DataFieldItem("Brake Gauge (Graphical)", "Dynamic colored bar with peak marker")
             }
         }

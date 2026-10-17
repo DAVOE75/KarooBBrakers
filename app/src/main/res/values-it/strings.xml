@@ -23,6 +23,9 @@
     <string name="type_pad_wear">Usura Pastiglie</string>
     <string name="desc_pad_wear">Indice cumulativo di usura in base a energia e tipo di freno</string>
 
+    <string name="type_brake_temperature">Temperatura Freni</string>
+    <string name="desc_brake_temperature">Temperatura stimata in tempo reale della pista/disco in °C</string>
+
     <string name="type_graphical_brake">Indicatore Grafico di Frenata</string>
     <string name="desc_graphical_brake">Barra dinamica colorata con intensità e picco di frenata</string>
 
@@ -62,7 +65,7 @@
     <string name="alert_hard_braking_title">FRENATA BRUSCA RILEVATA!</string>
     <string name="alert_hard_braking_detail">Decelerazione massima: %1$.1f m/s² (%2$.2f G)</string>
     <string name="alert_thermal_title">RISCHIO SURRISCALDAMENTO FRENI</string>
-    <string name="alert_thermal_detail">Elevata energia termica su %s. Rilascia periodicamente i freni per raffreddare.</string>
+    <string name="alert_thermal_detail">Surriscaldamento critico su %1$s (%2$.0f°C)! Rilascia i freni a intervalli per prevenire delaminazione.</string>
 
     <!-- UI & Diagnostica -->
     <string name="tab_dashboard">Telemetria</string>

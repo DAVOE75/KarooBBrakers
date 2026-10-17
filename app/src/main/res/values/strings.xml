@@ -23,6 +23,9 @@
     <string name="type_pad_wear">Brake Pad Wear</string>
     <string name="desc_pad_wear">Cumulative pad wear index based on energy &amp; brake compound</string>
 
+    <string name="type_brake_temperature">Brake Temperature</string>
+    <string name="desc_brake_temperature">Estimated real-time brake track/rotor temperature in °C</string>
+
     <string name="type_graphical_brake">Brake Gauge</string>
     <string name="desc_graphical_brake">Dynamic graphical meter showing braking intensity and peak</string>
 
@@ -62,7 +65,7 @@
     <string name="alert_hard_braking_title">EMERGENCY BRAKING</string>
     <string name="alert_hard_braking_detail">Peak deceleration: %1$.1f m/s² (%2$.2f G)</string>
     <string name="alert_thermal_title">BRAKE OVERHEATING RISK</string>
-    <string name="alert_thermal_detail">High heat dissipation on %s. Release brakes periodically to cool.</string>
+    <string name="alert_thermal_detail">High thermal buildup on %1$s (%2$.0f°C). Release brakes periodically to avoid resin damage!</string>
 
     <!-- UI Tabs & Diagnostic -->
     <string name="tab_dashboard">Telemetry</string>

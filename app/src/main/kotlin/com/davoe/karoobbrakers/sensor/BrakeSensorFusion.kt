@@ -7,11 +7,12 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.davoe.karoobbrakers.data.BrakePreferences
 import com.davoe.karoobbrakers.model.BrakeMetrics
+import com.davoe.karoobbrakers.model.TempStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 class BrakeSensorFusion(
@@ -48,9 +49,14 @@ class BrakeSensorFusion(
     private var totalEnergyAccumulatedKj = 0.0
     private var maxRideDecelMs2 = 0.0
 
+    // Thermodynamic state
+    private val ambientTempCelsius = 22.0
+    private var currentEstimatedTempCelsius = ambientTempCelsius
+    private var peakEstimatedTempCelsius = ambientTempCelsius
+
     // Callbacks for Karoo system alerts (beeper, banner)
     var onHardBrakeDetected: ((peakDecel: Double, gForce: Double) -> Unit)? = null
-    var onThermalWarningDetected: ((brakeTypeName: String, energyKj: Double) -> Unit)? = null
+    var onThermalWarningDetected: ((brakeTypeName: String, tempCelsius: Double) -> Unit)? = null
 
     fun start() {
         gravityEstimate = FloatArray(3) { 0f }
@@ -74,7 +80,7 @@ class BrakeSensorFusion(
             if (dt in 0.05..2.0) {
                 // Kinematic acceleration from speed derivative
                 val kinematicAccel = (speedMps - lastSpeedMs) / dt
-                // If speed is increasing significantly, cyclist is speeding up
+                // If speed is increasing significantly, cyclist is accelerating
                 if (kinematicAccel > 0.5) {
                     filteredDecelMs2 = 0.0
                 }
@@ -87,7 +93,7 @@ class BrakeSensorFusion(
 
     fun onCadenceUpdate(cadenceRpm: Double) {
         currentCadenceRpm = max(0.0, cadenceRpm)
-        // Pedaling lockout: If pedaling, force decel to 0
+        // Pedaling lockout: If actively pedaling, force decel to 0
         if (currentCadenceRpm > 5.0 && isCurrentlyBraking) {
             endBrakeEvent()
         }
@@ -106,6 +112,8 @@ class BrakeSensorFusion(
         totalEnergyAccumulatedKj = 0.0
         maxRideDecelMs2 = 0.0
         currentEventEnergyJoules = 0.0
+        currentEstimatedTempCelsius = ambientTempCelsius
+        peakEstimatedTempCelsius = ambientTempCelsius
         _metrics.value = BrakeMetrics()
     }
 
@@ -126,21 +134,16 @@ class BrakeSensorFusion(
         val totalWeightKg = preferences.getTotalWeightKg().toDouble()
         val brakeType = preferences.getBrakeType()
 
-        // 1. Compute raw linear acceleration
+        // 1. Compute raw linear forward deceleration
         val rawForwardDecel: Double = if (event.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
-            // Y-axis aligns with device forward/backward, Z-axis vertical, X-axis lateral
-            // Squeezing brakes causes negative Y acceleration (or magnitude when braking)
-            // Karoo can be mounted tilted, so we inspect forward vector magnitude
             val yAccel = -event.values[1].toDouble()
             val totalLinMag = sqrt(
                 event.values[0] * event.values[0] +
                 event.values[1] * event.values[1] +
                 event.values[2] * event.values[2]
             ).toDouble()
-            // When moving forward (speed > 1 m/s), deceleration opposes motion
             if (yAccel > 0) yAccel else (totalLinMag * 0.7)
         } else {
-            // High-pass filter to remove gravity component
             val beta = 0.8f
             gravityEstimate[0] = beta * gravityEstimate[0] + (1 - beta) * event.values[0]
             gravityEstimate[1] = beta * gravityEstimate[1] + (1 - beta) * event.values[1]
@@ -150,8 +153,8 @@ class BrakeSensorFusion(
             max(0.0, linY)
         }
 
-        // 2. Pedaling & Ramp Rejection Check:
-        // If pedaling cadence > 5 RPM or power > 25W, or speed < 0.5 m/s, cyclist is NOT braking
+        // 2. Pedaling & Ramp Rejection:
+        // If pedaling cadence > 5 RPM or power > 25W, or stationary (< 0.6 m/s), lock out brake
         val isPedaling = currentCadenceRpm > 5.0 || currentPowerWatts > 25.0
         val isMoving = currentSpeedMs > 0.6
 
@@ -161,7 +164,7 @@ class BrakeSensorFusion(
             rawForwardDecel
         }
 
-        // 3. Low-Pass Exponential Smoothing (Rejects cobblestone / road vibration spikes)
+        // 3. Low-Pass Exponential Smoothing (Cobblestone / vibration rejection)
         filteredDecelMs2 = alpha * effectiveDecelInput + (1.0 - alpha) * filteredDecelMs2
         if (filteredDecelMs2 < 0.15) filteredDecelMs2 = 0.0
 
@@ -169,8 +172,9 @@ class BrakeSensorFusion(
         val nowMs = System.currentTimeMillis()
         val isDecelAboveThreshold = filteredDecelMs2 >= triggerThreshold
 
+        var instantaneousPowerWatts = 0.0
+
         if (!isCurrentlyBraking && isDecelAboveThreshold && !isPedaling && isMoving) {
-            // Start of a valid braking event
             isCurrentlyBraking = true
             eventStartTimeMs = nowMs
             currentEventPeakDecelMs2 = filteredDecelMs2
@@ -184,24 +188,17 @@ class BrakeSensorFusion(
                 maxRideDecelMs2 = currentEventPeakDecelMs2
             }
 
-            // Power = Force * Velocity = (m * a) * v
+            // Power = Force * Velocity = (M * a) * v
             val brakingForceNewtons = totalWeightKg * filteredDecelMs2
-            val brakingPowerWatts = brakingForceNewtons * currentSpeedMs
-            val deltaEnergyJoules = brakingPowerWatts * dt
+            instantaneousPowerWatts = brakingForceNewtons * currentSpeedMs
+            val deltaEnergyJoules = instantaneousPowerWatts * dt
             currentEventEnergyJoules += deltaEnergyJoules
             totalEnergyAccumulatedKj += (deltaEnergyJoules / 1000.0)
 
-            // Safety alerts check:
-            // Emergency / Hard Braking Check
+            // Emergency Hard Braking Alert
             val hardBrakeThreshold = preferences.getHardBrakeThresholdMs2().toDouble()
             if (preferences.isHardBrakeAlertEnabled() && currentEventPeakDecelMs2 >= hardBrakeThreshold) {
                 onHardBrakeDetected?.invoke(currentEventPeakDecelMs2, currentEventPeakDecelMs2 / 9.80665)
-            }
-
-            // Overheating warning check for sustained heavy descents
-            val currentEventEnergyKj = currentEventEnergyJoules / 1000.0
-            if (preferences.isThermalWarningEnabled() && currentEventEnergyKj >= brakeType.maxContinuousEnergyKj) {
-                onThermalWarningDetected?.invoke(brakeType.name, currentEventEnergyKj)
             }
 
             // Exit conditions
@@ -210,13 +207,35 @@ class BrakeSensorFusion(
             }
         }
 
-        // 5. Emit updated metrics
-        val currentG = filteredDecelMs2 / 9.80665
-        val instantaneousPowerWatts = if (isCurrentlyBraking) {
-            (totalWeightKg * filteredDecelMs2 * currentSpeedMs)
-        } else {
-            0.0
+        // 5. Thermodynamic Model Integration
+        // Qin: 80% of braking mechanical power turns into brake track heat
+        val heatInWatts = if (isCurrentlyBraking) 0.80 * instantaneousPowerWatts else 0.0
+        // Qout: Convective cooling proportional to speed airflow and temperature gradient
+        val airSpeedMultiplier = currentSpeedMs.coerceAtLeast(0.0).pow(0.75)
+        val coolingCapacity = brakeType.coolingFactorBase + (brakeType.coolingFactorVelocity * airSpeedMultiplier)
+        val heatOutWatts = coolingCapacity * (currentEstimatedTempCelsius - ambientTempCelsius).coerceAtLeast(0.0)
+
+        val dTemp = ((heatInWatts - heatOutWatts) / brakeType.thermalMassJoulePerK) * dt
+        currentEstimatedTempCelsius = max(ambientTempCelsius, currentEstimatedTempCelsius + dTemp)
+        if (currentEstimatedTempCelsius > peakEstimatedTempCelsius) {
+            peakEstimatedTempCelsius = currentEstimatedTempCelsius
         }
+
+        // Thermal status evaluation
+        val tempStatus = when {
+            currentEstimatedTempCelsius >= brakeType.criticalTempCelsius -> TempStatus.CRITICAL
+            currentEstimatedTempCelsius >= brakeType.warningTempCelsius -> TempStatus.HOT
+            currentEstimatedTempCelsius >= (brakeType.warningTempCelsius * 0.65) -> TempStatus.WARM
+            else -> TempStatus.NORMAL
+        }
+
+        val isThermalOverheating = currentEstimatedTempCelsius >= brakeType.criticalTempCelsius
+        if (preferences.isThermalWarningEnabled() && isThermalOverheating) {
+            onThermalWarningDetected?.invoke(brakeType.id, currentEstimatedTempCelsius)
+        }
+
+        // 6. Emit updated metrics
+        val currentG = filteredDecelMs2 / 9.80665
         val padWearScore = (totalEnergyAccumulatedKj * brakeType.wearFactor) / 10.0
 
         _metrics.value = BrakeMetrics(
@@ -232,7 +251,10 @@ class BrakeSensorFusion(
             totalEnergyKj = totalEnergyAccumulatedKj,
             padWearScore = padWearScore,
             continuousBrakingEnergyKj = currentEventEnergyJoules / 1000.0,
-            isThermalWarning = currentEventEnergyJoules / 1000.0 >= brakeType.maxContinuousEnergyKj,
+            estimatedTempCelsius = currentEstimatedTempCelsius,
+            peakTempCelsius = peakEstimatedTempCelsius,
+            tempStatus = tempStatus,
+            isThermalWarning = isThermalOverheating,
             isHardBrakeAlert = isCurrentlyBraking && currentEventPeakDecelMs2 >= preferences.getHardBrakeThresholdMs2(),
         )
     }

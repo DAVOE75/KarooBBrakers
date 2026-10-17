@@ -1,8 +1,16 @@
-# 🛑 Karoo BBrakers
-### *Braking Telemetry, Dynamic Safety & Wear Analytics for Hammerhead Karoo*
+<p align="center">
+  <img src="art/logo.png" alt="Karoo BBrakers Logo" width="320" />
+</p>
+
+# Karoo BBrakers (v1.0.0)
 
 <p align="center">
-  <img src="app/src/main/res/drawable/app_logo.jpg" alt="Karoo BBrakers Logo" width="220" style="border-radius: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);"/>
+  <a href="README.md">Español</a> |
+  <a href="README_en.md">English</a> |
+  <a href="README_fr.md">Français</a> |
+  <a href="README_de.md">Deutsch</a> |
+  <a href="README_it.md">Italiano</a> |
+  <a href="README_pt.md">Português</a>
 </p>
 
 <p align="center">
@@ -14,57 +22,55 @@
 
 ---
 
-## 📖 Overview
+## 📖 Descripción General
 
-**Karoo BBrakers** is an advanced cycling telemetry and safety extension designed for **Hammerhead Karoo (Karoo 2 & Karoo 3)** bike computers. By merging internal high-frequency inertial sensors (accelerometer / linear acceleration) with Karoo speed, cadence, and power telemetry, **Karoo BBrakers** accurately measures real-time deceleration force, kinetic power dissipation, and brake pad wear—while preventing false alarms on climbs and rough roads.
+**Karoo BBrakers** es una extensión avanzada de telemetría y seguridad activa diseñada específicamente para ciclocomputadores **Hammerhead Karoo (Karoo 2 y Karoo 3)**.
 
-Complementing safety tools like [Karoo Sentinel](https://github.com/DAVOE75/KarooSentinel), **Karoo BBrakers** transforms your ride data with professional telemetry, automatic FIT developer fields, and live audible/visual alerts.
-
----
-
-## ⚡ Key Features
-
-### 1. 🎯 Smart Sensor Fusion & Incline Rejection
-* **Zero False Positives on Climbs:** If the rider is actively pedaling (Cadence > 5 RPM or Power > 25W), brake detection is strictly locked out. Velocity drops caused by approaching an uphill ramp or steep grade are never confused with braking.
-* **Vibration Suppression:** Adaptive low-pass filters eliminate high-frequency spikes caused by road chatter, potholes, cobblestones, and trail chatter.
-* **Jerk & Onset Analysis:** Recognizes the physical "bite" signature ($\Delta a / \Delta t$) unique to disc and rim brake pads.
-
-### 2. ⚖️ Vehicle Weight & Kinetic Physics ($P = m \cdot a \cdot v$)
-* Real braking power is directly proportional to the total vehicle mass ($M = m_{cyclist} + m_{bike} + m_{gear}$).
-* Configurable total mass (40 kg to 160 kg) enables precise calculations of:
-  * **Braking Force ($F$):** $F = M \cdot a$ (Newtons)
-  * **Instantaneous Braking Power ($P$):** $P = F \cdot v = M \cdot a \cdot v$ (Watts)
-  * **Dissipated Energy ($E$):** $E = \int P \, dt$ (Kilojoules)
-
-### 3. 🚴 Brake System Customization & Wear Analytics
-Configure your specific brake hardware:
-* **Disc Brakes (Hydraulic / Mechanical):** Benchmark high friction & heat resistance.
-* **Rim Brakes (Aluminum Track):** Adjusted wear factor (1.35x) and heat thresholds.
-* **Rim Brakes (Carbon Track):** Sensitive thermal threshold (16 kJ) to protect carbon fiber rims from delamination during sustained Alpine descents.
-* **Pad Wear Index:** Continuously accumulates wear points based on absorbed energy and pad/rim material friction rates.
-
-### 4. 🚨 Active In-Ride Safety Alerts
-* **Emergency Braking Alarm:** When deceleration exceeds safety thresholds ($> 4.2 \text{ m/s}^2$ / $0.43\text{ G}$), Karoo triggers a high-priority audible hardware beeper melody and an on-screen warning banner.
-* **Thermal Fading Risk Warning:** Alerts riders during long continuous descents when heat dissipation reaches critical levels, advising periodic brake release for cooling.
-
-### 5. 📊 Real-Time Karoo Data Fields
-Add any of these custom metrics to your Karoo ride screens:
-* **Braking Force:** Instantaneous deceleration in $\text{m/s}^2$ or $\text{G}$.
-* **Braking Power:** Live wattage dissipated by brakes (W).
-* **Peak Brake G:** Highest deceleration recorded in the ride or current lap.
-* **Braking Events:** Counter of brake applications (helps assess cornering technique and pacing).
-* **Brake Energy:** Total cumulative kinetic energy absorbed (kJ).
-* **Pad Wear Score:** Wear indicator to track maintenance intervals.
-* **Brake Gauge (Graphical):** Dynamic 5-segment color-coded intensity bar (Green $\to$ Amber $\to$ Red) with peak marker.
-
-### 6. 📁 Garmin FIT Developer Fields
-All braking metrics are embedded automatically into your `.fit` activity file at 1Hz (`WriteToRecordMesg`) and summarized in session records (`WriteToSessionMesg`), making your deceleration graphs visible in **Strava**, **Intervals.icu**, **GoldenCheetah**, and FIT telemetry analyzers.
+Diseñada en consonancia con el ecosistema de extensiones de [DAVOE75](https://github.com/DAVOE75) ([Karoo Sentinel](https://github.com/DAVOE75/KarooSentinel), [ALTGRAPH](https://github.com/DAVOE75/ALTGRAPH), [KarooTopoMaps](https://github.com/DAVOE75/KarooTopoMaps)), **Karoo BBrakers** fusiona los acelerómetros internos de alta frecuencia con los flujos de telemetría del Karoo (velocidad, cadencia y potencia) para calcular la **desaceleración instantánea ($m/s^2$ o $G$)**, la **potencia de frenada disipada (W)**, la **estimación térmica continua de la pista de frenado/rotor (°C)** y el **desgaste acumulado de las pastillas**.
 
 ---
 
-## 🌍 Multi-Language Support (6 Languages)
+## ⚡ Características Principales
 
-Karoo BBrakers is localized in:
+### 1. 🎯 Filtro Inteligente de Pedaleo y Pendientes (Antirrampas)
+* **Cero falsos positivos en subidas:** Si el ciclista está pedaleando (Cadencia > 5 RPM o Potencia > 25 W), la detección de frenada queda estrictamente **bloqueada a 0**. La deceleración natural al aproximarse a una rampa o repecho sin pedalear jamás se confunde con una frenada gracias al análisis del perfil de sacudida (*jerk* de mordida $\Delta a / \Delta t$).
+* **Supresión Dinámica de Vibraciones:** Filtro pasobajo adaptativo con perfiles para **Carretera (`ROAD`)**, **Gravel (`GRAVEL`)** y **MTB (`MTB`)**, eliminando oscilaciones provocadas por asfalto rugoso, adoquines o baches.
+
+### 2. 🔥 Estimación Termodinámica de Temperatura de Frenada (Llantas de Carbono y Discos)
+* **Modelo Físico Continuo:** Modela la tasa de entrada térmica ($Q_{in} = \eta \cdot P_{frenada}$) y la disipación convectiva por flujo de aire en función de la velocidad ($Q_{out} = (k_0 + k_1 \cdot v^{0.75}) \cdot \Delta T$).
+* **Protección Específica para Llantas de Carbono:**
+  * En llantas de carbono con zapata, la baja conductividad transversal de la fibra concentra el calor en la resina de la pista de frenado.
+  * Al superar los **105°C (Aviso)** o alcanzar **145°C (Crítico)**, el Karoo emite una alerta acústica y visual en pantalla recomendando soltar frenos intermitentemente para ventilar y evitar la delaminación o deformación de la llanta.
+* **Frenos de Disco y Llanta de Aluminio:** Umbrales adaptados a la capacidad térmica del acero inoxidable y la aleación de aluminio.
+
+### 3. ⚖️ Física de Potencia Cinética Real ($P = m \cdot a \cdot v$)
+* El ciclista configura el **peso total (Ciclista + Bicicleta + Equipamiento)** de 40 kg a 160 kg.
+* Cálculo en tiempo real de:
+  * **Fuerza de Frenada ($F$):** $F = M \cdot a$ (Newtons)
+  * **Potencia Instantánea ($P$):** $P = F \cdot v = M \cdot a \cdot v$ (Vatios)
+  * **Energía Cinética Absorbida ($E$):** $E = \int P \, dt$ (Kilojulios)
+
+### 4. 🚨 Alarmas Activas de Seguridad en Marcha
+* **Alarma de Frenada Brusca:** En detenciones repentinas ($> 4.2 \text{ m/s}^2$ / $0.43\text{ G}$), se activa un patrón de zumbador físico (`PlayBeepPattern`) y un banner en pantalla (`InRideAlert`).
+* **Alerta de Sobrecalentamiento:** Avisa en descensos alpinos de gran desnivel continuo si los frenos están acumulando temperatura excesiva.
+
+### 5. 📊 Campos de Datos para Pantallas Karoo
+* **Fuerza de Frenada:** Deceleración en tiempo real en $\text{m/s}^2$ o $\text{G}$.
+* **Potencia de Frenada:** Vatios disipados por los frenos (W).
+* **Temperatura de Frenada:** Temperatura estimada en tiempo real (°C).
+* **Pico de Frenada (G):** Máximo valor de desaceleración de la ruta.
+* **Eventos de Frenada:** Contador de accionamientos de freno.
+* **Energía Disipada:** Kilojulios totales absorbidos (kJ).
+* **Desgaste de Pastillas:** Puntuación de desgaste ponderada por material (disco / aluminio / carbono).
+* **Tacómetro Gráfico (Glance):** Indicador visual dinámico con escala de 5 segmentos en color (Verde $\to$ Ámbar $\to$ Rojo) y marcador de pico.
+
+### 6. 📁 Campos de Desarrollador FIT (Strava e Intervals.icu)
+Todos los datos se inyectan a 1 Hz en el archivo `.fit` nativo de Karoo (`WriteToRecordMesg`) y se resumen al finalizar en el mensaje de sesión (`WriteToSessionMesg`), permitiendo visualizar la telemetría completa de frenada en plataformas de análisis.
+
+---
+
+## 🌍 Idiomas Disponibles (6 Idiomas)
+
 * 🇪🇸 **Español**
 * 🇬🇧 **English**
 * 🇫🇷 **Français**
@@ -74,47 +80,36 @@ Karoo BBrakers is localized in:
 
 ---
 
-## 🛠️ Installation & Setup
+## 🛠️ Instalación y Configuración
 
-### Requirements
-* Hammerhead Karoo 2 or Karoo 3
-* Karoo OS version `1.634.2440` or later
-
-### Steps
-1. Download the latest `KarooBBrakers-vX.X.X.apk` from [Releases](https://github.com/DAVOE75/KarooBBrakers/releases).
-2. Install the APK via sideloading (ADB or Karoo sideload tools).
-3. Open the **Karoo BBrakers** app from the Karoo App Launcher.
-4. Set your **Brake System Type**, **Total Weight** (Rider + Bike + Gear), and **Surface Profile**.
-5. Go to your **Ride Profiles** $\to$ **Edit Screens**, tap an empty slot, select **Karoo BBrakers**, and add your preferred data fields.
+1. Descarga el archivo `app-debug.apk` de [Releases](https://github.com/DAVOE75/KarooBBrakers/releases).
+2. Instálalo en tu Hammerhead Karoo 2 o Karoo 3 mediante sideloading (ADB o Karoo sideload tools).
+3. Abre **Karoo BBrakers** desde el menú de aplicaciones.
+4. Selecciona tu **Tipo de Frenos**, introduce tu **Peso Total** y ajusta tu **Perfil de Terreno**.
+5. En los ajustes de tu Perfil de Ruta del Karoo, añade cualquiera de los campos de datos de **Karoo BBrakers** a tus páginas de visualización.
 
 ---
 
-## 🏗️ Building from Source
+## 🏗️ Compilación desde el Código Fuente
 
 ```bash
-# Clone the repository
 git clone https://github.com/DAVOE75/KarooBBrakers.git
 cd KarooBBrakers
-
-# Build debug APK
 ./gradlew assembleDebug
-
-# Build release APK
-./gradlew assembleRelease
 ```
 
-The compiled APK will be generated at:
+El APK compilado se encuentra en:
 `app/build/outputs/apk/debug/app-debug.apk`
 
 ---
 
-## 🤝 Author & Credits
+## 🤝 Autor
 
-Developed with passion by **[DAVOE75](https://github.com/DAVOE75)**  
-Creator of [Karoo Sentinel](https://github.com/DAVOE75/KarooSentinel).
+Desarrollado por **[DAVOE75](https://github.com/DAVOE75)**  
+Creador de [Karoo Sentinel](https://github.com/DAVOE75/KarooSentinel), [ALTGRAPH](https://github.com/DAVOE75/ALTGRAPH) y [KarooTopoMaps](https://github.com/DAVOE75/KarooTopoMaps).
 
 ---
 
-## 📄 License
+## 📄 Licencia
 
-Licensed under the [Apache License, Version 2.0](LICENSE).
+Distribuido bajo la [Licencia Apache 2.0](LICENSE).
