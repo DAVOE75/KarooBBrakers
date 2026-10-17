@@ -29,6 +29,18 @@
     <string name="type_graphical_brake">Manómetro de Frenada</string>
     <string name="desc_graphical_brake">Espectro dinámico de Blanco a Rojo según la intensidad de frenada</string>
 
+    <string name="type_descent_efficiency">Eficiencia en Bajada (DES)</string>
+    <string name="desc_descent_efficiency">Puntuación WorldTour (0-100%) que premia frenadas firmes y penaliza arrastrar freno</string>
+
+    <string name="type_pad_life">Vida Útil de Pastillas</string>
+    <string name="desc_pad_life">Porcentaje de vida restante estimado según energía acumulada en kJ</string>
+
+    <string name="type_wasted_watts">Vatios Perdidos (Arrastre)</string>
+    <string name="desc_wasted_watts">Potencia parásita disipada por roce de pastillas o pistón atascado en vatios</string>
+
+    <string name="type_grip_margin">Margen de Agarre en Curva</string>
+    <string name="desc_grip_margin">Porcentaje de seguridad del círculo de Kamm antes del deslizamiento del neumático</string>
+
     <string name="type_graphical_thermal">Monitor Térmico &amp; Fade</string>
     <string name="desc_graphical_thermal">Monitor gráfico en ruta de temperatura, zonas de calor y límites de seguridad</string>
 
@@ -40,6 +52,44 @@
     <string name="brake_type_disc">Frenos de Disco (Hidráulico / Mecánico)</string>
     <string name="brake_type_rim_alu">Frenos de Zapata - Llanta de Aluminio</string>
     <string name="brake_type_rim_carbon">Frenos de Zapata - Llanta de Carbono</string>
+
+    <!-- Pastillas y Odómetro Digital -->
+    <string name="title_pad_compound">Compuesto de Pastillas de Freno</string>
+    <string name="desc_pad_compound">Selecciona el material de las pastillas para comportamiento térmico, vida en kJ y cristalización</string>
+    <string name="pad_compound_resin">Orgánicas / Resina</string>
+    <string name="pad_compound_resin_desc">Mordida instantánea, silenciosas, menor límite térmico (~400 kJ)</string>
+    <string name="pad_compound_semi_metallic">Semi-Metálicas</string>
+    <string name="pad_compound_semi_metallic_desc">Potencia equilibrada, todo clima (~750 kJ)</string>
+    <string name="pad_compound_metallic">Metálicas / Sinterizadas</string>
+    <string name="pad_compound_metallic_desc">Máxima resistencia térmica, mayor durabilidad (~1200 kJ)</string>
+    <string name="title_pad_odometer">Odómetro Digital de Servicio de Pastillas</string>
+    <string name="desc_pad_odometer">Registra la energía total acumulada absorbida por tus pastillas actuales</string>
+    <string name="label_cumulative_energy">Energía Absorbida</string>
+    <string name="label_rated_capacity">Capacidad Nominal</string>
+    <string name="btn_reset_pad_odometer">Restablecer Odómetro tras Cambio</string>
+    <string name="msg_pad_odometer_reset">Odómetro de pastillas restablecido al 100%</string>
+
+    <!-- Telemetría y Radar WorldTour PRO -->
+    <string name="title_worldtour_pro">Telemetría WorldTour PRO</string>
+    <string name="label_trail_brake">Trail-Braking</string>
+    <string name="trail_quality_none">En Recta</string>
+    <string name="trail_quality_perfect">Trail Perfecto</string>
+    <string name="trail_quality_good">Buena Modulación</string>
+    <string name="trail_quality_early">Liberación Previa</string>
+    <string name="trail_quality_panic">Frenada en Pánico</string>
+    <string name="label_des_score">Puntuación Bajada</string>
+    <string name="desc_des_pro_pulse">Frenada firme por pulsos</string>
+    <string name="desc_des_dragging">Arrastre continuo detectado</string>
+
+    <!-- Alarmas de Seguridad PRO -->
+    <string name="alert_glazing_title">¡Peligro de Cristalización!</string>
+    <string name="alert_glazing_detail">¡Frenada continua más de %1$.0fs a %2$.0f°C! Suelta manetas para evitar cristalizar la resina.</string>
+    <string name="alert_pad_wear_title">Aviso de Servicio de Pastillas</string>
+    <string name="alert_pad_wear_detail">¡Vida útil de pastillas al %d%%! Reemplaza las pastillas para proteger los discos.</string>
+    <string name="alert_glazing">Aviso de Cristalización de Pastillas</string>
+    <string name="desc_glazing">Avisa si arrastrar freno en bajadas amenaza con cristalizar las pastillas</string>
+    <string name="alert_descent_efficiency">Puntuación de Eficiencia en Bajada (DES)</string>
+    <string name="desc_descent_efficiency_toggle">Calcula la eficiencia de pulsos de frenada y el radar de trail-braking en ruta</string>
 
     <!-- Calibración del Recorrido y Tacto de Manetas -->
     <string name="title_front_lever">Tacto Maneta Freno Delantero</string>
@@ -121,6 +171,7 @@
     <!-- Insignias de Estado Operativo -->
     <string name="status_armed">ARMADO</string>
     <string name="status_braking">FRENANDO</string>
+    <string name="status_trail">TRAIL</string>
     <string name="status_grupeta">GRUPETA</string>
     <string name="status_pedaling">PEDALEO</string>
     <string name="status_coasting">INERCIA</string>
@@ -225,12 +276,16 @@
     <string name="science_topic3_desc">El freno delantero recibe aire limpio laminar (mayor coeficiente de disipación h), mientras que el trasero está resguardado en el aire turbulento de las vainas. En llantas de carbono se evita superar los 180°C para impedir la delaminación de la resina.</string>
     <string name="science_topic4_title">4. Modo Grupeta y Detección de Arrastre Parásito</string>
     <string name="science_topic4_desc">Rodar en grupeta exige toques milimétricos del freno trasero para mantener la distancia sin romper el ritmo del grupo. La app aísla estos toques suaves y detecta en continuo roces parásitos de pastillas (Vatios Perdidos).</string>
+    <string name="science_topic5_title">5. Eficiencia en Bajada (DES) y Cristalización</string>
+    <string name="science_topic5_desc">Arrastrar frenos en descensos prolongados impide que el disco evacúe calor y provoca la cristalización térmica de la resina. El DES premia frenadas firmes y cortas antes de curva y penaliza toques continuos de más de 5 segundos.</string>
+    <string name="science_topic6_title">6. Trail-Braking y Radar de Entrada en Curva</string>
+    <string name="science_topic6_desc">El trail-braking mantiene la deceleración al entrar en curva y la va soltando suavemente a medida que aumenta la inclinación hacia el vértice. El algoritmo rastrea el ángulo de inclinación y el tirón inercial para evaluar la técnica en vivo.</string>
 
     <string name="title_fields_catalog">Catálogo Completo de Campos de Datos</string>
 
     <!-- Apoyo y Donaciones -->
     <string name="title_support">Apoya el Proyecto</string>
     <string name="desc_support">Karoo BBrakers es libre y de código abierto. ¡Invítame a un café para apoyar el desarrollo continuo y nuevas mejoras!</string>
-    <string name="btn_buy_coffee">☕ Invítame a un café (hesiox)</string>
+    <string name="btn_buy_coffee">Invítame a un café (hesiox)</string>
     <string name="author_credit">Desarrollado con pasión por hesiox</string>
 </resources>

@@ -3,7 +3,7 @@
 </p>
 
 # Karoo BBrakers
-### Télémétrie de Freinage Niveau WorldTour, Transfert de Charge Dynamique, Cercle de Frottement de Kamm & Moniteur Thermique pour Hammerhead Karoo 2 et Karoo 3
+### Télémétrie de Freinage WorldTour PRO, Radar de Trail-Braking, Efficacité en Descente & Odomètre de Plaquettes pour Hammerhead Karoo 2 & Karoo 3
 
 <p align="center">
   <b>Langue / Language:</b> 
@@ -17,108 +17,134 @@
 
 <p align="center">
   <a href="https://github.com/DAVOE75/KarooBBrakers/releases/latest"><img src="https://img.shields.io/github/v/release/DAVOE75/KarooBBrakers?style=flat-square&logo=android&logoColor=white&label=Version&color=00C853" alt="Dernière Version" /></a>
-  <a href="https://github.com/DAVOE75/KarooBBrakers/releases"><img src="https://img.shields.io/github/downloads/DAVOE75/KarooBBrakers/total?style=flat-square&logo=github&logoColor=white&label=T%C3%A9l%C3%A9chargements&color=0091EA" alt="Téléchargements Totaux" /></a>
+  <a href="https://github.com/DAVOE75/KarooBBrakers/releases"><img src="https://img.shields.io/github/downloads/DAVOE75/KarooBBrakers/total?style=flat-square&logo=github&logoColor=white&label=Téléchargements&color=0091EA&_v=1" alt="Téléchargements totaux" /></a>
   <img src="https://img.shields.io/badge/Appareil-Karoo_2_•_Karoo_3-1B1B1B?style=flat-square&logo=googlemaps&logoColor=00E676" alt="Compatibilité Karoo" />
   <a href="https://github.com/DAVOE75/KarooBBrakers/blob/main/LICENSE"><img src="https://img.shields.io/github/license/DAVOE75/KarooBBrakers?style=flat-square&label=Licence&color=455A64" alt="Licence" /></a>
-  <a href="https://buymeacoffee.com/hesiox"><img src="https://img.shields.io/badge/Faire_un_don-Buy_Me_a_Coffee-FF813F?style=flat-square&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me A Coffee" /></a>
+  <a href="https://buymeacoffee.com/hesiox"><img src="https://img.shields.io/badge/Soutenir-Buy_Me_a_Coffee-FF813F?style=flat-square&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me A Coffee" /></a>
 </p>
 
 ---
 
-## Vue d'ensemble
-**Karoo BBrakers** est une extension complète de télémétrie de freinage, de dynamique inertielle et de sécurité active spécialement conçue pour l'écosystème **Hammerhead Karoo** (Karoo 2 et Karoo 3).
+## Présentation
+**Karoo BBrakers** est une extension complète de télémétrie de freinage, de dynamique inertielle et de sécurité active conçue spécialement pour l'écosystème **Hammerhead Karoo** (Karoo 2 et Karoo 3).
 
-L'analyse de la performance cycliste moderne s'est historiquement concentrée sur les capteurs de puissance, la fréquence cardiaque et la cadence. Cependant, sur route en compétition, dans les descentes de gravel ou en VTT, **les courses se gagnent et les chutes s'évitent sur les freins** : retarder le point de freinage, maîtriser le *trail braking* jusqu'au point de corde et gérer l'échauffement thermique des disques et des jantes. Karoo BBrakers métamorphose votre compteur cycliste en un cockpit de télémétrie digne de la Formule 1 ou du MotoGP.
+L'analyse moderne des performances cyclistes s'est presque exclusivement concentrée sur la puissance, la fréquence cardiaque et la cadence. Pourtant, lors des descentes de grands cols, en gravel et en VTT, **les courses se gagnent et les chutes s'évitent au freinage** : par la maîtrise des impulsions franches, le trail-braking jusqu'au point de corde et la gestion thermique des disques et jantes. Karoo BBrakers transforme votre compteur Hammerhead en un cockpit de télémétrie WorldTour.
 
 ---
 
-## Science, Physique & Algorithmes WorldTour
+## Physique, Science et Algorithmes WorldTour PRO
 
-### 1. Décélération Inertielle Continue (Échantillonnage Matériel à 50 Hz)
-- Exploite les capteurs physiques IMU intégrés au Karoo (`Sensor.TYPE_LINEAR_ACCELERATION` et `Sensor.TYPE_ACCELEROMETER`) à **50 Hz (mise à jour toutes les 20 ms)**.
-- **Compensation de la Gravité et de la Pente en Temps Réel** : L'algorithme isole l'inclinaison statique de la pente routière grâce à des filtres complémentaires. La décélération est mesurée en unités physiques directes ($\text{m/s}^2$ ou Force $G$) avec une réactivité instantanée.
-- **Découplage de la Résistance Aérodynamique et de Roulement** : La traînée naturelle de l'air ($F_{aero} = \frac{1}{2}\rho C_d A v^2$) et le frottement des pneumatiques ($C_{rr}$) sont soustraits dynamiquement afin d'éviter qu'une décélération en roue libre sur le plat ne soit comptabilisée à tort comme un freinage.
+### 1. Décélération Inertielle Continue (Échantillonnage Hardware à 50 Hz)
+- Exploite les capteurs inertiels IMU du Karoo (`Sensor.TYPE_LINEAR_ACCELERATION` et `Sensor.TYPE_ACCELEROMETER`) cadencés à **50 Hz (mises à jour toutes les 20 ms)**.
+- **Découplage Pente et Gravité en Temps Réel** : Les filtres complémentaires éliminent l'influence de l'inclinaison de la route. La décélération est mesurée directement en unités physiques ($\text{m/s}^2$ ou Force $G$) avec une réactivité instantanée.
+- **Filtrage de la Traînée Aérodynamique et de Roulement** : La résistance de l'air ($F_{aero} = \frac{1}{2}\rho C_d A v^2$) et le frottement des pneus ($C_{rr}$) sont soustraits pour ne pas comptabiliser le roulage en roue libre comme du freinage.
 
-### 2. Transfert Dynamique de Charge & Répartition Avant / Arrière
-- Lors d'une décélération, la force d'inertie transfère le poids du système vers la zone de contact du pneu avant :
+### 2. Score d'Efficacité en Descente (DES 0–100%)
+- La descente en montagne exige des freinages brefs et appuyés avant le virage, puis un relâchement complet en ligne droite pour permettre le refroidissement par convection.
+- Traîner les freins en continu empêche l'évacuation calorique et provoque le glaçage (vitrification de la matrice de résine).
+- L'algorithme DES note votre pilotage de 0 à 100%, récompensant les impulsions nettes et pénalisant les appuis prolongés de plus de 5 secondes.
+
+### 3. Radar de Trail-Braking et Entrée en Virage
+- Le trail-braking prolonge la décélération à l'inscription en courbe en relâchant progressivement la pression à mesure que l'angle de gîte ($\theta_{lean}$) augmente vers le point de corde.
+- Karoo BBrakers analyse l'angle de roulis et l'inertie longitudinale ($da/dt$) en temps réel pour classifier le pilotage en 4 catégories WorldTour :
+  - **PERFECT** : Forte décélération initiale relâchée avec fluidité au fur et à mesure de l'inclinaison.
+  - **GOOD** : Modulation propre et ajustement sûr de la vitesse.
+  - **EARLY RELEASE** : Relâchement trop tôt en ligne droite avant la courbe, perte de vitesse.
+  - **PANIC LEAN** : Freinage brutal et dangereux alors que le vélo est déjà fortement incliné.
+
+### 4. Transfert de Charge Dynamique et Équilibre Avant/Arrière
+- Au freinage, l'inertie transfère jusqu'à **85% de la charge normale** sur le pneu avant :
   $$\Delta W = \frac{m \cdot a \cdot h_{CG}}{L_{empattement}}$$
-- En descente raide ou lors d'un gros freinage, jusqu'à **85 % de la charge normale** se retrouve sur la roue avant. Karoo BBrakers calcule en temps réel la répartition de freinage Avant vs Arrière, permettant au coureur d'optimiser le dosage des leviers et d'éviter les dérapages de l'arrière.
+- Karoo BBrakers calcule en temps réel la répartition de freinage avant/arrière pour optimiser le dosage et éviter le blocage du train arrière.
 
-### 3. Cercle de Frottement de Kamm & Prévention des Glissades (*Washout*)
-- L'adhérence d'un pneumatique sur le bitume est un vecteur limité par une enveloppe finie :
+### 5. Cercle de Friction de Kamm et Prévention des Chutes
+- L'adhérence d'un pneu est une limite vectorielle finie :
   $$F_{total} = \sqrt{F_{freinage}^2 + F_{virage}^2} \le \mu \cdot N$$
-- Freiner brusquement alors que le vélo est incliné en courbe ($\theta_{inclinaison}$) augmente drastiquement le risque de décrochage soudain de la roue avant.
-- Karoo BBrakers surveille en permanence la **Marge d'Adhérence %** en temps réel, alertant le cycliste avant le dépassement de la limite d'adhérence.
+- Freiner fort en virage augmente considérablement le risque de décrochage de la roue avant (*washout*).
+- Karoo BBrakers calcule en temps réel votre **Marge d'Adhérence %** et avertit avant la limite de décrochage.
 
-### 4. Moniteur Thermodynamique Double des Rotors & Alerte Carbone
-- **Refroidissement Différentiel des Étriers** : L'étrier avant bénéficie d'un flux d'air laminaire propre et à haute vitesse ($h_{avant} \propto v^{0.8}$), tandis que l'étrier arrière est masqué dans le sillage turbulent des bases ($h_{arriere} \approx 0.65 \cdot h_{avant}$).
-- **Seuils Critiques de Sécurité par Matériau** :
-  - **Freins à Disque** : Plage sûre jusqu'à 350 °C.
-  - **Freins sur Jante (Aluminium)** : Sûr jusqu'à 150 °C.
-  - **Freins sur Jante (Piste Carbone)** : Avertissement préventif à 145 °C et alerte critique à **180 °C** pour prévenir la délamination de la résine et l'explosion de la chambre à air/pneu.
+### 6. Odomètre de Service des Plaquettes
+- Comptabilise l'énergie totale cumulée absorbée par vos plaquettes en kilojoules ($\text{kJ}$).
+- Capacités nominales étalonnées par garniture :
+  - **Organique / Résine** : ~2500 kJ de capacité nominale. Mordant immédiat, silencieuse, limite thermique modérée.
+  - **Semi-Métallique** : ~4500 kJ de capacité nominale. Équilibre idéal toutes conditions.
+  - **Métallique / Frittée** : ~7000 kJ de capacité nominale. Très haute résistance thermique et longévité maximale.
+- Affiche la **Durée de Vie Restante en %** et permet la réinitialisation de l'odomètre d'un simple toucher après remplacement.
 
-### 5. Détection de Frottement Résiduel (Watts Perdus / Wasted Watts)
-- Détecte en continu les pistons grippés, les disques voilés ou le frottement continu des plaquettes pendant que vous pédalez.
-- Calcule instantanément la **perte de puissance en Watts** ($P = F_{frottement} \cdot v$) pour diagnostiquer toute perte mécanique parasite.
+### 7. Moniteur Thermique Dual et Alerte de Glaçage
+- **Refroidissement Différentiel des Étriers** : L'étrier avant bénéficie d'un flux d'air laminaire direct ($h_{av} \propto v^{0.8}$), tandis que l'arrière est dans le sillage turbulent des bases ($h_{arr} \approx 0.65 \cdot h_{av}$).
+- **Seuils Critiques** :
+  - **Freins à Disque** : Sûrs jusqu'à 350°C.
+  - **Freins sur Jante Aluminium** : Sûrs jusqu'à 150°C.
+  - **Freins sur Jante Carbone** : Avertissement à 145°C, alarme critique à **180°C**.
+- **Alerte Sonore de Glaçage** : Avertit immédiatement si un freinage continu dépasse 22 secondes à des températures risquant de vitrifier les garnitures.
 
-### 6. Mode Peloton (Modulation Subtile en Groupe)
-- Dans un peloton ou un groupe compact, les cyclistes effleurent légèrement le frein arrière pour ajuster leur distance sans à-coup.
-- L'extension isole ces micro-effleurements (0,2–1,2 $\text{m/s}^2$) avec un badge violet distinctif sans déclencher de fausse alerte de freinage violent.
+### 8. Détection de Frottement Parasite (Watts Gaspillés / Wasted Watts)
+- Détecte en continu les pistons grippés, disques voilés ou plaquettes qui frottent pendant le pédalage.
+- Calcule en direct les **Watts Gaspillés** ($P = F_{rub} \cdot v$) pour préserver votre énergie.
+
+### 9. Throttling des Vues Distantes (8 Hz)
+- Le rendu des données vers Karoo OS est cadencé à 120 ms (~8 Hz), éliminant la saturation du bus Binder et prolongeant considérablement l'autonomie de la batterie.
 
 ---
 
-## Catalogue Complet des Champs de Données (10 Types Karoo)
+## Catalogue Complet des Champs de Données (14 Types Nactifs)
 
-Karoo BBrakers enregistre 10 types de données natifs dans l'OS Hammerhead (`extension_info.xml`) :
+Karoo BBrakers enregistre 14 types de données natifs dans Karoo OS (`extension_info.xml`) :
 
-| ID du Type | Nom dans Karoo OS | Format | Description |
+| Type ID | Nom Affiché | Format | Description |
 |---|---|---|---|
-| `current_decel` | **Force de Freinage** | Numérique | Force de décélération instantanée en $\text{m/s}^2$, Force $G$ ou $\text{ft/s}^2$. |
+| `current_decel` | **Force de Freinage** | Numérique | Décélération instantanée en $\text{m/s}^2$, Force $G$ ou $\text{ft/s}^2$. |
 | `braking_power` | **Puissance de Freinage** | Numérique | Puissance cinétique dissipée par les freins en Watts ($W$). |
-| `max_decel` | **Pic de Freinage G** | Numérique | Décélération maximale enregistrée durant la sortie. |
-| `brake_events` | **Événements de Freinage** | Numérique | Nombre total d'actions de freinage et de touchers détectés. |
-| `brake_energy` | **Énergie Absorbée** | Numérique | Énergie cinétique totale absorbée en kilojoules ($\text{kJ}$). |
-| `pad_wear` | **Usure des Plaquettes** | Numérique | Indice d'usure cumulé selon l'énergie de frottement et la garniture. |
-| `brake_temperature`| **Température des Freins** | Numérique | Température estimée en temps réel du disque/jante en °C ou °F. |
-| `graphical_brake` | **Jauge de Freinage** | Graphique | Indicateur dynamique à 5 segments (Blanc vers Jaune vers Orange vers Rouge). |
-| `graphical_thermal`| **Moniteur Thermique & Fade** | Graphique | Températures différentielles Av/Ar, zones thermiques et limites. |
-| `graphical_cockpit`| **Cockpit HUD de Freinage** | Graphique | HUD tout-en-un avec jauge, puissance, chaleur et marge d'adhérence. |
+| `max_decel` | **Pic de Décélération G** | Numérique | Décélération maximale enregistrée pendant la sortie. |
+| `brake_events` | **Événements de Freinage** | Numérique | Nombre total d'actions de freinage et d'effleurements. |
+| `brake_energy` | **Énergie Dissipée** | Numérique | Énergie cinétique totale absorbée en kilojoules ($\text{kJ}$). |
+| `pad_wear` | **Indice d'Usure** | Numérique | Estimation d'usure basée sur l'énergie de friction et la garniture. |
+| `pad_life` | **Vie des Plaquettes** | Numérique | Pourcentage de vie restante des plaquettes selon les kJ cumulés. |
+| `descent_efficiency`| **Efficacité Descente (DES)**| Numérique | Score WorldTour (0–100%) récompensant les impulsions nettes. |
+| `wasted_watts` | **Watts Gaspillés** | Numérique | Puissance parasite dissipée par frottement de plaquette en Watts. |
+| `grip_margin` | **Marge d'Adhérence** | Numérique | Marge de sécurité du cercle de Kamm avant perte d'adhérence. |
+| `brake_temperature`| **Température des Freins**| Numérique | Température estimée en temps réel du disque/jante en °C ou °F. |
+| `graphical_brake` | **Jauge de Freinage** | Graphique | Indicateur couleur 5 segments (Blanc, Jaune, Orange, Rouge). |
+| `graphical_thermal`| **Moniteur Thermique & Fade**| Graphique | Double affichage de température, zones de chaleur et limites. |
+| `graphical_cockpit`| **Cockpit HUD de Freinage**| Graphique | HUD tout-en-un avec jauge, Watts, chaleur, gîte et badge trail. |
 
 ---
 
-## Code Couleur Visuel en Course
-Conçu pour une lisibilité instantanée à haute vitesse (40 à 70 km/h) :
-- **Blanc Pur** ($< 1,0\text{ m/s}^2$) : Contact initial des plaquettes / effleurement très doux.
-- **Jaune Clair** ($1,0 - 2,0\text{ m/s}^2$) : Régulation fine de l'allure.
-- **Jaune Vif** ($2,0 - 3,2\text{ m/s}^2$) : Freinage standard d'approche de virage.
-- **Orange Vif** ($3,2 - 4,5\text{ m/s}^2$) : Décélération ferme en descente raide.
-- **Rouge Éclatant** ($> 4,5\text{ m/s}^2$) : Freinage d'urgence / arrêt brutal.
-- **Violet** : Mode peloton actif (ajustement subtil de la trajectoire).
-- **Vert** : Température dans la plage optimale et sûre ($< 80^\circ\text{C}$).
+## Code Couleur Visuel en Sortie
+- **Blanc** ($< 1.0\text{ m/s}^2$) : Contact initial / effleurement léger.
+- **Jaune Pâle** ($1.0 - 2.0\text{ m/s}^2$) : Modulation douce / calage de distance.
+- **Jaune Pur** ($2.0 - 3.2\text{ m/s}^2$) : Freinage standard avant virage.
+- **Orange** ($3.2 - 4.5\text{ m/s}^2$) : Freinage ferme en pente raide.
+- **Rouge** ($> 4.5\text{ m/s}^2$) : Freinage d'urgence / arrêt d'urgence.
+- **Violet** : Mode peloton actif (effleurement de roue arrière).
+- **Vert** : Température dans la zone optimale ($< 80^\circ\text{C}$).
 
 ---
 
-## Champs FIT Developer pour l'Analyse Post-Course
-Pendant l'enregistrement de vos sorties, Karoo BBrakers intègre des champs développeur FIT à 1 Hz :
+## Champs Developer FIT & Analyse Post-Sortie
+Pendant vos sorties enregistrées, Karoo BBrakers injecte des champs FIT à 1 Hz :
 - `BrakingDeceleration` ($\text{m/s}^2$)
 - `BrakingPower` ($\text{Watts}$)
 - `IsBraking` (indicateur $0/1$)
 - `BrakeTemperature` ($^\circ\text{C}$)
-- Résumé de session : Total d'événements, Pic de $G$, Énergie absorbée en kJ et Score d'Usure.
+- `DescentEfficiency` ($\%$)
+- `GripMargin` ($\%$)
+- Données de résumé de session : Total événements, Pic de G, kJ absorbés et score d'usure.
 
-Parfaitement compatible avec **Strava**, **Intervals.icu**, **GoldenCheetah** et **WKO5**.
+Compatible avec **Strava**, **Intervals.icu**, **GoldenCheetah** et **WKO5**.
 
 ---
 
-## Installation & Mises à Jour Directes (OTA)
+## Installation & Mises à Jour OTA
 
-### Option 1 : Via l'URL du Manifeste sur le Karoo (Recommandé)
-1. Copiez l'URL du manifeste :
+### Option 1 : Installation Directe par Manifest sur le Karoo
+1. Copiez cette URL de Manifest :
    ```
    https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/manifest.json
    ```
-2. Sur votre Hammerhead Karoo, accédez à **Paramètres -> Extensions -> Ajouter une extension**.
-3. Collez l'URL. Karoo OS installera l'extension automatiquement et vous préviendra dès qu'une mise à jour sera disponible.
+2. Sur votre Hammerhead Karoo, allez dans **Paramètres -> Extensions -> Ajouter une Extension**.
+3. Collez l'URL. Karoo OS installera Karoo BBrakers automatiquement et vous avertira des futures mises à jour.
 
 ### Option 2 : Installation manuelle via ADB
 ```bash
@@ -127,8 +153,8 @@ adb install -r karoobbrakers.apk
 
 ---
 
-## Auteur & Crédits
-- **Développeur** : hesiox ([DAVOE75](https://github.com/DAVOE75))
-- **Matériel supporté** : Hammerhead Karoo 2 et Karoo 3 (Android 8.1 - 12+)
+## Développeur & Crédits
+- **Auteur** : hesiox ([DAVOE75](https://github.com/DAVOE75))
+- **Matériel cible** : Hammerhead Karoo 2 / Karoo 3 (Android 8.1 - 12+)
 - **SDK** : Hammerhead Karoo Extension SDK (`io.hammerhead.karooext`)
 - **Licence** : Licence MIT

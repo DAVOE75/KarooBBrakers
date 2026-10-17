@@ -29,6 +29,18 @@
     <string name="type_graphical_brake">Manometro Freni</string>
     <string name="desc_graphical_brake">Misuratore dinamico da Bianco a Rosso secondo l\'intensità di frenata</string>
 
+    <string name="type_descent_efficiency">Efficienza in Discesa (DES)</string>
+    <string name="desc_descent_efficiency">Punteggio WorldTour (0-100%) che premia frenate decise e penalizza il trascinamento</string>
+
+    <string name="type_pad_life">Durata Residua Pastiglie</string>
+    <string name="desc_pad_life">Percentuale di vita utile residua stimata in base ai kJ accumulati</string>
+
+    <string name="type_wasted_watts">Watt Sprecati (Attrito)</string>
+    <string name="desc_wasted_watts">Potenza parassita dissipata per sfregamento pastiglie o pistoncino bloccato in Watt</string>
+
+    <string name="type_grip_margin">Margine di Aderenza in Curva</string>
+    <string name="desc_grip_margin">Percentuale di sicurezza nel cerchio di Kamm prima della perdita di aderenza</string>
+
     <string name="type_graphical_thermal">Monitor Termico &amp; Fade</string>
     <string name="desc_graphical_thermal">Monitor grafico di temperatura, zone termiche e limiti di sicurezza</string>
 
@@ -40,6 +52,44 @@
     <string name="brake_type_disc">Freni a Disco (Idraulico / Meccanico)</string>
     <string name="brake_type_rim_alu">Freni su Cerchio in Alluminio</string>
     <string name="brake_type_rim_carbon">Freni su Cerchio in Carbonio</string>
+
+    <!-- Mescola Pastiglie e Contachilometri Digitale -->
+    <string name="title_pad_compound">Mescola Pastiglie Freno</string>
+    <string name="desc_pad_compound">Mescola per comportamento termico, durata in kJ e soglie di vetrificazione</string>
+    <string name="pad_compound_resin">Organica / Resina</string>
+    <string name="pad_compound_resin_desc">Attacco immediato, silenziose, minore resistenza termica (~400 kJ)</string>
+    <string name="pad_compound_semi_metallic">Semi-Metallica</string>
+    <string name="pad_compound_semi_metallic_desc">Potenza bilanciata in tutte le condizioni meteo (~750 kJ)</string>
+    <string name="pad_compound_metallic">Metallica / Sinterizzata</string>
+    <string name="pad_compound_metallic_desc">Altissima resistenza al calore, massima durata (~1200 kJ)</string>
+    <string name="title_pad_odometer">Contachilometri di Servizio Pastiglie</string>
+    <string name="desc_pad_odometer">Registra l\'energia totale cumulativa assorbita dalle pastiglie attuali</string>
+    <string name="label_cumulative_energy">Energia Assorbita</string>
+    <string name="label_rated_capacity">Capacità Nominale</string>
+    <string name="btn_reset_pad_odometer">Azzera Contachilometri dopo Sostituzione</string>
+    <string name="msg_pad_odometer_reset">Contachilometri pastiglie azzerato al 100%</string>
+
+    <!-- Telemetria e Radar WorldTour PRO -->
+    <string name="title_worldtour_pro">Telemetria WorldTour PRO</string>
+    <string name="label_trail_brake">Trail-Braking</string>
+    <string name="trail_quality_none">In Rettilineo</string>
+    <string name="trail_quality_perfect">Trail Perfetto</string>
+    <string name="trail_quality_good">Buona Modulazione</string>
+    <string name="trail_quality_early">Rilascio Anticipato</string>
+    <string name="trail_quality_panic">Panico in Piega</string>
+    <string name="label_des_score">Punteggio Discesa</string>
+    <string name="desc_des_pro_pulse">Frenata decisa a impulsi</string>
+    <string name="desc_des_dragging">Freno trascinato rilevato</string>
+
+    <!-- Avvisi di Sicurezza PRO -->
+    <string name="alert_glazing_title">Rischio Vetrificazione!</string>
+    <string name="alert_glazing_detail">Frenata continua oltre %1$.0fs a %2$.0f°C! Rilascia le leve per evitare la vetrificazione della resina.</string>
+    <string name="alert_pad_wear_title">Avviso Servizio Pastiglie</string>
+    <string name="alert_pad_wear_detail">Vita utile pastiglie al %d%%! Sostituisci le pastiglie per proteggere i dischi.</string>
+    <string name="alert_glazing">Avviso Vetrificazione Pastiglie</string>
+    <string name="desc_glazing">Avvisa quando trascinare i freni in discesa rischia di vetrificare la resina</string>
+    <string name="alert_descent_efficiency">Punteggio di Efficienza in Discesa (DES)</string>
+    <string name="desc_descent_efficiency_toggle">Calcola l\'efficienza degli impulsi di frenata e il radar di trail-braking in diretta</string>
 
     <!-- Calibrazione Corsa e Punto di Contatto Leva -->
     <string name="title_front_lever">Sensibilità Leva Anteriore</string>
@@ -121,6 +171,7 @@
     <!-- Badge di Stato -->
     <string name="status_armed">ARMATO</string>
     <string name="status_braking">FRENATA</string>
+    <string name="status_trail">TRAIL</string>
     <string name="status_grupeta">GRUPPO</string>
     <string name="status_pedaling">PEDALATA</string>
     <string name="status_coasting">INERZIA</string>
@@ -225,12 +276,16 @@
     <string name="science_topic3_desc">Il freno anteriore riceve aria laminare diretta, mentre il posteriore è coperto dai foderi. Sui cerchi in carbonio si evita di superare i 180°C per non danneggiare la resina epossidica.</string>
     <string name="science_topic4_title">4. Modulazione in Gruppo e Rilevamento Sfregamento</string>
     <string name="science_topic4_desc">Pedalare in gruppo richiede tocchi millimetrici per limare la distanza. L\'app isola questi tocchi e rileva continuamente pastiglie che sfregano (Watt sprecati).</string>
+    <string name="science_topic5_title">5. Efficienza in Discesa (DES) e Vetrificazione</string>
+    <string name="science_topic5_desc">Trascinare i freni in discese ripide impedisce ai dischi di smaltire calore e causa la vetrificazione della resina. Il DES premia impulsi brevi e decisi prima della curva e penalizza trascinamenti oltre i 5 secondi.</string>
+    <string name="science_topic6_title">6. Trail-Braking e Radar di Entrata in Curva</string>
+    <string name="science_topic6_desc">Il trail-braking porta la decelerazione dentro la curva, rilasciando gradualmente la pressione man mano che aumenta la piega verso il punto di corda. L\'algoritmo analizza angolo di rollio e inerzia in tempo reale.</string>
 
     <string name="title_fields_catalog">Catalogo Completo dei Campi Dati</string>
 
     <!-- Supporto -->
     <string name="title_support">Supporta il Progetto</string>
     <string name="desc_support">Karoo BBrakers è gratuito e open-source. Offrimi un caffè per sostenere i futuri aggiornamenti!</string>
-    <string name="btn_buy_coffee">☕ Offrimi un caffè (hesiox)</string>
+    <string name="btn_buy_coffee">Offrimi un caffè (hesiox)</string>
     <string name="author_credit">Sviluppato con passione da hesiox</string>
 </resources>

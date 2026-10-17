@@ -32,11 +32,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import com.davoe.karoobbrakers.extension.datafields.DescentEfficiencyDataType
+import com.davoe.karoobbrakers.extension.datafields.GripMarginDataType
+import com.davoe.karoobbrakers.extension.datafields.PadLifeDataType
+import com.davoe.karoobbrakers.extension.datafields.WastedWattsDataType
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.1") {
+class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
 
     private val karooSystem by lazy { KarooSystemService(this) }
     private val preferences by lazy { BrakePreferences(this) }
@@ -49,6 +53,8 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.1") {
 
     private var lastHardAlertTimeMs = 0L
     private var lastThermalAlertTimeMs = 0L
+    private var lastGlazingAlertTimeMs = 0L
+    private var lastPadWearAlertTimeMs = 0L
 
     // FIT Developer Data Fields Definitions
     private val devFieldDecel = DeveloperField(
@@ -99,6 +105,18 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.1") {
         fieldName = "BrakeTemperature",
         units = "deg_c",
     )
+    private val devFieldDES = DeveloperField(
+        fieldDefinitionNumber = 8,
+        fitBaseTypeId = 2, // UInt8
+        fieldName = "DescentEfficiency",
+        units = "percent",
+    )
+    private val devFieldGripMargin = DeveloperField(
+        fieldDefinitionNumber = 9,
+        fitBaseTypeId = 2, // UInt8
+        fieldName = "GripMargin",
+        units = "percent",
+    )
 
     override val types: List<DataTypeImpl> by lazy {
         listOf(
@@ -109,6 +127,10 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.1") {
             BrakeEnergyDataType(extension, sensorFusion),
             PadWearDataType(extension, sensorFusion),
             BrakeTemperatureDataType(extension, sensorFusion, preferences),
+            DescentEfficiencyDataType(extension, sensorFusion),
+            PadLifeDataType(extension, sensorFusion),
+            WastedWattsDataType(extension, sensorFusion),
+            GripMarginDataType(extension, sensorFusion),
             BrakeGraphicalDataType(extension, sensorFusion, preferences),
             BrakeThermalGraphicalDataType(extension, sensorFusion, preferences),
             BrakeCockpitGraphicalDataType(extension, sensorFusion, preferences),
@@ -133,6 +155,22 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.1") {
             if (now - lastThermalAlertTimeMs > 15000L) {
                 lastThermalAlertTimeMs = now
                 triggerThermalWarning(brakeTypeName, tempCelsius)
+            }
+        }
+
+        sensorFusion.onGlazingWarningDetected = { tempCelsius, durationSec ->
+            val now = System.currentTimeMillis()
+            if (now - lastGlazingAlertTimeMs > 30000L) {
+                lastGlazingAlertTimeMs = now
+                triggerGlazingWarning(tempCelsius, durationSec)
+            }
+        }
+
+        sensorFusion.onPadWearWarningDetected = { remainingPercent ->
+            val now = System.currentTimeMillis()
+            if (now - lastPadWearAlertTimeMs > 60000L) {
+                lastPadWearAlertTimeMs = now
+                triggerPadWearWarning(remainingPercent)
             }
         }
 
@@ -230,6 +268,8 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.1") {
             FieldValue(devFieldPower, metrics.currentBrakingPowerWatts),
             FieldValue(devFieldIsBraking, if (metrics.isBraking) 1.0 else 0.0),
             FieldValue(devFieldTemp, metrics.estimatedTempCelsius),
+            FieldValue(devFieldDES, metrics.descentEfficiencyScore.toDouble()),
+            FieldValue(devFieldGripMargin, metrics.gripMarginPercent.toDouble()),
         )
         emitter.onNext(WriteToRecordMesg(values))
     }
@@ -302,6 +342,66 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.1") {
                 title = title,
                 detail = detail,
                 autoDismissMs = 4500L,
+                backgroundColor = android.R.color.holo_orange_dark,
+                textColor = android.R.color.white,
+            )
+        )
+    }
+
+    private fun triggerGlazingWarning(tempCelsius: Double, durationSec: Double) {
+        if (preferences.isBeeperEnabled()) {
+            karooSystem.dispatch(
+                PlayBeepPattern(
+                    listOf(
+                        PlayBeepPattern.Tone(2200, 100),
+                        PlayBeepPattern.Tone(null, 50),
+                        PlayBeepPattern.Tone(2200, 100),
+                        PlayBeepPattern.Tone(null, 50),
+                        PlayBeepPattern.Tone(2200, 150),
+                    )
+                )
+            )
+        }
+
+        val title = getString(R.string.alert_glazing_title)
+        val detail = String.format(Locale.getDefault(), getString(R.string.alert_glazing_detail), durationSec, tempCelsius)
+
+        karooSystem.dispatch(
+            InRideAlert(
+                id = "karoobbrakers_glazing_warning",
+                icon = R.drawable.ic_wear,
+                title = title,
+                detail = detail,
+                autoDismissMs = 5000L,
+                backgroundColor = android.R.color.holo_red_dark,
+                textColor = android.R.color.white,
+            )
+        )
+    }
+
+    private fun triggerPadWearWarning(remainingPercent: Int) {
+        if (preferences.isBeeperEnabled()) {
+            karooSystem.dispatch(
+                PlayBeepPattern(
+                    listOf(
+                        PlayBeepPattern.Tone(2000, 150),
+                        PlayBeepPattern.Tone(null, 60),
+                        PlayBeepPattern.Tone(2000, 150),
+                    )
+                )
+            )
+        }
+
+        val title = getString(R.string.alert_pad_wear_title)
+        val detail = String.format(Locale.getDefault(), getString(R.string.alert_pad_wear_detail), remainingPercent)
+
+        karooSystem.dispatch(
+            InRideAlert(
+                id = "karoobbrakers_pad_wear_warning",
+                icon = R.drawable.ic_wear,
+                title = title,
+                detail = detail,
+                autoDismissMs = 6000L,
                 backgroundColor = android.R.color.holo_orange_dark,
                 textColor = android.R.color.white,
             )

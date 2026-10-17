@@ -3,7 +3,7 @@
 </p>
 
 # Karoo BBrakers
-### Telemetria de Travagem Nível WorldTour, Distribuição Dinâmica de Carga, Círculo de Fricção de Kamm & Monitor Térmico para Hammerhead Karoo 2 e Karoo 3
+### Telemetria de Travagem WorldTour PRO, Radar de Trail-Braking, Eficiência em Descida & Odómetro de Pastilhas para Hammerhead Karoo 2 & Karoo 3
 
 <p align="center">
   <b>Idioma / Language:</b> 
@@ -17,108 +17,134 @@
 
 <p align="center">
   <a href="https://github.com/DAVOE75/KarooBBrakers/releases/latest"><img src="https://img.shields.io/github/v/release/DAVOE75/KarooBBrakers?style=flat-square&logo=android&logoColor=white&label=Vers%C3%A3o&color=00C853" alt="Última Versão" /></a>
-  <a href="https://github.com/DAVOE75/KarooBBrakers/releases"><img src="https://img.shields.io/github/downloads/DAVOE75/KarooBBrakers/total?style=flat-square&logo=github&logoColor=white&label=Downloads&color=0091EA" alt="Downloads Totais" /></a>
+  <a href="https://github.com/DAVOE75/KarooBBrakers/releases"><img src="https://img.shields.io/github/downloads/DAVOE75/KarooBBrakers/total?style=flat-square&logo=github&logoColor=white&label=Transfer%C3%AAncias&color=0091EA&_v=1" alt="Total de Transferências" /></a>
   <img src="https://img.shields.io/badge/Dispositivo-Karoo_2_•_Karoo_3-1B1B1B?style=flat-square&logo=googlemaps&logoColor=00E676" alt="Compatibilidade Karoo" />
   <a href="https://github.com/DAVOE75/KarooBBrakers/blob/main/LICENSE"><img src="https://img.shields.io/github/license/DAVOE75/KarooBBrakers?style=flat-square&label=Licen%C3%A7a&color=455A64" alt="Licença" /></a>
-  <a href="https://buymeacoffee.com/hesiox"><img src="https://img.shields.io/badge/Doar-Buy_Me_a_Coffee-FF813F?style=flat-square&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me A Coffee" /></a>
+  <a href="https://buymeacoffee.com/hesiox"><img src="https://img.shields.io/badge/Apoiar-Buy_Me_a_Coffee-FF813F?style=flat-square&logo=buy-me-a-coffee&logoColor=white" alt="Buy Me A Coffee" /></a>
 </p>
 
 ---
 
 ## Visão Geral
-**Karoo BBrakers** é uma extensão de telemetria integral de travagem, dinâmica inercial e segurança ativa desenvolvida especificamente para o ecossistema **Hammerhead Karoo** (Karoo 2 e Karoo 3).
+**Karoo BBrakers** é uma extensão abrangente de telemetria de travagem, dinâmica inercial e segurança ativa desenvolvida propositadamente para o ecossistema **Hammerhead Karoo** (Karoo 2 e Karoo 3).
 
-A análise moderna de rendimento no ciclismo focou-se historicamente no potenciómetro, na frequência cardíaca e na cadência. No entanto, em provas de estrada, descidas de gravel e BTT, **as corridas ganham-se e as quedas evitam-se nas travagens**: na capacidade de retardar o ponto de travagem, no controlo de *trail braking* na curva e na gestão térmica de discos e pistas de carbono. Karoo BBrakers transforma o teu ciclocomputador num cockpit de telemetria profissional ao nível da Fórmula 1 ou MotoGP.
+A análise moderna do desempenho ciclista focou-se quase exclusivamente no medidor de potência, na frequência cardíaca e na cadência. Contudo, nas descidas de alta montanha, em gravel e em BTT, **as corridas ganham-se e as quedas evitam-se na travagem**: na capacidade de travar por impulsos firmes, no trail-braking até ao vértice da curva e na gestão térmica de discos e pastilhas. O Karoo BBrakers transforma o teu ciclocomputador Hammerhead num verdadeiro cockpit de telemetria WorldTour.
 
 ---
 
-## Ciência, Física & Algoritmos WorldTour
+## Física, Ciência e Algoritmos WorldTour PRO
 
-### 1. Desaceleração Inercial Contínua (Amostragem de Hardware a 50 Hz)
-- Utiliza os sensores inerciais físicos do Karoo (`Sensor.TYPE_LINEAR_ACCELERATION` e `Sensor.TYPE_ACCELEROMETER`) a trabalhar a **50 Hz (amostras a cada 20 ms)**.
-- **Compensação de Gravidade e Inclinação em Tempo Real**: O algoritmo isola a inclinação estática da estrada através de filtros complementares contínuos. A desaceleração é calculada em unidades físicas diretas ($\text{m/s}^2$ ou Força $G$) com resposta instantânea.
-- **Desacoplamento Aerodinâmico e de Rolamento**: O atrito aerodinâmico natural ($F_{aero} = \frac{1}{2}\rho C_d A v^2$) e o coeficiente de atrito dos pneus ($C_{rr}$) são subtraídos dinamicamente para que rolar por inércia em terreno plano nunca seja computado erradamente como travagem.
+### 1. Desaceleração Inercial Contínua (Amostragem Hardware a 50 Hz)
+- Utiliza os sensores inerciais físicos IMU do Karoo (`Sensor.TYPE_LINEAR_ACCELERATION` e `Sensor.TYPE_ACCELEROMETER`) em execução a **50 Hz (atualizações a cada 20 ms)**.
+- **Desacoplamento de Inclinação e Gravidade em Tempo Real**: Os filtros complementares isolam a pendente da estrada. A desaceleração é medida diretamente em unidades físicas ($\text{m/s}^2$ ou Força $G$) com resposta instantânea.
+- **Filtro Aerodinâmico e de Resistência ao Rolamento**: A resistência do ar ($F_{aero} = \frac{1}{2}\rho C_d A v^2$) e o atrito dos pneus ($C_{rr}$) são subtraídos dinamicamente para não registar o rolar por inércia no plano como travagem.
 
-### 2. Transferência Dinâmica de Carga & Equilíbrio Dianteiro / Traseiro
-- Durante a travagem, a inércia transfere o peso do sistema para a área de contacto do pneu dianteiro:
+### 2. Pontuação de Eficiência em Descida (DES 0–100%)
+- Em descidas de montanha, a técnica profissional exige travagens curtas e firmes por impulsos antes da curva, soltando as manetes nas retas para permitir o arrefecimento por convecção.
+- Arrastar continuamente os travões impede a dissipação de calor e leva à cristalização ou vitrificação da resina das pastilhas.
+- O algoritmo DES avalia a tua técnica de 0 a 100%, premiando travagens limpas e penalizando apoios contínuos de mais de 5 segundos.
+
+### 3. Radar de Trail-Braking e Entrada em Curva
+- O trail-braking consiste em manter a força de travagem ao entrar na curva, aliviando-a gradualmente à medida que a inclinação ($\theta_{lean}$) aumenta em direção ao ponto de tangência ou vértice.
+- O Karoo BBrakers monitoriza o ângulo de inclinação e a inércia longitudinal ($da/dt$) em tempo real para classificar a técnica em 4 classes WorldTour:
+  - **PERFECT**: Forte desaceleração à entrada que se solta progressivamente conforme a bicicleta deita.
+  - **GOOD**: Boa modulação com controlo seguro da velocidade.
+  - **EARLY RELEASE**: Libertação precipitada antes da curva em reta, com perda de velocidade.
+  - **PANIC LEAN**: Travagem brusca e perigosa com a bicicleta já muito inclinada na curva.
+
+### 4. Transferência Dinâmica de Carga e Repartição Dianteira/Traseira
+- Numa travagem forte, a inércia transfere até **85% da carga normal** para o pneu dianteiro:
   $$\Delta W = \frac{m \cdot a \cdot h_{CG}}{L_{distancia\_entre\_eixos}}$$
-- Em descidas íngremes ou travagens fortes, até **85% da carga normal** concentra-se na roda dianteira. O Karoo BBrakers calcula em tempo real a distribuição entre o travão dianteiro e traseiro, permitindo otimizar a modulação das manetes e evitar derrapagens do eixo traseiro.
+- O Karoo BBrakers calcula em tempo real a repartição percentual entre travão dianteiro e traseiro, ajudando a dosear a pressão e a evitar o bloqueio da roda traseira.
 
-### 3. Círculo de Fricção de Kamm & Prevenção de Quedas (*Washout*)
-- A aderência do pneu com o asfalto é um vetor limitado por uma envolvente finita:
+### 5. Círculo de Fricção de Kamm e Prevenção de Quedas
+- A aderência do pneu com o piso é um limite vetorial finito:
   $$F_{total} = \sqrt{F_{travagem}^2 + F_{curva}^2} \le \mu \cdot N$$
-- Travar bruscamente enquanto a bicicleta está inclinada na curva ($\theta_{inclinacao}$) aumenta drasticamente o risco de perda súbita de aderência dianteira (*front-wheel washout*).
-- O Karoo BBrakers monitoriza em tempo real a **Margem de Aderência %**, emitindo alertas visuais e sonoros antes de atingir o limite de atrito.
+- Travar com intensidade em plena inclinação de curva dispara o risco de perda repentina da roda dianteira (*washout*).
+- O Karoo BBrakers calcula em tempo real a tua **Margem de Aderência %**, avisando antes do limite de escorregamento.
 
-### 4. Monitor Termodinâmico Duplo dos Rotores & Alerta de Carbono
-- **Arrefecimento Diferencial das Pinças**: A pinça dianteira recebe um fluxo de ar laminar limpo a alta velocidade ($h_{diant} \propto v^{0.8}$), enquanto a traseira fica resguardada no cone de ar turbulento das escoras ($h_{tras} \approx 0.65 \cdot h_{diant}$).
+### 6. Odómetro Digital de Serviço de Pastilhas
+- Regista a energia total acumulada absorvida pelas tuas pastilhas de travão em kilojoules ($\text{kJ}$).
+- Capacidades nominais calibradas por composto:
+  - **Orgânicas / Resina**: ~2500 kJ de capacidade nominal. Mordida rápida, silenciosas, menor tolerância ao calor.
+  - **Semi-Metálicas**: ~4500 kJ de capacidade nominal. Equilíbrio ideal para todas as condições meteorológicas.
+  - **Metálicas / Sinterizadas**: ~7000 kJ de capacidade nominal. Máxima resistência a altas temperaturas e máxima durabilidade.
+- Apresenta a **Vida Útil Restante em %** e permite repor o odómetro com um simples toque na aplicação após a substituição.
+
+### 7. Monitor Térmico Duplo e Alerta de Cristalização
+- **Arrefecimento Diferencial das Pinças**: A pinça dianteira recebe ar limpo a alta velocidade ($h_{diant} \propto v^{0.8}$), enquanto a traseira fica na esteira turbulenta das escoras ($h_{tras} \approx 0.65 \cdot h_{diant}$).
 - **Limites de Segurança por Material**:
-  - **Travões de Disco**: Seguro até 350 °C.
-  - **Travões de Calço (Aro em Alumínio)**: Seguro até 150 °C.
-  - **Travões de Calço (Aro em Carbono)**: Aviso prévio a 145 °C e alarme crítico aos **180 °C** para evitar a delaminação da resina e o rebentamento do pneu/câmara.
+  - **Travões de Disco**: Seguros até 350°C.
+  - **Travões de Aro em Alumínio**: Seguros até 150°C.
+  - **Travões de Aro em Carbono**: Aviso preventivo a 145°C e alarme crítico a **180°C**.
+- **Alarme Sonoro de Cristalização**: Avisa imediatamente se uma travagem contínua ultrapassar 22 segundos a temperaturas que ameacem a vitrificação da resina.
 
-### 5. Deteção de Atrito Parasita (Watts Desperdiçados / Wasted Watts)
-- Deteta êmbolos encravados, discos empenados ou pastilhas a roçar continuamente enquanto pedalas.
-- Calcula instantaneamente os **Watts desperdiçados** ($P = F_{atrito} \cdot v$) para diagnosticar perdas mecânicas em tempo real.
+### 8. Deteção de Atrito Parasita (Watts Desperdiçados / Wasted Watts)
+- Deteta em tempo real pistões presos, discos empenados ou pastilhas a roçar enquanto pedalas.
+- Calcula instantaneamente os **Watts Desperdiçados** ($P = F_{rub} \cdot v$) para poupar a tua energia.
 
-### 6. Modo Pelotão (Peloton Feathering)
-- Num pelotão ou grupo compacto, os ciclistas tocam subtilmente no travão traseiro para manter a distância sem provocar travagens bruscas.
-- A extensão isola estes micro-toques (0,2–1,2 $\text{m/s}^2$) com uma insígnia violeta distintiva, sem acionar alarmes desnecessários.
+### 9. Throttling de RemoteViews (8 Hz)
+- A transmissão de dados para o Karoo OS está otimizada a 120 ms (~8 Hz), eliminando a sobrecarga do Binder e prolongando consideravelmente a autonomia da bateria em tiradas longas.
 
 ---
 
-## Catálogo Completo de Campos de Dados (10 Tipos Karoo)
+## Catálogo Completo dos Campos de Dados (14 Tipos Nativos)
 
-O Karoo BBrakers regista 10 tipos de dados nativos no sistema Karoo (`extension_info.xml`):
+O Karoo BBrakers regista 14 tipos de dados nativos no Karoo OS (`extension_info.xml`):
 
-| ID do Tipo | Nome no Karoo OS | Formato | Descrição |
+| Type ID | Nome no Ecrã | Formato | Descrição |
 |---|---|---|---|
-| `current_decel` | **Força de Travagem** | Numérico | Força de desaceleração instantânea em $\text{m/s}^2$, Força $G$ ou $\text{ft/s}^2$. |
+| `current_decel` | **Força de Travagem** | Numérico | Desaceleração instantânea em $\text{m/s}^2$, Força $G$ ou $\text{ft/s}^2$. |
 | `braking_power` | **Potência de Travagem** | Numérico | Potência cinética dissipada pelos travões em Watts ($W$). |
-| `max_decel` | **Pico de Travagem G** | Numérico | Desaceleração máxima de pico registada durante a volta. |
-| `brake_events` | **Eventos de Travagem** | Numérico | Número total de toques e travagens detetadas. |
-| `brake_energy` | **Energia Dissipada** | Numérico | Trabalho cinético total absorvido em quilojoules ($\text{kJ}$). |
-| `pad_wear` | **Desgaste dos Calços** | Numérico | Índice cumulativo de desgaste baseado em energia e composto. |
+| `max_decel` | **Pico Desaceleração G** | Numérico | Desaceleração máxima registada durante a volta. |
+| `brake_events` | **Eventos de Travagem** | Numérico | Contagem total de toques e travagens. |
+| `brake_energy` | **Energia Dissipada** | Numérico | Energia cinética total absorvida em kilojoules ($\text{kJ}$). |
+| `pad_wear` | **Desgaste Estimado** | Numérico | Índice de desgaste acumulado com base na energia e composto. |
+| `pad_life` | **Vida das Pastilhas** | Numérico | Percentagem de vida útil restante com base nos kJ acumulados. |
+| `descent_efficiency`| **Eficiência Descida (DES)** | Numérico | Pontuação WorldTour (0–100%) que premeia impulsos sobre arrasto. |
+| `wasted_watts` | **Watts Desperdiçados** | Numérico | Potência parasita dissipada por pastilha a roçar em Watts. |
+| `grip_margin` | **Margem de Aderência** | Numérico | Margem de segurança no círculo de Kamm antes de escorregar. |
 | `brake_temperature`| **Temperatura dos Travões**| Numérico | Temperatura estimada em tempo real do disco/aro em °C ou °F. |
-| `graphical_brake` | **Manómetro de Travagem** | Gráfico | Indicador dinâmico de 5 zonas (Branco para Amarelo para Laranja para Vermelho). |
-| `graphical_thermal`| **Monitor Térmico & Fade** | Gráfico | Temperaturas duplas D/T, zonas térmicas e limites de segurança. |
-| `graphical_cockpit`| **Cockpit HUD de Travagem** | Gráfico | HUD tudo-em-um com manómetro, potência, calor e margem de aderência. |
+| `graphical_brake` | **Manómetro de Travagem** | Gráfico | Indicador dinâmico de 5 segmentos (Branco, Amarelo, Laranja, Vermelho). |
+| `graphical_thermal`| **Monitor Térmico & Fade** | Gráfico | Temperaturas duplas, zonas de calor e limites de segurança. |
+| `graphical_cockpit`| **Cockpit HUD de Travagem**| Gráfico | HUD tudo-em-um com manómetro, Watts, calor, inclinação e badge trail. |
 
 ---
 
-## Código Cromático de Segurança em Marcha
-Concebido para uma leitura visual instantânea entre os 40 e os 70 km/h:
-- **Branco Puro** ($< 1,0\text{ m/s}^2$): Toque inicial na manete / modulação muito suave.
-- **Amarelo Claro** ($1,0 - 2,0\text{ m/s}^2$): Regulação fina da velocidade.
-- **Amarelo Vivo** ($2,0 - 3,2\text{ m/s}^2$): Travagem padrão de aproximação a curva.
-- **Laranja Vivo** ($3,2 - 4,5\text{ m/s}^2$): Travagem firme em descidas acentuadas.
-- **Vermelho Fogo** ($> 4,5\text{ m/s}^2$): Travagem de emergência / paragem a fundo.
-- **Violeta**: Modo pelotão ativo (toque fino sem sobressaltos).
-- **Verde**: Temperatura na zona ideal e segura ($< 80^\circ\text{C}$).
+## Código Visual de Cores em Marcha
+- **Branco** ($< 1.0\text{ m/s}^2$): Contacto inicial / modulação suave.
+- **Amarelo Claro** ($1.0 - 2.0\text{ m/s}^2$): Ajuste fino de distância em grupo.
+- **Amarelo Puro** ($2.0 - 3.2\text{ m/s}^2$): Travagem padrão antes de curva.
+- **Laranja** ($3.2 - 4.5\text{ m/s}^2$): Travagem firme em pendente forte.
+- **Vermelho** ($> 4.5\text{ m/s}^2$): Travagem de emergência / paragem brusca.
+- **Violeta**: Modo pelotão ativo (toques subtis na roda traseira).
+- **Verde**: Temperatura ideal de funcionamento ($< 80^\circ\text{C}$).
 
 ---
 
-## Campos FIT Developer para Análise Pós-Volta
-Durante a gravação da atividade, o Karoo BBrakers injeta campos FIT nativos a 1 Hz:
+## Campos Developer FIT & Análise Pós-Volta
+Durante as voltas gravadas, o Karoo BBrakers injeta campos FIT a 1 Hz:
 - `BrakingDeceleration` ($\text{m/s}^2$)
 - `BrakingPower` ($\text{Watts}$)
-- `IsBraking` ($0/1$)
+- `IsBraking` (indicador $0/1$)
 - `BrakeTemperature` ($^\circ\text{C}$)
-- Resumo de sessão: Total de eventos, Pico $G$ alcançado, kJ absorvidos e Índice de Desgaste.
+- `DescentEfficiency` ($\%$)
+- `GripMargin` ($\%$)
+- Resumo da sessão: Total de eventos, Pico G, kJ absorvidos e pontuação de desgaste.
 
 Compatível com **Strava**, **Intervals.icu**, **GoldenCheetah** e **WKO5**.
 
 ---
 
-## Instalação & Atualizações Diretas (OTA)
+## Instalação e Atualizações OTA
 
-### Opção 1: Através do URL do Manifesto no Karoo (Recomendada)
-1. Copia o URL do manifesto:
+### Opção 1: Instalação Direta por Manifest no Karoo
+1. Copia este URL de Manifest:
    ```
    https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/manifest.json
    ```
 2. No teu Hammerhead Karoo, acede a **Definições -> Extensões -> Adicionar Extensão**.
-3. Cola o URL. O Karoo OS instalará a aplicação automaticamente e disponibilizará o botão de atualização assim que lançarmos novas versões.
+3. Cola o URL. O Karoo OS instalará o Karoo BBrakers automaticamente e avisará de novas versões.
 
 ### Opção 2: Instalação manual por ADB
 ```bash
@@ -127,8 +153,8 @@ adb install -r karoobbrakers.apk
 
 ---
 
-## Autor & Créditos
-- **Programador**: hesiox ([DAVOE75](https://github.com/DAVOE75))
-- **Dispositivos suportados**: Hammerhead Karoo 2 e Karoo 3 (Android 8.1 - 12+)
+## Desenvolvedor e Créditos
+- **Autor**: hesiox ([DAVOE75](https://github.com/DAVOE75))
+- **Dispositivos suportados**: Hammerhead Karoo 2 / Karoo 3 (Android 8.1 - 12+)
 - **SDK**: Hammerhead Karoo Extension SDK (`io.hammerhead.karooext`)
 - **Licença**: Licença MIT

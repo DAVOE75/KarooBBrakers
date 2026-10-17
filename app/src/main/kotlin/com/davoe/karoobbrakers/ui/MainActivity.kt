@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferences = BrakePreferences(this)
-        sensorFusion = BrakeSensorFusion(this, preferences)
+        sensorFusion = BrakeSensorFusion.activeInstance ?: BrakeSensorFusion(this, preferences)
 
         setContent {
             KarooBBrakersTheme {
@@ -84,11 +84,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        sensorFusion.start()
+        if (sensorFusion !== BrakeSensorFusion.activeInstance) {
+            sensorFusion.start()
+        }
     }
 
     override fun onPause() {
-        sensorFusion.stop()
+        if (sensorFusion !== BrakeSensorFusion.activeInstance) {
+            sensorFusion.stop()
+        }
         super.onPause()
     }
 

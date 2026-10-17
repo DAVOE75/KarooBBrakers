@@ -63,9 +63,11 @@ import com.davoe.karoobbrakers.model.BrakeMetrics
 import com.davoe.karoobbrakers.model.BrakeType
 import com.davoe.karoobbrakers.model.DecelUnit
 import com.davoe.karoobbrakers.model.LeverFeel
+import com.davoe.karoobbrakers.model.PadCompound
 import com.davoe.karoobbrakers.model.SurfaceProfile
 import com.davoe.karoobbrakers.model.TempStatus
 import com.davoe.karoobbrakers.model.TemperatureUnit
+import com.davoe.karoobbrakers.model.TrailBrakeQuality
 import com.davoe.karoobbrakers.model.UnitSystem
 import com.davoe.karoobbrakers.model.WeightUnit
 import com.davoe.karoobbrakers.ui.theme.AccentCyan
@@ -581,8 +583,10 @@ fun TelemetryTab(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = if (hasDrag) "⚠️" else "✓",
-                        fontSize = 16.sp,
+                        text = if (hasDrag) "[!]" else "[OK]",
+                        fontSize = 11.5.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (hasDrag) AccentRed else AccentGreen,
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Column(modifier = Modifier.weight(1f)) {
@@ -602,6 +606,107 @@ fun TelemetryTab(
                             fontSize = 10.5.sp,
                             color = TextSecondary,
                             lineHeight = 14.sp,
+                        )
+                    }
+                }
+            }
+        }
+
+        // 4b. WorldTour PRO Descent & Trail-Braking Radar Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = DarkCard),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.title_worldtour_pro),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AccentOrange,
+                        modifier = Modifier.weight(1f, fill = false),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    val desScore = metrics.descentEfficiencyScore
+                    val desColor = when {
+                        desScore >= 80 -> AccentGreen
+                        desScore >= 60 -> AccentOrange
+                        else -> AccentRed
+                    }
+                    Text(
+                        text = "${stringResource(R.string.label_des_score)}: $desScore%",
+                        fontSize = 12.5.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = desColor,
+                        maxLines = 1,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    val trailQualityName = when (metrics.trailBrakeQuality) {
+                        TrailBrakeQuality.NONE -> stringResource(R.string.trail_quality_none)
+                        TrailBrakeQuality.PERFECT -> stringResource(R.string.trail_quality_perfect)
+                        TrailBrakeQuality.GOOD -> stringResource(R.string.trail_quality_good)
+                        TrailBrakeQuality.EARLY_RELEASE -> stringResource(R.string.trail_quality_early)
+                        TrailBrakeQuality.PANIC_LEAN -> stringResource(R.string.trail_quality_panic)
+                    }
+                    val trailColor = when (metrics.trailBrakeQuality) {
+                        TrailBrakeQuality.PERFECT -> AccentGreen
+                        TrailBrakeQuality.GOOD -> AccentCyan
+                        TrailBrakeQuality.EARLY_RELEASE -> AccentOrange
+                        TrailBrakeQuality.PANIC_LEAN -> AccentRed
+                        TrailBrakeQuality.NONE -> TextSecondary
+                    }
+
+                    MetricMiniBox(
+                        label = stringResource(R.string.label_trail_brake),
+                        value = trailQualityName,
+                        color = trailColor,
+                        modifier = Modifier.weight(1.2f)
+                    )
+                    MetricMiniBox(
+                        label = stringResource(R.string.type_pad_life),
+                        value = "${metrics.padLifeRemainingPercent}%",
+                        color = if (metrics.padLifeRemainingPercent > 20) AccentGreen else AccentRed,
+                        modifier = Modifier.weight(0.8f)
+                    )
+                }
+
+                if (metrics.isPadGlazingAlert) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(AccentRed.copy(alpha = 0.2f))
+                            .border(1.dp, AccentRed, RoundedCornerShape(6.dp))
+                            .padding(6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "[!]",
+                            color = AccentRed,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(R.string.alert_glazing_title),
+                            color = AccentRed,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
                         )
                     }
                 }
@@ -1079,6 +1184,10 @@ fun SettingsTab(preferences: BrakePreferences) {
     val hardBrakeAlert by preferences.hardBrakeAlertFlow.collectAsState()
     val beeperEnabled by preferences.beeperEnabledFlow.collectAsState()
     val thermalWarning by preferences.thermalWarningFlow.collectAsState()
+    val padCompound by preferences.padCompoundFlow.collectAsState()
+    val cumulativeEnergyKj by preferences.cumulativePadEnergyKjFlow.collectAsState()
+    val glazingAlert by preferences.glazingAlertFlow.collectAsState()
+    val descentEfficiencyAlert by preferences.descentEfficiencyAlertFlow.collectAsState()
 
     Column(
         modifier = Modifier
@@ -1367,6 +1476,154 @@ fun SettingsTab(preferences: BrakePreferences) {
             }
         }
 
+        // 4b. Brake Pad Compound & Digital Service Odometer
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = DarkCard),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                Text(
+                    text = stringResource(R.string.title_pad_compound),
+                    fontSize = 14.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = AccentOrange,
+                )
+                Text(
+                    text = stringResource(R.string.desc_pad_compound),
+                    fontSize = 11.5.sp,
+                    color = TextSecondary,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Compound Selector Chips
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    PadCompound.entries.forEach { compound ->
+                        val isSelected = padCompound == compound
+                        val compoundName = when (compound) {
+                            PadCompound.RESIN -> stringResource(R.string.pad_compound_resin)
+                            PadCompound.SEMI_METALLIC -> stringResource(R.string.pad_compound_semi_metallic)
+                            PadCompound.METALLIC -> stringResource(R.string.pad_compound_metallic)
+                        }
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(if (isSelected) AccentOrange.copy(alpha = 0.2f) else DarkSurface)
+                                .border(
+                                    width = if (isSelected) 1.5.dp else 1.dp,
+                                    color = if (isSelected) AccentOrange else Color(0xFF2C3440),
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .clickable { preferences.setPadCompound(compound) }
+                                .padding(vertical = 7.dp, horizontal = 2.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = compoundName,
+                                fontSize = 10.5.sp,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                                color = if (isSelected) AccentOrange else TextSecondary,
+                                textAlign = TextAlign.Center,
+                                maxLines = 1,
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Odometer Progress & Readouts
+                val ratedKj = padCompound.ratedEnergyKj
+                val remainingPercent = ((1.0 - (cumulativeEnergyKj / ratedKj)).coerceIn(0.0, 1.0) * 100).toInt()
+                val progressColor = when {
+                    remainingPercent > 40 -> AccentGreen
+                    remainingPercent > 15 -> AccentOrange
+                    else -> AccentRed
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.title_pad_odometer),
+                        fontSize = 12.5.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = TextPrimary,
+                    )
+                    Text(
+                        text = "$remainingPercent%",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = progressColor,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Progress Bar
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(DarkSurface)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth((remainingPercent / 100f).coerceIn(0f, 1f))
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(progressColor)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "${stringResource(R.string.label_cumulative_energy)}: ${String.format(Locale.US, "%.1f", cumulativeEnergyKj)} kJ",
+                        fontSize = 11.sp,
+                        color = TextSecondary,
+                    )
+                    Text(
+                        text = "${stringResource(R.string.label_rated_capacity)}: ${ratedKj.toInt()} kJ",
+                        fontSize = 11.sp,
+                        color = TextSecondary,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Reset Button
+                Button(
+                    onClick = { preferences.resetPadOdometer() },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = DarkSurface,
+                        contentColor = AccentOrange
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, Color(0xFF374151)),
+                ) {
+                    Text(
+                        text = stringResource(R.string.btn_reset_pad_odometer),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+        }
+
         // 5. Total Weight Stepper & Slider
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -1643,6 +1900,20 @@ fun SettingsTab(preferences: BrakePreferences) {
                 )
 
                 SettingSwitchRow(
+                    title = stringResource(R.string.alert_glazing),
+                    subtitle = stringResource(R.string.desc_glazing),
+                    checked = glazingAlert,
+                    onCheckedChange = { preferences.setGlazingAlertEnabled(it) },
+                )
+
+                SettingSwitchRow(
+                    title = stringResource(R.string.alert_descent_efficiency),
+                    subtitle = stringResource(R.string.desc_descent_efficiency_toggle),
+                    checked = descentEfficiencyAlert,
+                    onCheckedChange = { preferences.setDescentEfficiencyAlertEnabled(it) },
+                )
+
+                SettingSwitchRow(
                     title = stringResource(R.string.alert_beeper),
                     subtitle = stringResource(R.string.desc_beeper),
                     checked = beeperEnabled,
@@ -1742,6 +2013,16 @@ fun GuideTab() {
                     title = stringResource(R.string.science_topic4_title),
                     explanation = stringResource(R.string.science_topic4_desc),
                 )
+
+                ScienceTopicItem(
+                    title = stringResource(R.string.science_topic5_title),
+                    explanation = stringResource(R.string.science_topic5_desc),
+                )
+
+                ScienceTopicItem(
+                    title = stringResource(R.string.science_topic6_title),
+                    explanation = stringResource(R.string.science_topic6_desc),
+                )
             }
         }
 
@@ -1766,6 +2047,10 @@ fun GuideTab() {
                 DataFieldItem(stringResource(R.string.type_brake_events), stringResource(R.string.desc_brake_events))
                 DataFieldItem(stringResource(R.string.type_brake_energy), stringResource(R.string.desc_brake_energy))
                 DataFieldItem(stringResource(R.string.type_pad_wear), stringResource(R.string.desc_pad_wear))
+                DataFieldItem(stringResource(R.string.type_pad_life), stringResource(R.string.desc_pad_life))
+                DataFieldItem(stringResource(R.string.type_descent_efficiency), stringResource(R.string.desc_descent_efficiency))
+                DataFieldItem(stringResource(R.string.type_wasted_watts), stringResource(R.string.desc_wasted_watts))
+                DataFieldItem(stringResource(R.string.type_grip_margin), stringResource(R.string.desc_grip_margin))
                 DataFieldItem(stringResource(R.string.type_brake_temperature), stringResource(R.string.desc_brake_temperature))
                 DataFieldItem(stringResource(R.string.type_graphical_brake), stringResource(R.string.desc_graphical_brake))
                 DataFieldItem(stringResource(R.string.type_graphical_thermal), stringResource(R.string.desc_graphical_thermal))

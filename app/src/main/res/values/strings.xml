@@ -29,6 +29,18 @@
     <string name="type_graphical_brake">Brake Gauge</string>
     <string name="desc_graphical_brake">Dynamic graphical meter with White to Red brake intensity spectrum</string>
 
+    <string name="type_descent_efficiency">Descent Efficiency (DES)</string>
+    <string name="desc_descent_efficiency">WorldTour descent score (0-100%) rewarding firm pulses and penalizing dragging</string>
+
+    <string name="type_pad_life">Brake Pad Life</string>
+    <string name="desc_pad_life">Estimated remaining pad wear life percentage based on cumulative kJ</string>
+
+    <string name="type_wasted_watts">Wasted Watts (Drag)</string>
+    <string name="desc_wasted_watts">Parasitic power lost to brake rubbing or stuck pistons in Watts</string>
+
+    <string name="type_grip_margin">Cornering Grip Margin</string>
+    <string name="desc_grip_margin">Kamm friction circle safety buffer percentage before tire slip</string>
+
     <string name="type_graphical_thermal">Thermal &amp; Fade Monitor</string>
     <string name="desc_graphical_thermal">Graphical real-time temperature, heat zones and material limit warnings</string>
 
@@ -40,6 +52,44 @@
     <string name="brake_type_disc">Disc Brakes (Hydraulic / Mechanical)</string>
     <string name="brake_type_rim_alu">Rim Brakes - Aluminum Wheel Track</string>
     <string name="brake_type_rim_carbon">Rim Brakes - Carbon Wheel Track</string>
+
+    <!-- Pad Compound & Digital Service Odometer -->
+    <string name="title_pad_compound">Brake Pad Compound</string>
+    <string name="desc_pad_compound">Select pad material for thermal behavior, rated kJ life, and glazing thresholds</string>
+    <string name="pad_compound_resin">Organic / Resin</string>
+    <string name="pad_compound_resin_desc">High bite, silent, lower heat limit (~400 kJ)</string>
+    <string name="pad_compound_semi_metallic">Semi-Metallic</string>
+    <string name="pad_compound_semi_metallic_desc">Balanced power, all-weather (~750 kJ)</string>
+    <string name="pad_compound_metallic">Metallic / Sintered</string>
+    <string name="pad_compound_metallic_desc">Extreme heat resistance, longest life (~1200 kJ)</string>
+    <string name="title_pad_odometer">Digital Pad Service Odometer</string>
+    <string name="desc_pad_odometer">Tracks total cumulative energy absorbed by your current brake pads</string>
+    <string name="label_cumulative_energy">Energy Absorbed</string>
+    <string name="label_rated_capacity">Rated Capacity</string>
+    <string name="btn_reset_pad_odometer">Reset Odometer After Pad Swap</string>
+    <string name="msg_pad_odometer_reset">Pad odometer reset to 100%</string>
+
+    <!-- WorldTour PRO Telemetry & Radar -->
+    <string name="title_worldtour_pro">WorldTour PRO Telemetry</string>
+    <string name="label_trail_brake">Trail-Braking</string>
+    <string name="trail_quality_none">Straight-Line</string>
+    <string name="trail_quality_perfect">Perfect Trail</string>
+    <string name="trail_quality_good">Good Modulation</string>
+    <string name="trail_quality_early">Early Release</string>
+    <string name="trail_quality_panic">Panic Lean</string>
+    <string name="label_des_score">Descent Score</string>
+    <string name="desc_des_pro_pulse">Firm pulse braking</string>
+    <string name="desc_des_dragging">Continuous dragging detected</string>
+
+    <!-- PRO Safety Alerts -->
+    <string name="alert_glazing_title">Pad Glazing Risk!</string>
+    <string name="alert_glazing_detail">Continuous braking over %1$.0fs at %2$.0f°C! Pulsate levers to avoid resin crystallization.</string>
+    <string name="alert_pad_wear_title">Brake Pad Service Alert</string>
+    <string name="alert_pad_wear_detail">Pad life at %d%%! Replace brake pads to protect rotors.</string>
+    <string name="alert_glazing">Pad Glazing Warning</string>
+    <string name="desc_glazing">Warns when dragging brakes on descents threatens pad surface crystallization</string>
+    <string name="alert_descent_efficiency">Descent Efficiency Score (DES)</string>
+    <string name="desc_descent_efficiency_toggle">Computes in-ride braking pulse efficiency and trail-braking radar</string>
 
     <!-- Lever Travel & Free Stroke Calibration -->
     <string name="title_front_lever">Front Brake Lever Feel</string>
@@ -121,6 +171,7 @@
     <!-- Operational State Badges -->
     <string name="status_armed">ARMED</string>
     <string name="status_braking">BRAKING</string>
+    <string name="status_trail">TRAIL</string>
     <string name="status_grupeta">PELOTON</string>
     <string name="status_pedaling">PEDALING</string>
     <string name="status_coasting">COASTING</string>
@@ -225,12 +276,16 @@
     <string name="science_topic3_desc">Front calipers experience clean oncoming laminar airflow (higher heat transfer coefficient h), while rear calipers are shielded in turbulent chainstay air. Carbon rim tracks cannot exceed 180°C without risking resin delamination.</string>
     <string name="science_topic4_title">4. Peloton Feathering &amp; Involuntary Drag</string>
     <string name="science_topic4_desc">Riding in pacelines requires subtle rear brake feathering to trim distance without disrupting the group. The extension isolates feathering from emergency stops and continuously detects parasitic brake rubbing (Wasted Watts).</string>
+    <string name="science_topic5_title">5. Descent Efficiency (DES) &amp; Pad Glazing</string>
+    <string name="science_topic5_desc">Dragging brakes during descents prevents rotor heat shedding and leads to thermal glazing (resin vitrification). DES rewards short, firm braking pulses before corners and penalizes dragging over 5 seconds.</string>
+    <string name="science_topic6_title">6. Trail-Braking &amp; Corner Entry Radar</string>
+    <string name="science_topic6_desc">Trail-braking carries braking force past the corner entry, smoothly tapering deceleration as lean angle peaks at the apex. The algorithm tracks roll angle and longitudinal jerk to classify braking technique in real time.</string>
 
     <string name="title_fields_catalog">Complete Data Fields Catalog</string>
 
     <!-- Support & Buy Me a Coffee -->
     <string name="title_support">Support the Project</string>
     <string name="desc_support">Karoo BBrakers is free and open-source. Buy me a coffee to support continuous updates and new features!</string>
-    <string name="btn_buy_coffee">☕ Buy Me a Coffee (hesiox)</string>
+    <string name="btn_buy_coffee">Buy Me a Coffee (hesiox)</string>
     <string name="author_credit">Developed with passion by hesiox</string>
 </resources>

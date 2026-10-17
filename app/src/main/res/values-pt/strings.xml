@@ -29,6 +29,18 @@
     <string name="type_graphical_brake">Manómetro de Travagem</string>
     <string name="desc_graphical_brake">Indicador dinâmico de Branco a Vermelho conforme a intensidade</string>
 
+    <string name="type_descent_efficiency">Eficiência em Descida (DES)</string>
+    <string name="desc_descent_efficiency">Pontuação WorldTour (0-100%) que premeia travagens firmes e penaliza arrastar travão</string>
+
+    <string name="type_pad_life">Vida Útil das Pastilhas</string>
+    <string name="desc_pad_life">Percentagem de vida útil restante estimada com base nos kJ acumulados</string>
+
+    <string name="type_wasted_watts">Watts Desperdiçados (Atrito)</string>
+    <string name="desc_wasted_watts">Potência parasita dissipada por atrito de pastilhas ou pistão preso em Watts</string>
+
+    <string name="type_grip_margin">Margem de Aderência em Curva</string>
+    <string name="desc_grip_margin">Percentagem de segurança no círculo de fricção de Kamm antes do pneu deslizar</string>
+
     <string name="type_graphical_thermal">Monitor Térmico &amp; Fade</string>
     <string name="desc_graphical_thermal">Monitor gráfico em tempo real de calor, zonas térmicas e limites</string>
 
@@ -40,6 +52,44 @@
     <string name="brake_type_disc">Travões de Disco (Hidráulico / Mecânico)</string>
     <string name="brake_type_rim_alu">Travões de Aro em Alumínio</string>
     <string name="brake_type_rim_carbon">Travões de Aro em Carbono</string>
+
+    <!-- Composto das Pastilhas e Odómetro Digital -->
+    <string name="title_pad_compound">Composto das Pastilhas de Travão</string>
+    <string name="desc_pad_compound">Composto para comportamento térmico, vida útil em kJ e limites de cristalização</string>
+    <string name="pad_compound_resin">Orgânicas / Resina</string>
+    <string name="pad_compound_resin_desc">Mordida rápida, silenciosas, menor tolerância térmica (~400 kJ)</string>
+    <string name="pad_compound_semi_metallic">Semi-Metálicas</string>
+    <string name="pad_compound_semi_metallic_desc">Travagem equilibrada em todas as condições meteorológicas (~750 kJ)</string>
+    <string name="pad_compound_metallic">Metálicas / Sinterizadas</string>
+    <string name="pad_compound_metallic_desc">Resistência extrema ao calor, durabilidade máxima (~1200 kJ)</string>
+    <string name="title_pad_odometer">Odómetro Digital de Serviço de Pastilhas</string>
+    <string name="desc_pad_odometer">Regista a energia total acumulada absorvida pelas tuas pastilhas atuais</string>
+    <string name="label_cumulative_energy">Energia Absorvida</string>
+    <string name="label_rated_capacity">Capacidade Nominal</string>
+    <string name="btn_reset_pad_odometer">Repor Odómetro após Troca</string>
+    <string name="msg_pad_odometer_reset">Odómetro de pastilhas reposto a 100%</string>
+
+    <!-- Telemetria e Radar WorldTour PRO -->
+    <string name="title_worldtour_pro">Telemetria WorldTour PRO</string>
+    <string name="label_trail_brake">Trail-Braking</string>
+    <string name="trail_quality_none">Em Reta</string>
+    <string name="trail_quality_perfect">Trail Perfeito</string>
+    <string name="trail_quality_good">Boa Modulação</string>
+    <string name="trail_quality_early">Libertação Precoce</string>
+    <string name="trail_quality_panic">Pânico em Curva</string>
+    <string name="label_des_score">Pontuação Descida</string>
+    <string name="desc_des_pro_pulse">Travagem firme por impulsos</string>
+    <string name="desc_des_dragging">Travão arrastado detetado</string>
+
+    <!-- Avisos de Segurança PRO -->
+    <string name="alert_glazing_title">Perigo de Cristalização!</string>
+    <string name="alert_glazing_detail">Travagem contínua superior a %1$.0fs a %2$.0f°C! Solta as manetes para evitar cristalizar a resina.</string>
+    <string name="alert_pad_wear_title">Aviso de Serviço de Pastilhas</string>
+    <string name="alert_pad_wear_detail">Vida útil das pastilhas a %d%%! Substitui as pastilhas para proteger os discos.</string>
+    <string name="alert_glazing">Aviso de Cristalização de Pastilhas</string>
+    <string name="desc_glazing">Avisa se arrastar os travões nas descidas ameaça cristalizar o composto</string>
+    <string name="alert_descent_efficiency">Pontuação de Eficiência em Descida (DES)</string>
+    <string name="desc_descent_efficiency_toggle">Calcula a eficiência dos impulsos de travagem e o radar de trail-braking ao vivo</string>
 
     <!-- Calibração do Curso e Ponto de Contacto da Manete -->
     <string name="title_front_lever">Sensibilidade Manete Dianteira</string>
@@ -121,6 +171,7 @@
     <!-- Distintivos de Estado -->
     <string name="status_armed">ARMADO</string>
     <string name="status_braking">TRAVANDO</string>
+    <string name="status_trail">TRAIL</string>
     <string name="status_grupeta">PELOTÃO</string>
     <string name="status_pedaling">PEDALANDO</string>
     <string name="status_coasting">INÉRCIA</string>
@@ -225,12 +276,16 @@
     <string name="science_topic3_desc">O travão dianteiro recebe fluxo de ar direto, enquanto o traseiro fica nas turbulências das escoras. Em aros de carbono evita-se ultrapassar os 180°C para não degradar a resina epóxi.</string>
     <string name="science_topic4_title">4. Modulação em Pelotão e Deteção de Atrito Parasita</string>
     <string name="science_topic4_desc">Andar em pelotão exige toques milimétricos no travão para manter a distância. A app isola esses toques suaves e deteta calços a roçar enquanto pedalas (Watts perdidos).</string>
+    <string name="science_topic5_title">5. Eficiência em Descida (DES) e Cristalização</string>
+    <string name="science_topic5_desc">Arrastar os travões em descidas contínuas impede a dissipação de calor e leva à cristalização da resina. O DES premeia impulsos curtos e firmes antes de curvar e penaliza apoios contínuos de mais de 5 segundos.</string>
+    <string name="science_topic6_title">6. Trail-Braking e Radar de Entrada em Curva</string>
+    <string name="science_topic6_desc">O trail-braking mantém a força de travagem para dentro da curva, aliviando-a suavemente à medida que a inclinação sobe em direção ao ponto de tangência. O algoritmo monitoriza o ângulo de inclinação e a inércia em tempo real.</string>
 
     <string name="title_fields_catalog">Catálogo Completo dos Campos de Dados</string>
 
     <!-- Apoio -->
     <string name="title_support">Apoia o Projeto</string>
     <string name="desc_support">O Karoo BBrakers é gratuito e de código aberto. Paga-me um café para apoiar futuras melhorias!</string>
-    <string name="btn_buy_coffee">☕ Paga-me um café (hesiox)</string>
+    <string name="btn_buy_coffee">Paga-me um café (hesiox)</string>
     <string name="author_credit">Desenvolvido com paixão por hesiox</string>
 </resources>

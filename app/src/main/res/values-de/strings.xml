@@ -29,6 +29,18 @@
     <string name="type_graphical_brake">Brems-Manometer</string>
     <string name="desc_graphical_brake">Dynamisches Skalenmeter von Weiß bis Rot je nach Bremsintensität</string>
 
+    <string name="type_descent_efficiency">Abfahrts-Effizienz (DES)</string>
+    <string name="desc_descent_efficiency">WorldTour-Abfahrtsscore (0-100%), der kurze Pulse belohnt und Dauerschleifen rügt</string>
+
+    <string name="type_pad_life">Bremsbelag-Restlebensdauer</string>
+    <string name="desc_pad_life">Geschätzte verbleibende Belag-Lebensdauer in Prozent basierend auf kumulierten kJ</string>
+
+    <string name="type_wasted_watts">Verschwendete Watt (Schleifen)</string>
+    <string name="desc_wasted_watts">Parasitäre Verlustleistung durch schleifende Bremsen oder klemmende Kolben in Watt</string>
+
+    <string name="type_grip_margin">Kurven-Grip-Marge</string>
+    <string name="desc_grip_margin">Sicherheitsmarge im Kammschen Reibungskreis in Prozent vor dem Abreißen des Grips</string>
+
     <string name="type_graphical_thermal">Wärme- &amp; Fade-Monitor</string>
     <string name="desc_graphical_thermal">Grafischer Echtzeit-Monitor für Temperatur, Wärmezonen und Grenzwerte</string>
 
@@ -40,6 +52,44 @@
     <string name="brake_type_disc">Scheibenbremsen (Hydraulisch / Mechanisch)</string>
     <string name="brake_type_rim_alu">Felgenbremsen - Aluminium-Bremsflanke</string>
     <string name="brake_type_rim_carbon">Felgenbremsen - Carbon-Bremsflanke</string>
+
+    <!-- Belag-Mischung & Digitaler Service-Zähler -->
+    <string name="title_pad_compound">Bremsbelag-Mischung</string>
+    <string name="desc_pad_compound">Belagmischung für thermisches Verhalten, kJ-Lebensdauer und Verglasungsgrenzen</string>
+    <string name="pad_compound_resin">Organisch / Resin</string>
+    <string name="pad_compound_resin_desc">Direkter Biss, geräuschlos, geringere Hitzetoleranz (~400 kJ)</string>
+    <string name="pad_compound_semi_metallic">Semi-Metallisch</string>
+    <string name="pad_compound_semi_metallic_desc">Ausgewogene Bremskraft für alle Wetterbedingungen (~750 kJ)</string>
+    <string name="pad_compound_metallic">Sintermetall / Metallisch</string>
+    <string name="pad_compound_metallic_desc">Extrem hitzefest, maximale Langlebigkeit (~1200 kJ)</string>
+    <string name="title_pad_odometer">Digitaler Belag-Service-Kilometerzähler</string>
+    <string name="desc_pad_odometer">Zählt die gesamte kumulierte Bremsenergie Ihrer aktuellen Bremsbeläge</string>
+    <string name="label_cumulative_energy">Aufgenommene Energie</string>
+    <string name="label_rated_capacity">Nennkapazität</string>
+    <string name="btn_reset_pad_odometer">Zähler nach Belagswechsel zurücksetzen</string>
+    <string name="msg_pad_odometer_reset">Belagzähler auf 100% zurückgesetzt</string>
+
+    <!-- WorldTour PRO Telemetrie & Radar -->
+    <string name="title_worldtour_pro">WorldTour PRO Telemetrie</string>
+    <string name="label_trail_brake">Trail-Braking</string>
+    <string name="trail_quality_none">Geradeaus</string>
+    <string name="trail_quality_perfect">Perfektes Trail</string>
+    <string name="trail_quality_good">Gute Modulation</string>
+    <string name="trail_quality_early">Früh Gelöst</string>
+    <string name="trail_quality_panic">Panik-Schräglage</string>
+    <string name="label_des_score">Abfahrts-Score</string>
+    <string name="desc_des_pro_pulse">Stolze Brems-Pulse</string>
+    <string name="desc_des_dragging">Dauerschleifen erkannt</string>
+
+    <!-- PRO Sicherheitswarnungen -->
+    <string name="alert_glazing_title">Verglasungs-Gefahr!</string>
+    <string name="alert_glazing_detail">Dauerbremsung über %1$.0fs bei %2$.0f°C! Hebel pulsieren, um Verglasung zu vermeiden.</string>
+    <string name="alert_pad_wear_title">Bremsbelag-Service fällig</string>
+    <string name="alert_pad_wear_detail">Belag-Lebensdauer bei %d%%! Beläge prüfen und tauschen, um Scheiben zu schonen.</string>
+    <string name="alert_glazing">Warnung vor Belag-Verglasung</string>
+    <string name="desc_glazing">Warnt vor Verglasung der Belagoberfläche durch Dauerschleifen auf Abfahrten</string>
+    <string name="alert_descent_efficiency">Abfahrts-Effizienz-Score (DES)</string>
+    <string name="desc_descent_efficiency_toggle">Berechnet Pulsbrems-Effizienz und Kurven-Trail-Braking-Radar live</string>
 
     <!-- Hebelweg- & Druckpunkt-Kalibrierung -->
     <string name="title_front_lever">Vorderbremshebel-Gefühl</string>
@@ -121,6 +171,7 @@
     <!-- Status-Badges -->
     <string name="status_armed">BEREIT</string>
     <string name="status_braking">BREMSEN</string>
+    <string name="status_trail">TRAIL</string>
     <string name="status_grupeta">PELOTON</string>
     <string name="status_pedaling">TRETEN</string>
     <string name="status_coasting">ROLLEN</string>
@@ -225,12 +276,16 @@
     <string name="science_topic3_desc">Die Vorderradbremse wird durch laminare Frischluft gekühlt, während die Hinterradbremse im Windschatten der Kettenstreben liegt. Bei Carbonfelgen wird vor Überschreiten von 180°C gewarnt.</string>
     <string name="science_topic4_title">4. Peloton-Feinbremsung &amp; Schleif-Erkennung</string>
     <string name="science_topic4_desc">In der Gruppe sind millimetergenaue Hebeltipps nötig. Die App isoliert dieses Schleifen und detektiert gleichzeitig schleifende Bremskolben beim Treten (verlorene Watt).</string>
+    <string name="science_topic5_title">5. Abfahrts-Effizienz (DES) &amp; Belag-Verglasung</string>
+    <string name="science_topic5_desc">Ständiges Dauerschleifen auf Passabfahrten verhindert die Wärmeabfuhr und führt zur thermischen Verglasung der Kunstharzmatrix. Der DES belohnt kurze, kraftvolle Bremsstöße vor Kurven und bestraft Schleifen über 5 Sekunden.</string>
+    <string name="science_topic6_title">6. Trail-Braking &amp; Kurveneingangs-Radar</string>
+    <string name="science_topic6_desc">Beim Trail-Braking wird die Bremskraft dosiert bis in den Kurvenscheitelpunkt mitgeführt und mit zunehmender Schräglage progressiv gelöst. Das System erfasst Rollwinkel und Beschleunigungsruck in Echtzeit.</string>
 
     <string name="title_fields_catalog">Vollständiger Datenfeld-Katalog</string>
 
     <!-- Support & Buy Me a Coffee -->
     <string name="title_support">Projekt unterstützen</string>
     <string name="desc_support">Karoo BBrakers ist kostenlos und quelloffen. Unterstütze die Weiterentwicklung mit einem Kaffee!</string>
-    <string name="btn_buy_coffee">☕ Spendier mir einen Kaffee (hesiox)</string>
+    <string name="btn_buy_coffee">Spendier mir einen Kaffee (hesiox)</string>
     <string name="author_credit">Mit Leidenschaft entwickelt von hesiox</string>
 </resources>

@@ -2,7 +2,7 @@
 <ExtensionInfo
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="karoobbrakers"
-    version="1.0.1"
+    version="1.1.0"
     displayName="@string/extension_name"
     icon="@drawable/ic_brake_sense"
     scansDevices="false"
@@ -55,6 +55,34 @@
         displayName="@string/type_brake_temperature"
         description="@string/desc_brake_temperature"
         icon="@drawable/ic_wear"
+        graphical="false" />
+
+    <DataType
+        typeId="descent_efficiency"
+        displayName="@string/type_descent_efficiency"
+        description="@string/desc_descent_efficiency"
+        icon="@drawable/ic_brake_gauge"
+        graphical="false" />
+
+    <DataType
+        typeId="pad_life"
+        displayName="@string/type_pad_life"
+        description="@string/desc_pad_life"
+        icon="@drawable/ic_wear"
+        graphical="false" />
+
+    <DataType
+        typeId="wasted_watts"
+        displayName="@string/type_wasted_watts"
+        description="@string/desc_wasted_watts"
+        icon="@drawable/ic_brake_power"
+        graphical="false" />
+
+    <DataType
+        typeId="grip_margin"
+        displayName="@string/type_grip_margin"
+        description="@string/desc_grip_margin"
+        icon="@drawable/ic_brake_sense"
         graphical="false" />
 
     <DataType

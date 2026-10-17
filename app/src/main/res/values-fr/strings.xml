@@ -29,6 +29,18 @@
     <string name="type_graphical_brake">Jauge de Freinage</string>
     <string name="desc_graphical_brake">Indicateur dynamique du Blanc au Rouge selon l\'intensité de freinage</string>
 
+    <string name="type_descent_efficiency">Efficacité en Descente (DES)</string>
+    <string name="desc_descent_efficiency">Score WorldTour (0-100%) récompensant les freinages francs et pénalisant le traînage</string>
+
+    <string name="type_pad_life">Durée de Vie des Plaquettes</string>
+    <string name="desc_pad_life">Pourcentage de durée de vie restante estimé d\'après les kJ cumulés</string>
+
+    <string name="type_wasted_watts">Watts Gaspillés (Frottement)</string>
+    <string name="desc_wasted_watts">Puissance parasite dissipée par frottement de plaquette ou piston grippé en Watts</string>
+
+    <string name="type_grip_margin">Marge d\'Adhérence en Virage</string>
+    <string name="desc_grip_margin">Marge de sécurité du cercle de friction de Kamm avant perte d\'adhérence</string>
+
     <string name="type_graphical_thermal">Moniteur Thermique &amp; Fade</string>
     <string name="desc_graphical_thermal">Moniteur graphique de température, zones de chaleur et limites de sécurité</string>
 
@@ -40,6 +52,44 @@
     <string name="brake_type_disc">Freins à Disque (Hydraulique / Mécanique)</string>
     <string name="brake_type_rim_alu">Freins sur Jante Aluminium</string>
     <string name="brake_type_rim_carbon">Freins sur Jante Carbone</string>
+
+    <!-- Garniture des Plaquettes et Odomètre Digital -->
+    <string name="title_pad_compound">Garniture des Plaquettes</string>
+    <string name="desc_pad_compound">Matériau de plaquette pour le comportement thermique, la longévité en kJ et le glaçage</string>
+    <string name="pad_compound_resin">Organique / Résine</string>
+    <string name="pad_compound_resin_desc">Attaque franche, silencieuses, limite thermique modérée (~400 kJ)</string>
+    <string name="pad_compound_semi_metallic">Semi-Métallique</string>
+    <string name="pad_compound_semi_metallic_desc">Freinage équilibré toutes conditions météo (~750 kJ)</string>
+    <string name="pad_compound_metallic">Métallique / Frittée</string>
+    <string name="pad_compound_metallic_desc">Résistance thermique extrême, durabilité maximale (~1200 kJ)</string>
+    <string name="title_pad_odometer">Odomètre de Service des Plaquettes</string>
+    <string name="desc_pad_odometer">Enregistre l\'énergie totale cumulée absorbée par vos plaquettes actuelles</string>
+    <string name="label_cumulative_energy">Énergie Absorbée</string>
+    <string name="label_rated_capacity">Capacité Nominale</string>
+    <string name="btn_reset_pad_odometer">Réinitialiser l\'Odomètre après Remplacement</string>
+    <string name="msg_pad_odometer_reset">Odomètre de plaquettes réinitialisé à 100%</string>
+
+    <!-- Télémétrie et Radar WorldTour PRO -->
+    <string name="title_worldtour_pro">Télémétrie WorldTour PRO</string>
+    <string name="label_trail_brake">Trail-Braking</string>
+    <string name="trail_quality_none">Ligne Droite</string>
+    <string name="trail_quality_perfect">Trail Parfait</string>
+    <string name="trail_quality_good">Bonne Modulation</string>
+    <string name="trail_quality_early">Relâchement Précoce</string>
+    <string name="trail_quality_panic">Panique en Virage</string>
+    <string name="label_des_score">Score de Descente</string>
+    <string name="desc_des_pro_pulse">Impulsions franches</string>
+    <string name="desc_des_dragging">Traînage continu détecté</string>
+
+    <!-- Alertes de Sécurité PRO -->
+    <string name="alert_glazing_title">Risque de Glaçage !</string>
+    <string name="alert_glazing_detail">Freinage continu plus de %1$.0fs à %2$.0f°C ! Relâchez les leviers pour éviter la vitrification.</string>
+    <string name="alert_pad_wear_title">Alerte Usure Plaquettes</string>
+    <string name="alert_pad_wear_detail">Vie des plaquettes à %d%% ! Remplacez les plaquettes pour protéger les disques.</string>
+    <string name="alert_glazing">Avertissement de Glaçage</string>
+    <string name="desc_glazing">Avertit lorsque le traînage en descente risque de vitrifier les garnitures</string>
+    <string name="alert_descent_efficiency">Score d\'Efficacité en Descente (DES)</string>
+    <string name="desc_descent_efficiency_toggle">Calcule l\'efficacité des impulsions et le radar de trail-braking en direct</string>
 
     <!-- Calibrage de Garde de Levier -->
     <string name="title_front_lever">Garde Levier Frein Avant</string>
@@ -121,6 +171,7 @@
     <!-- Badges d'État -->
     <string name="status_armed">ARMÉ</string>
     <string name="status_braking">FREINAGE</string>
+    <string name="status_trail">TRAIL</string>
     <string name="status_grupeta">PELOTON</string>
     <string name="status_pedaling">PÉDALAGE</string>
     <string name="status_coasting">ROUE LIBRE</string>
@@ -225,12 +276,16 @@
     <string name="science_topic3_desc">Le frein avant reçoit un flux laminaire direct, tandis que l\'arrière est dans la turbulence des bases. Sur jante carbone, l\'alarme évite de franchir 180°C pour préserver la résine époxy.</string>
     <string name="science_topic4_title">4. Modulation en Peloton et Détection de Frottement</string>
     <string name="science_topic4_desc">Rouler en peloton demande des effleurements millimétriques pour garder la distance. L\'app distingue ce touché léger et détecte en continu les plaquettes qui frottent (Watts perdus).</string>
+    <string name="science_topic5_title">5. Efficacité en Descente (DES) et Glaçage</string>
+    <string name="science_topic5_desc">Traîner les freins en descente empêche la dissipation thermique et provoque le glaçage (vitrification de la résine). Le DES valorise les impulsions franches et sanctionne les appuis continus de plus de 5 secondes.</string>
+    <string name="science_topic6_title">6. Trail-Braking et Radar d\'Entrée en Courbe</string>
+    <string name="science_topic6_desc">Le trail-braking consiste à prolonger le freinage dans le virage en le relâchant progressivement à mesure que l\'angle de gîte augmente jusqu\'au point de corde. L\'algorithme analyse l\'angle de roulis et l\'inertie en direct.</string>
 
     <string name="title_fields_catalog">Catalogue Complet des Champs de Données</string>
 
     <!-- Soutien -->
     <string name="title_support">Soutenir le Projet</string>
     <string name="desc_support">Karoo BBrakers est gratuit et open-source. Offrez-moi un café pour encourager les futures améliorations !</string>
-    <string name="btn_buy_coffee">☕ Offrez-moi un café (hesiox)</string>
+    <string name="btn_buy_coffee">Offrez-moi un café (hesiox)</string>
     <string name="author_credit">Développé avec passion par hesiox</string>
 </resources>

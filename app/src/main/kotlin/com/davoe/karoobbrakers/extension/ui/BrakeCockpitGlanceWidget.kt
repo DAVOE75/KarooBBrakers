@@ -24,15 +24,16 @@ import com.davoe.karoobbrakers.model.TempStatus
 import java.util.Locale
 
 /**
- * All-In-One Integrated Brake Cockpit HUD widget for Karoo 2 & Karoo 3.
+ * All-In-One Integrated WorldTour Brake Cockpit HUD widget for Karoo 2 & Karoo 3.
  *
  * Provides instant in-ride visibility of:
  * - Real-time deceleration with unit (m/s², G, ft/s²)
  * - 5-Stage progressive intensity spectrum bar (White -> Pale Yellow -> Yellow -> Orange -> Red)
- * - Operational state pill: ARMED (Cyan) | BRAKE (Neon Red) | GRUPETA (Violet) | PEDAL (Slate Blue)
+ * - Operational state pill: ARMED (Cyan) | BRAKE (Neon Red) | GRUPETA (Violet) | PEDAL (Slate Blue) | TRAIL (Orange)
+ * - WorldTour Descent Efficiency Score (DES %) & Trail-Braking status
  * - Kinetic power dissipation (Watts) in Cyan
- * - Dual-channel Front (Cyan) vs Rear (Amber) bias
- * - Dual-channel Front & Rear temperature readouts
+ * - Dual-channel Front (Cyan) vs Rear (Amber) bias and temperature readouts
+ * - Pad Life Odometer % remaining
  * - Peak G-Force marker
  */
 @Composable
@@ -61,6 +62,10 @@ fun BrakeCockpitGlanceWidget(
     powerLabel: String = "PWR",
     frontLabel: String = "F",
     rearLabel: String = "R",
+    descentEfficiencyScore: Int = 100,
+    isDescending: Boolean = false,
+    isTrailBraking: Boolean = false,
+    padLifeRemainingPercent: Int = 100,
 ) {
     // 5-Stage Progressive Spectrum Colors (White -> Yellow -> Orange -> Red)
     val spectrumColors = listOf(
@@ -72,13 +77,15 @@ fun BrakeCockpitGlanceWidget(
     )
 
     val defaultStatusText = when {
+        isTrailBraking -> "TRAIL"
         isPedaling -> "PEDAL"
         isGroupFeathering -> "GRUPETA"
         isBraking -> "BRAKE"
         else -> "ARMED"
     }
-    val finalStatusText = statusText ?: defaultStatusText
+    val finalStatusText = if (isTrailBraking) "TRAIL" else (statusText ?: defaultStatusText)
     val statusColor = when {
+        isTrailBraking -> Color(0xFFFF9100)
         isPedaling -> Color(0xFF78909C)
         isGroupFeathering -> Color(0xFFB388FF)
         isBraking -> Color(0xFFFF1744)
@@ -103,7 +110,7 @@ fun BrakeCockpitGlanceWidget(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // --- 1. Top Header Bar: Status Badge | Stops Counter | Peak G ---
+        // --- 1. Top Header Bar: Status Badge | WorldTour Indicator / Descent Score | Peak G ---
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -118,13 +125,26 @@ fun BrakeCockpitGlanceWidget(
                 ),
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
-            Text(
-                text = "#$eventsCount",
-                style = TextStyle(
-                    color = ColorProvider(Color(0xFF78909C)),
-                    fontSize = 10.sp,
-                ),
-            )
+
+            if (isDescending) {
+                Text(
+                    text = "DES $descentEfficiencyScore%",
+                    style = TextStyle(
+                        color = ColorProvider(if (descentEfficiencyScore >= 85) Color(0xFF00E676) else Color(0xFFFF9100)),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+            } else {
+                Text(
+                    text = "#$eventsCount",
+                    style = TextStyle(
+                        color = ColorProvider(Color(0xFF78909C)),
+                        fontSize = 10.sp,
+                    ),
+                )
+            }
+
             Spacer(modifier = GlanceModifier.width(6.dp))
             Text(
                 text = String.format(Locale.US, "%s: %.2fG", peakLabel, peakG),
@@ -194,7 +214,7 @@ fun BrakeCockpitGlanceWidget(
 
         Spacer(modifier = GlanceModifier.height(2.dp))
 
-        // --- 4. Sub-Telemetry Row: Dissipated Power & Dual Heat Readout ---
+        // --- 4. Sub-Telemetry Row: Dissipated Power | Pad Life | Dual Heat Readout ---
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,

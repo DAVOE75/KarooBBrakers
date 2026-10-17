@@ -28,6 +28,8 @@ data class BrakeMetrics(
     val totalEnergyKj: Double = 0.0,
     val continuousBrakingEnergyKj: Double = 0.0,
     val padWearScore: Double = 0.0,
+    val padLifeRemainingPercent: Int = 100,
+    val cumulativePadEnergyKj: Double = 0.0,
 
     // 3. Operational States
     val isBraking: Boolean = false,
@@ -35,6 +37,7 @@ data class BrakeMetrics(
     val isCoasting: Boolean = false,
     val totalBrakeEvents: Int = 0,
     val totalBrakingTimeMs: Long = 0L,
+    val activeBrakingDurationMs: Long = 0L,
 
     // 4. Dual-Channel Front & Rear Distribution
     val frontBiasPercent: Int = 60,
@@ -50,6 +53,7 @@ data class BrakeMetrics(
     val tempStatus: TempStatus = TempStatus.NORMAL,
     val isThermalWarning: Boolean = false,
     val isHardBrakeAlert: Boolean = false,
+    val isPadGlazingAlert: Boolean = false,
 
     // 6. WorldTour Cornering, Grip & Lean Angle Dynamics
     val roadSlopePercent: Double = 0.0,
@@ -59,9 +63,14 @@ data class BrakeMetrics(
     val isNearGripLimit: Boolean = false,
     val brakingIqScore: Int = 95,
     val isTrailBraking: Boolean = false,
+    val trailBrakeQuality: TrailBrakeQuality = TrailBrakeQuality.GOOD,
     val isGroupRidingFeathering: Boolean = false,
     val apexSpeedKmh: Double = 0.0,
     val exitSpeedDeltaKmh: Double = 0.0,
+
+    // 7. WorldTour PRO Descent Efficiency Score (DES)
+    val descentEfficiencyScore: Int = 100,
+    val isDescending: Boolean = false,
 ) {
     val brakingIntensityPercent: Int
         get() = ((currentDecelMs2 / 5.0) * 100.0).coerceIn(0.0, 100.0).toInt()
