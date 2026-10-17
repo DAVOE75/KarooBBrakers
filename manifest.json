@@ -4,8 +4,8 @@
   "developer": "DAVOE75 (hesiox)",
   "description": "WorldTour-grade Braking Telemetry, Dynamic Load Transfer, Kamm Friction Circle, Dual Rotor Thermal & Fade Safety Monitor and Peloton Feathering for Hammerhead Karoo 2 & Karoo 3.",
   "iconUrl": "https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/app/src/main/res/drawable/app_logo.png",
-  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.0.0/karoobbrakers.apk",
-  "latestVersion": "1.0.0",
-  "latestVersionCode": 1,
-  "releaseNotes": "Initial WorldTour release: Real-time deceleration gauge (White to Red spectrum), dual front/rear brake bias, Kamm friction circle grip margin, dissipated watts and involuntary brake drag detection, dual rotor heat monitoring, peloton feathering, and full 6-language localization (EN, ES, DE, FR, IT, PT)."
+  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.0.1/karoobbrakers.apk",
+  "latestVersion": "1.0.1",
+  "latestVersionCode": 2,
+  "releaseNotes": "v1.0.1: Full 100% localization across 6 languages (ES, EN, DE, FR, IT, PT) for all 10 data types and widgets; removed project support cards; continuous responsive deceleration physics from 50Hz hardware accelerometer (eliminating stationary lockouts); live KarooSystemService telemetry integration; enlarged high-legibility outdoor typography."
 }
