@@ -2,69 +2,70 @@
 <resources>
     <string name="app_name">Karoo BBrakers</string>
     <string name="extension_name">Karoo BBrakers</string>
-    <string name="tagline">Bremstelemetrie, Dynamische Sicherheit &amp; Verschleißanalyse</string>
+    <string name="tagline">Bremstelemetrie &amp; Schutz</string>
 
     <!-- Datentypen -->
     <string name="type_current_decel">Bremskraft</string>
     <string name="desc_current_decel">Momentane Verzögerungskraft in m/s², G oder ft/s²</string>
 
     <string name="type_braking_power">Bremsleistung</string>
-    <string name="desc_braking_power">Echte kinetische Bremsleistung in Watt (W)</string>
+    <string name="desc_braking_power">Echtzeit-Kinetikverlustleistung der Bremsen in Watt</string>
 
-    <string name="type_max_decel">Spitzenverzögerung (G)</string>
-    <string name="desc_max_decel">Maximale Bremsverzögerung während der Fahrt</string>
+    <string name="type_max_decel">Spitzen-Brems-G</string>
+    <string name="desc_max_decel">Höchste Bremsverzögerung während der Fahrt</string>
 
     <string name="type_brake_events">Bremsvorgänge</string>
-    <string name="desc_brake_events">Gesamtzahl der erfassten Bremsvorgänge</string>
+    <string name="desc_brake_events">Gesamtzahl der registrierten Bremsungen</string>
 
-    <string name="type_brake_energy">Dissipierte Energie</string>
-    <string name="desc_brake_energy">Gesamte von den Bremsen aufgenommene kinetische Energie in kJ</string>
+    <string name="type_brake_energy">Bremsenergie</string>
+    <string name="desc_brake_energy">Gesamte von den Bremsen absorbierte Energie in kJ</string>
 
-    <string name="type_pad_wear">Bremsbelagverschleiß</string>
-    <string name="desc_pad_wear">Kumulierter Verschleißindex basierend auf Energie &amp; Bremsentyp</string>
+    <string name="type_pad_wear">Belagverschleiß</string>
+    <string name="desc_pad_wear">Kumulierter Verschleißindex basierend auf Energie und Belagsart</string>
 
     <string name="type_brake_temperature">Bremstemperatur</string>
-    <string name="desc_brake_temperature">Geschätzte Echtzeit-Temperatur der Bremsflanke/Scheibe in °C oder °F</string>
+    <string name="desc_brake_temperature">Geschätzte Echtzeit-Temperatur von Scheibe/Flanke in °C oder °F</string>
 
-    <string name="type_graphical_brake">Bremsanzeige-Grafik</string>
-    <string name="desc_graphical_brake">Dynamisches Spektrum von Weiß bis Rot zur Anzeige der Bremsintensität</string>
+    <string name="type_graphical_brake">Brems-Manometer</string>
+    <string name="desc_graphical_brake">Dynamisches Skalenmeter von Weiß bis Rot je nach Bremsintensität</string>
 
-    <string name="type_graphical_thermal">Temperatur- &amp; Fading-Monitor</string>
-    <string name="desc_graphical_thermal">Grafischer Echtzeit-Temperaturmonitor mit Wärmezonen und Grenzwertwarnung</string>
+    <string name="type_graphical_thermal">Wärme- &amp; Fade-Monitor</string>
+    <string name="desc_graphical_thermal">Grafischer Echtzeit-Monitor für Temperatur, Wärmezonen und Grenzwerte</string>
 
-    <string name="type_graphical_cockpit">Brems-Cockpit HUD</string>
-    <string name="desc_graphical_cockpit">Integriertes Cockpit-HUD mit Bremskraft, Leistung, Temperatur und Tretfilter</string>
+    <string name="type_graphical_cockpit">Brems-Cockpit-HUD</string>
+    <string name="desc_graphical_cockpit">Integriertes Cockpit-HUD mit Verzögerung, Leistung, Temperatur und Tretfilter</string>
 
-    <string name="title_brake_type">Bremssystemtyp</string>
-    <string name="desc_brake_type">Bestimmt Reibungskoeffizienten, thermische Grenzen und Verschleißrate</string>
+    <string name="title_brake_type">Bremssystem-Typ</string>
+    <string name="desc_brake_type">Bestimmt Reibungskoeffizient, thermische Limits und Verschleißrate</string>
     <string name="brake_type_disc">Scheibenbremsen (Hydraulisch / Mechanisch)</string>
     <string name="brake_type_rim_alu">Felgenbremsen - Aluminium-Bremsflanke</string>
     <string name="brake_type_rim_carbon">Felgenbremsen - Carbon-Bremsflanke</string>
 
-    <!-- Hebelweg & Druckpunkt-Kalibrierung -->
-    <string name="title_front_lever">Hebelweg Vorderradbremse</string>
-    <string name="desc_front_lever">Leerweg bis Beläge vordere Scheibe/Felge berühren</string>
-    <string name="title_rear_lever">Hebelweg Hinterradbremse</string>
-    <string name="desc_rear_lever">Leerweg der Hinterradbremse (Feindosierung in der Gruppe)</string>
-    <string name="lever_feel_direct">Direkt / Kurz (5-12mm)</string>
-    <string name="lever_feel_standard">Standard / Ausgewogen (15-20mm)</string>
-    <string name="lever_feel_progressive">Progressiv / Lang (25-35mm - Gruppen-Modulation)</string>
+    <!-- Hebelweg- & Druckpunkt-Kalibrierung -->
+    <string name="title_front_lever">Vorderbremshebel-Gefühl</string>
+    <string name="desc_front_lever">Leerweg bis zum Belagkontakt am Vorderrad</string>
+    <string name="title_rear_lever">Hinterbremshebel-Gefühl</string>
+    <string name="desc_rear_lever">Leerweg bis zum Hinterradkontakt (Feinmodulation im Peloton)</string>
+    <string name="lever_feel_direct">Direkt (5-12mm)</string>
+    <string name="lever_feel_standard">Standard (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressiv (25-35mm)</string>
 
-    <string name="title_peloton_mode">Gruppen-Schleifbrems-Erkennung</string>
-    <string name="desc_peloton_mode">Erkennt sanfte Bremskorrekturen im Windschatten ohne Fehlalarme</string>
-    <string name="screens_gallery_title">Fahrt-Bildschirme Übersicht</string>
-    <string name="screens_color_legend_title">Farbcodierung auf einen Blick</string>
+    <string name="title_peloton_mode">Peloton-Modus</string>
+    <string name="desc_peloton_mode">Erkennt feines Schleifen der Hinterradbremse in der Gruppe ohne Fehlalarme</string>
+    <string name="screens_gallery_title">Datenbildschirm-Galerie</string>
+    <string name="screens_gallery_desc">Kontraststarke Widgets für sofortige Ablesbarkeit bei 40-70 km/h.</string>
+    <string name="screens_color_legend_title">Visueller Farbcode auf einen Blick</string>
 
-    <string name="title_total_weight">Gesamtgewicht (Fahrer + Fahrrad + Ausrüstung)</string>
-    <string name="desc_total_weight">Unerlässlich zur Berechnung der kinetischen Leistung (P = m·a·v)</string>
+    <string name="title_total_weight">Gesamtgewicht (Fahrer + Rad + Ausrüstung)</string>
+    <string name="desc_total_weight">Wichtig für die Berechnung kinetischer Bremsleistung (P = m·a·v)</string>
     <string name="weight_unit">kg</string>
 
     <string name="title_surface">Untergrund- / Geländeprofil</string>
     <string name="desc_surface">Filtert Erschütterungen, Schlaglöcher und Kopfsteinpflaster heraus</string>
-    <string name="surface_road">Straße / Asphalt</string>
-    <string name="surface_wet_road">Nasse Straße / Regen</string>
-    <string name="surface_gravel">Gravel / Kopfsteinpflaster / Schotter</string>
-    <string name="surface_mtb">Mountainbike / Technischer Trail</string>
+    <string name="surface_road">Straße (Trocken)</string>
+    <string name="surface_wet_road">Nässe / Regen</string>
+    <string name="surface_gravel">Gravel / Schotter</string>
+    <string name="surface_mtb">MTB / Trail</string>
 
     <!-- Regionale Einheitensysteme (Deutschland, UK, USA) -->
     <string name="title_unit_system">Regionales Einheitensystem</string>
@@ -85,47 +86,151 @@
     <string name="title_unit">Verzögerungseinheit</string>
     <string name="unit_decel_ms2">m/s²</string>
     <string name="unit_decel_g">G-Kraft (G)</string>
-    <string name="unit_decel_fts2">Fuß/Sek² (ft/s²)</string>
+    <string name="unit_decel_fts2">Fuß/sek² (ft/s²)</string>
 
     <string name="title_pedaling_filter">Intelligenter Tret- &amp; Steigungsfilter</string>
-    <string name="desc_pedaling_filter">Bremsen wird gesperrt wenn getreten wird, um Trägheitsausrollen oder Steigungen nicht als Bremsen zu werten</string>
-    <string name="coasting_active">Rollen / Trägheit (Luftwiderstand gefiltert)</string>
+    <string name="desc_pedaling_filter">Beim Treten wird die Bremsung blockiert, um Tempoverlust durch Steigungen nicht als Bremsen zu werten</string>
+    <string name="coasting_active">Rollen / Trägheit (Luftwiderstand herausgefiltert)</string>
 
-    <string name="title_safety_alerts">Sicherheitswarnungen</string>
-    <string name="alert_hard_braking">Notbremsungs-Alarm</string>
-    <string name="desc_hard_braking">Akustischer Signalton und Display-Blinken bei abruptem Bremsen (&gt; 4.2 m/s²)</string>
+    <string name="title_safety_alerts">Sicherheits-Warnungen</string>
+    <string name="alert_hard_braking">Gefahrenbremsungs-Alarm</string>
+    <string name="desc_hard_braking">Akustischer Signalton und optischer Alarm bei Vollbremsungen</string>
     <string name="alert_thermal">Überhitzungswarnung</string>
-    <string name="desc_thermal">Warnt vor Fading und Überhitzung bei langen steilen Abfahrten</string>
-    <string name="alert_beeper">Hardware-Piepser des Karoo</string>
-    <string name="desc_beeper">Nutzt den internen Piepser des Karoo für akustische Warnungen</string>
+    <string name="desc_thermal">Warnt vor Fading auf langen, steilen Abfahrten</string>
+    <string name="alert_beeper">Karoo-Hardware-Beeper</string>
+    <string name="desc_beeper">Verwendet den internen Lautsprecher für akustische Signale</string>
 
-    <!-- Warnmeldungen während der Fahrt -->
-    <string name="alert_hard_braking_title">NOTBREMSUNG ERKANNT!</string>
+    <!-- In-Ride Alerts -->
+    <string name="alert_hard_braking_title">GEFAHRENBREMSUNG!</string>
     <string name="alert_hard_braking_detail">Spitzenverzögerung: %1$s (%2$s)</string>
-    <string name="alert_thermal_title">GEFAHR DER BREMSÜBERHITZUNG</string>
-    <string name="alert_thermal_detail">Kritische Hitze an %1$s (%2$s)! Bremsen zur Kühlung zeitweise lösen, um Harzschäden zu vermeiden.</string>
+    <string name="alert_thermal_title">ÜBERHITZUNGSGEFAHR</string>
+    <string name="alert_thermal_detail">Kritische Hitze an %1$s (%2$s). Bremse kurz lösen, um Harzschäden zu verhindern!</string>
 
-    <!-- UI & Diagnose -->
-    <string name="tab_dashboard">Telemetrie</string>
-    <string name="tab_screens">Fahrt-Screens</string>
-    <string name="tab_settings">Einstellungen</string>
-    <string name="tab_guide">Anleitung</string>
+    <!-- UI Tabs (Kurze Bezeichnungen ohne Abschneiden) -->
+    <string name="tab_live">Live</string>
+    <string name="tab_screens">Screens</string>
+    <string name="tab_settings">Setup</string>
+    <string name="tab_guide">Hilfe</string>
     <string name="sensor_active">Sensoren Aktiv</string>
-    <string name="pedaling_active">Pedalieren Aktiv (Bremsen blockiert)</string>
-    <string name="live_test_title">Echtzeit-Sensordiagnose</string>
-    <string name="live_test_desc">Fahrrad neigen oder bremsen, um Sensorreaktion zu testen</string>
-    <string name="btn_save">Konfiguration Speichern</string>
+    <string name="pedaling_active">Treten Aktiv (Bremsung gesperrt)</string>
+    <string name="live_test_title">Live-Sensordiagnose</string>
+    <string name="live_test_desc">Fahrrad neigen oder bremsen, um Sensorwerte zu testen</string>
+    <string name="btn_save">Konfiguration speichern</string>
     <string name="toast_saved">Konfiguration erfolgreich gespeichert!</string>
 
-    <!-- Benutzerhandbuch -->
-    <string name="guide_step1">1. Öffne ein Fahrprofil in den Karoo-Einstellungen.</string>
-    <string name="guide_step2">2. Bearbeite eine Datenseite und wähle ein leeres Feld aus.</string>
-    <string name="guide_step3">3. Wähle unter \'Karoo BBrakers\' den gewünschten Wert oder die Grafik.</string>
-    <string name="guide_step4">4. Die Daten werden in der FIT-Datei zur Analyse in Strava &amp; Intervals.icu gespeichert.</string>
+    <!-- Status-Badges -->
+    <string name="status_armed">BEREIT</string>
+    <string name="status_braking">BREMSEN</string>
+    <string name="status_grupeta">PELOTON</string>
+    <string name="status_pedaling">TRETEN</string>
+    <string name="status_coasting">ROLLEN</string>
 
-    <!-- Unterstützung & Spenden -->
+    <!-- WorldTour Telemetrie-Labels -->
+    <string name="peloton_feathering_active">Peloton-Modus: Feine Hinterradbremsung (Kein Fehlstopp)</string>
+    <string name="title_front_rear_balance">Bremsbalance Vorn / Hinten</string>
+    <string name="label_road_slope">Steigung</string>
+    <string name="label_front">Vorn</string>
+    <string name="label_rear">Hinten</string>
+    <string name="desc_load_transfer">Trägheit verlagert bei steilen Abfahrten oder Vollbremsungen bis zu 85% Last nach vorn.</string>
+    <string name="title_kamm_circle">Kammscher Reibungskreis &amp; Grip</string>
+    <string name="label_margin">Marge</string>
+    <string name="label_roll_lean">Schräglage</string>
+    <string name="label_lateral_g">Quer-G</string>
+    <string name="label_total_g">Gesamt-G</string>
+    <string name="desc_kamm_circle">Überwacht Reifenhaftungsgrenzen bei Schräglage und Bremsen, um Wegrutschen des Vorderrads zu verhindern.</string>
+    <string name="title_power_drag">Kinetische Leistung &amp; Schleif-Erkennung</string>
+    <string name="label_dissipated">Abgebaut</string>
+    <string name="alert_brake_drag_detected">BREMSSCHLEIFEN: %1$d W VERLUST</string>
+    <string name="label_zero_drag">Kein Schleifen (Beläge frei)</string>
+    <string name="desc_drag_rubbing">Bremsbelag schleift an der Scheibe oder ist verkantet.</string>
+    <string name="desc_drag_clean">Keine parasitäre Reibung beim Treten festgestellt.</string>
+    <string name="title_dual_thermal">Thermischer Doppelrotor-Monitor</string>
+    <string name="label_limit">Grenze</string>
+    <string name="label_front_rotor">ROTOR VORN</string>
+    <string name="label_rear_rotor">ROTOR HINTEN</string>
+    <string name="desc_cooling_front">Direkte Kühlluft</string>
+    <string name="desc_cooling_rear">Windschatten Kettenstrebe</string>
+    <string name="label_peak_g_subtitle">Spitzenwert Tour</string>
+    <string name="label_stops_subtitle">Bremsvorgänge</string>
+    <string name="label_absorbed_subtitle">Gesamt absorbiert</string>
+    <string name="label_wear_subtitle">Belagverschleiß</string>
+    <string name="label_wear">Verschleiß</string>
+    <string name="label_zone">ZONE</string>
+    <string name="label_zone_safe">SICHER</string>
+    <string name="label_zone_warm">WARM</string>
+    <string name="label_zone_hot">HEISS</string>
+    <string name="label_zone_critical">KRITISCH</string>
+    <string name="label_front_abbr">V</string>
+    <string name="label_rear_abbr">H</string>
+    <string name="label_peak_short">SPITZE</string>
+    <string name="label_heat">WÄRME</string>
+    <string name="label_power_abbr">LEIST</string>
+    <string name="label_max_abbr">MAX</string>
+    <string name="label_safety_limit">Sicherheitslimit</string>
+    <string name="label_hud">HUD</string>
+    <string name="status_pedal">PEDAL</string>
+    <string name="status_brake">BREMSE</string>
+    <string name="status_peloton">GRUPPE</string>
+
+    <!-- Bildschirminhalte -->
+    <string name="widget_gauge_title">1. BREMS-MANOMETER (GRAFISCH)</string>
+    <string name="widget_gauge_desc">5-Stufen-Dynamikskala, Status-Badge, Spitzen-G-Markierung und Bremskraftverteilung.</string>
+    <string name="widget_thermal_title">2. THERMISCHER MONITOR &amp; FADE (GRAFISCH)</string>
+    <string name="widget_thermal_desc">Getrennte Rotor-Temperaturen mit 4 Sicherheitszonen und Carbon-Überhitzungswarnung.</string>
+    <string name="widget_cockpit_title">3. COCKPIT-HUD (GRAFISCH)</string>
+    <string name="widget_cockpit_desc">Integriertes Cockpit-HUD: Bremskraft, Watt-Verlust, Doppeltemperatur, Schräglage und Kamm-Marge.</string>
+
+    <!-- Farbcode-Legende -->
+    <string name="color_white">Weiß</string>
+    <string name="color_white_desc">Initialer Druckpunkt &amp; leichter Hebelkontakt (&lt; 1.0 m/s²)</string>
+    <string name="color_pale_yellow">Hellgelb</string>
+    <string name="color_pale_yellow_desc">Feine Geschwindigkeitsanpassung (1.0 - 2.0 m/s²)</string>
+    <string name="color_pure_yellow">Gelb</string>
+    <string name="color_pure_yellow_desc">Standardbremsung vor Kurven (2.0 - 3.2 m/s²)</string>
+    <string name="color_pure_orange">Orange</string>
+    <string name="color_pure_orange_desc">Starke Bremsung auf Passabfahrten (3.2 - 4.5 m/s²)</string>
+    <string name="color_fiery_red">Feuerrot</string>
+    <string name="color_fiery_red_desc">Gefahrenbremsung / Notstopp (&gt; 4.5 m/s²)</string>
+    <string name="color_violet">Violett</string>
+    <string name="color_violet_desc">Peloton-Modus (feine Distanzanpassung)</string>
+    <string name="color_green">Grün</string>
+    <string name="color_green_desc">Normale Betriebstemperatur (&lt; 80°C / 176°F)</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_cyan_desc">Warme Betriebstemperatur (80 - 160°C)</string>
+    <string name="color_amber">Bernstein</string>
+    <string name="color_amber_desc">Heiße Bremsflanke / Hitzestau (160 - 230°C)</string>
+    <string name="color_neon_red">Neon-Rot</string>
+    <string name="color_neon_red_desc">Kritische Hitze / Fading-Gefahr (&gt; 230°C oder Carbon-Limit)</string>
+
+    <!-- Setup-Labels -->
+    <string name="title_lever_calibration">Hebel-Leerweg &amp; Druckpunkt</string>
+    <string name="desc_lever_calibration">Kalibriert Leerweg und Ruck-Empfindlichkeit vor dem Belagkontakt.</string>
+    <string name="title_custom_units">Individuelle Einheiten</string>
+    <string name="desc_choose_temp_unit">Wähle Celsius oder Fahrenheit</string>
+    <string name="desc_choose_decel_unit">Wähle m/s², G-Kraft oder ft/s²</string>
+
+    <!-- Hilfe & Wissenschaft -->
+    <string name="title_guide_config">Konfiguration auf dem Hammerhead Karoo</string>
+    <string name="guide_step1">1. Öffne ein Fahrprofil in den Karoo-Einstellungen.</string>
+    <string name="guide_step2">2. Bearbeite eine Datenseite und wähle ein freies Feld.</string>
+    <string name="guide_step3">3. Wähle unter \'Karoo BBrakers\' das gewünschte numerische oder grafische Feld.</string>
+    <string name="guide_step4">4. Telemetriedaten werden in die FIT-Datei für Strava &amp; Intervals.icu geschrieben.</string>
+
+    <string name="title_guide_science">WorldTour Bremsphysik &amp; Wissenschaft</string>
+    <string name="science_topic1_title">1. Dynamische Lastverlagerung &amp; Vorderrad-Balance</string>
+    <string name="science_topic1_desc">Bei starker Verzögerung wandern bis zu 85% der Radlast auf das Vorderrad. Abfahrtsgefälle verstärkt dies zusätzlich. Der Algorithmus berechnet die Gewichtsverlagerung in Echtzeit.</string>
+    <string name="science_topic2_title">2. Kammscher Reibungskreis &amp; Sturzvermeidung</string>
+    <string name="science_topic2_desc">Reifenhaftung ist physikalisch begrenzt (μ·N). Längsbremskraft und Querkraft in Kurven dürfen diesen Kreis nicht überschreiten: a_comb = √(a_x² + a_y²) ≤ μ·g. Der Marge-Monitor schützt vor Vorderradrutschern.</string>
+    <string name="science_topic3_title">3. Doppel-Thermodynamik &amp; Carbon-Schutz</string>
+    <string name="science_topic3_desc">Die Vorderradbremse wird durch laminare Frischluft gekühlt, während die Hinterradbremse im Windschatten der Kettenstreben liegt. Bei Carbonfelgen wird vor Überschreiten von 180°C gewarnt.</string>
+    <string name="science_topic4_title">4. Peloton-Feinbremsung &amp; Schleif-Erkennung</string>
+    <string name="science_topic4_desc">In der Gruppe sind millimetergenaue Hebeltipps nötig. Die App isoliert dieses Schleifen und detektiert gleichzeitig schleifende Bremskolben beim Treten (verlorene Watt).</string>
+
+    <string name="title_fields_catalog">Vollständiger Datenfeld-Katalog</string>
+
+    <!-- Support & Buy Me a Coffee -->
     <string name="title_support">Projekt unterstützen</string>
-    <string name="desc_support">Karoo BBrakers ist kostenlos und Open Source. Lade mich auf einen Kaffee ein, um die Weiterentwicklung zu unterstützen!</string>
+    <string name="desc_support">Karoo BBrakers ist kostenlos und quelloffen. Unterstütze die Weiterentwicklung mit einem Kaffee!</string>
     <string name="btn_buy_coffee">☕ Spendier mir einen Kaffee (hesiox)</string>
     <string name="author_credit">Mit Leidenschaft entwickelt von hesiox</string>
 </resources>

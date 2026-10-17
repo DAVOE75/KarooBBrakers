@@ -2,71 +2,72 @@
 <resources>
     <string name="app_name">Karoo BBrakers</string>
     <string name="extension_name">Karoo BBrakers</string>
-    <string name="tagline">Telemetria de Travagem, Segurança Dinâmica &amp; Análise de Desgaste</string>
+    <string name="tagline">Telemetria e Segurança</string>
 
     <!-- Tipos de Dados -->
     <string name="type_current_decel">Força de Travagem</string>
-    <string name="desc_current_decel">Desaceleração instantânea em m/s², G ou ft/s²</string>
+    <string name="desc_current_decel">Força de desaceleração instantânea em m/s², G ou ft/s²</string>
 
     <string name="type_braking_power">Potência de Travagem</string>
-    <string name="desc_braking_power">Potência cinética real dissipada pelos travões em Watts</string>
+    <string name="desc_braking_power">Potência cinética dissipada pelos travões em Watts</string>
 
-    <string name="type_max_decel">Pico de Travagem (G)</string>
+    <string name="type_max_decel">Pico de Travagem G</string>
     <string name="desc_max_decel">Desaceleração máxima registada durante a volta</string>
 
     <string name="type_brake_events">Eventos de Travagem</string>
-    <string name="desc_brake_events">Número total de travagens detetadas na atividade</string>
+    <string name="desc_brake_events">Número total de toques e travagens detetadas</string>
 
     <string name="type_brake_energy">Energia Dissipada</string>
-    <string name="desc_brake_energy">Energia cinética total absorvida pelos travões em kJ</string>
+    <string name="desc_brake_energy">Trabalho cinético total absorvido em kJ</string>
 
-    <string name="type_pad_wear">Desgaste das Pastilhas</string>
-    <string name="desc_pad_wear">Índice cumulativo de desgaste com base na energia e composto</string>
+    <string name="type_pad_wear">Desgaste dos Calços</string>
+    <string name="desc_pad_wear">Índice cumulativo de desgaste baseado em energia e composto</string>
 
     <string name="type_brake_temperature">Temperatura dos Travões</string>
-    <string name="desc_brake_temperature">Temperatura estimada em tempo real da pista/disco em °C ou °F</string>
+    <string name="desc_brake_temperature">Temperatura estimada em tempo real do disco/aro em °C ou °F</string>
 
     <string name="type_graphical_brake">Manómetro de Travagem</string>
-    <string name="desc_graphical_brake">Espetro dinâmico de Branco a Vermelho conforme a intensidade</string>
+    <string name="desc_graphical_brake">Indicador dinâmico de Branco a Vermelho conforme a intensidade</string>
 
     <string name="type_graphical_thermal">Monitor Térmico &amp; Fade</string>
-    <string name="desc_graphical_thermal">Monitor gráfico de temperatura com zonas térmicas e limites de segurança</string>
+    <string name="desc_graphical_thermal">Monitor gráfico em tempo real de calor, zonas térmicas e limites</string>
 
     <string name="type_graphical_cockpit">Cockpit HUD de Travagem</string>
-    <string name="desc_graphical_cockpit">HUD completo de rota com desaceleração, potência, temperatura e filtro de pedalada</string>
+    <string name="desc_graphical_cockpit">HUD tudo-em-um com desaceleração, potência, calor e filtro de pedalada</string>
 
     <string name="title_brake_type">Tipo de Sistema de Travagem</string>
-    <string name="desc_brake_type">Define o coeficiente de atrito, limites térmicos e taxa de desgaste</string>
-    <string name="brake_type_disc">Travões de Disco (Hidráulicos / Mecânicos)</string>
-    <string name="brake_type_rim_alu">Travões de Calço - Pista de Alumínio</string>
-    <string name="brake_type_rim_carbon">Travões de Calço - Pista de Carbono</string>
+    <string name="desc_brake_type">Define atrito, limites térmicos e velocidade de desgaste</string>
+    <string name="brake_type_disc">Travões de Disco (Hidráulico / Mecânico)</string>
+    <string name="brake_type_rim_alu">Travões de Aro em Alumínio</string>
+    <string name="brake_type_rim_carbon">Travões de Aro em Carbono</string>
 
-    <!-- Calibração do Curso e Tato das Manetes -->
-    <string name="title_front_lever">Tato Manete Travão Dianteiro</string>
-    <string name="desc_front_lever">Curso livre antes do contacto das pastilhas na roda ou disco dianteiro</string>
-    <string name="title_rear_lever">Tato Manete Travão Traseiro</string>
-    <string name="desc_rear_lever">Curso livre do travão traseiro (modulação suave em grupeta)</string>
-    <string name="lever_feel_direct">Direto / Curto (5-12mm)</string>
-    <string name="lever_feel_standard">Padrão / Equilibrado (15-20mm)</string>
-    <string name="lever_feel_progressive">Progressivo / Longo (25-35mm - Especial Grupeta)</string>
+    <!-- Calibração do Curso e Ponto de Contacto da Manete -->
+    <string name="title_front_lever">Sensibilidade Manete Dianteira</string>
+    <string name="desc_front_lever">Curso livre antes do contacto dos calços dianteiros</string>
+    <string name="title_rear_lever">Sensibilidade Manete Traseira</string>
+    <string name="desc_rear_lever">Curso livre antes do contacto traseiro (modulação em pelotão)</string>
+    <string name="lever_feel_direct">Direto (5-12mm)</string>
+    <string name="lever_feel_standard">Padrão (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressivo (25-35mm)</string>
 
-    <string name="title_peloton_mode">Deteção de Modulação em Grupeta</string>
-    <string name="desc_peloton_mode">Reconhece toques suaves de travão traseiro em grupo sem falsos alarmes</string>
-    <string name="screens_gallery_title">Amostra de Ecrãs de Rota</string>
-    <string name="screens_color_legend_title">Código de Cores Visual ao Instante</string>
+    <string name="title_peloton_mode">Modo Pelotão</string>
+    <string name="desc_peloton_mode">Reconhece toques suaves no travão traseiro à roda sem falsas paragens</string>
+    <string name="screens_gallery_title">Galeria de Telas em Andamento</string>
+    <string name="screens_gallery_desc">Widgets visuais de alto contraste concebidos para leitura instantânea a 40-70 km/h.</string>
+    <string name="screens_color_legend_title">Código de Cores Visual Imediato</string>
 
     <string name="title_total_weight">Peso Total (Ciclista + Bicicleta + Equipamento)</string>
-    <string name="desc_total_weight">Fundamental para calcular a potência cinética real (P = m·a·v)</string>
+    <string name="desc_total_weight">Essencial para a potência cinética real (P = m·a·v) e o desgaste</string>
     <string name="weight_unit">kg</string>
 
     <string name="title_surface">Perfil de Superfície / Terreno</string>
     <string name="desc_surface">Filtra vibrações, buracos e empedrado para evitar falsos positivos</string>
-    <string name="surface_road">Estrada / Asfalto</string>
-    <string name="surface_wet_road">Estrada Molhada / Chuva</string>
-    <string name="surface_gravel">Gravel / Calçada / Terra</string>
-    <string name="surface_mtb">BTT / Trilho Técnico</string>
+    <string name="surface_road">Estrada (Seco)</string>
+    <string name="surface_wet_road">Molhado / Chuva</string>
+    <string name="surface_gravel">Gravel / Calçada</string>
+    <string name="surface_mtb">BTT / Trilho</string>
 
-    <!-- Sistema de Unidades Regionais (UK, USA, Portugal, Europa) -->
+    <!-- Sistema de Unidades Regionais (Portugal, UK, EUA) -->
     <string name="title_unit_system">Sistema de Unidades Regional</string>
     <string name="desc_unit_system">Medições configuradas para Portugal, Reino Unido, EUA e Europa</string>
     <string name="unit_system_metric">Métrico (Portugal, Espanha, Europa)</string>
@@ -87,45 +88,149 @@
     <string name="unit_decel_g">Força G (G)</string>
     <string name="unit_decel_fts2">Pés/seg² (ft/s²)</string>
 
-    <string name="title_pedaling_filter">Filtro Inteligente de Pedalada &amp; Subidas</string>
-    <string name="desc_pedaling_filter">A travagem é bloqueada durante a pedalada para não confundir inércia ou subidas com travagem</string>
-    <string name="coasting_active">Inércia / Roda Livre (Arrasto aerodinâmico filtrado)</string>
+    <string name="title_pedaling_filter">Filtro Inteligente de Pedalada e Subidas</string>
+    <string name="desc_pedaling_filter">A travagem é bloqueada a pedalar para não confundir perda de velocidade em rampas com travagens</string>
+    <string name="coasting_active">Inércia / Rodar Livre (Resistência aerodinâmica filtrada)</string>
 
     <string name="title_safety_alerts">Alertas de Segurança</string>
     <string name="alert_hard_braking">Alarme de Travagem Brusca</string>
-    <string name="desc_hard_braking">Aviso sonoro e flash no ecrã para desacelerações bruscas (&gt; 4.2 m/s²)</string>
-    <string name="alert_thermal">Aviso de Sobreaquecimento</string>
-    <string name="desc_thermal">Avisa sobre o risco de fadiga térmica em descidas longas e íngremes</string>
-    <string name="alert_beeper">Sinalizador Karoo</string>
-    <string name="desc_beeper">Utiliza o altifalante interno do ciclocomputador para emitir avisos</string>
+    <string name="desc_hard_braking">Aviso acústico e sinal visual em abrandamentos repentinos</string>
+    <string name="alert_thermal">Alerta de Sobreaquecimento</string>
+    <string name="desc_thermal">Avisa do risco de fading em descidas longas e íngremes</string>
+    <string name="alert_beeper">Alarme Sonoro Hardware do Karoo</string>
+    <string name="desc_beeper">Utiliza o altifalante interno do Karoo para emitir avisos</string>
 
-    <!-- Alertas em Rota -->
-    <string name="alert_hard_braking_title">TRAVAGEM DE EMERGÊNCIA DETETADA!</string>
-    <string name="alert_hard_braking_detail">Desaceleração de pico: %1$s (%2$s)</string>
-    <string name="alert_thermal_title">RISCO DE SOBREAQUECIMENTO DOS TRAVÕES</string>
-    <string name="alert_thermal_detail">Calor crítico em %1$s (%2$s)! Solte os travões intermitentemente para proteger a resina.</string>
+    <!-- In-Ride Alerts -->
+    <string name="alert_hard_braking_title">TRAVAGEM DE EMERGÊNCIA!</string>
+    <string name="alert_hard_braking_detail">Desaceleração pico: %1$s (%2$s)</string>
+    <string name="alert_thermal_title">RISCO DE SOBREAQUECIMENTO</string>
+    <string name="alert_thermal_detail">Calor crítico em %1$s (%2$s). Solta os travões intermitentemente para proteger a resina!</string>
 
-    <!-- UI & Diagnóstico -->
-    <string name="tab_dashboard">Telemetria</string>
-    <string name="tab_screens">Ecrãs de Rota</string>
-    <string name="tab_settings">Configurações</string>
+    <!-- Separadores UI (Curtos sem corte em 480px) -->
+    <string name="tab_live">Ao Vivo</string>
+    <string name="tab_screens">Telas</string>
+    <string name="tab_settings">Ajustes</string>
     <string name="tab_guide">Guia</string>
     <string name="sensor_active">Sensores Ativos</string>
     <string name="pedaling_active">Pedalada Ativa (Travagem Bloqueada)</string>
     <string name="live_test_title">Diagnóstico de Sensores em Direto</string>
-    <string name="live_test_desc">Incline a bicicleta ou trave para testar a resposta dos sensores</string>
+    <string name="live_test_desc">Inclina a bicicleta ou trava para verificar a resposta dos sensores</string>
     <string name="btn_save">Guardar Configuração</string>
     <string name="toast_saved">Configuração guardada com sucesso!</string>
 
-    <!-- Guia do Utilizador -->
-    <string name="guide_step1">1. Aceda aos Perfis de Volta nas definições do Karoo.</string>
-    <string name="guide_step2">2. Edite um ecrã de dados e selecione um espaço livre.</string>
-    <string name="guide_step3">3. Na categoria \'Karoo BBrakers\', escolha o campo numérico ou gráfico.</string>
-    <string name="guide_step4">4. Os dados são guardados no ficheiro FIT para análise no Strava e Intervals.icu.</string>
+    <!-- Distintivos de Estado -->
+    <string name="status_armed">ARMADO</string>
+    <string name="status_braking">TRAVANDO</string>
+    <string name="status_grupeta">PELOTÃO</string>
+    <string name="status_pedaling">PEDALANDO</string>
+    <string name="status_coasting">INÉRCIA</string>
 
-    <!-- Apoio e Doações -->
-    <string name="title_support">Apoiar o Projeto</string>
-    <string name="desc_support">Karoo BBrakers é gratuito e de código aberto. Paga-me um café para apoiar o desenvolvimento contínuo e novidades!</string>
+    <!-- Telemetria WorldTour -->
+    <string name="peloton_feathering_active">Modulação Pelotão: Toque suave traseiro (Sem paragem falsa)</string>
+    <string name="title_front_rear_balance">Equilíbrio Diant / Tras</string>
+    <string name="label_road_slope">Inclinação</string>
+    <string name="label_front">Dianteiro</string>
+    <string name="label_rear">Traseiro</string>
+    <string name="desc_load_transfer">A inércia transfere até 85% da carga para a roda dianteira em descidas ou travagens fortes.</string>
+    <string name="title_kamm_circle">Círculo de Fricção de Kamm &amp; Aderência</string>
+    <string name="label_margin">Margem</string>
+    <string name="label_roll_lean">Inclinação</string>
+    <string name="label_lateral_g">G Lateral</string>
+    <string name="label_total_g">G Total</string>
+    <string name="desc_kamm_circle">Monitoriza o limite de aderência combinando inclinação em curva com travagem para evitar quedas.</string>
+    <string name="title_power_drag">Potência Cinética e Atrito</string>
+    <string name="label_dissipated">Dissipada</string>
+    <string name="alert_brake_drag_detected">ATRITO DE TRAVÃO: %1$d W PERDIDOS</string>
+    <string name="label_zero_drag">Zero Atrito de Travão (Pastilhas livres)</string>
+    <string name="desc_drag_rubbing">Pinças a roçar no disco ou calços desalinhados.</string>
+    <string name="desc_drag_clean">Sem atrito parasita detetado enquanto pedalas.</string>
+    <string name="title_dual_thermal">Monitor Térmico de Rotores Duplos</string>
+    <string name="label_limit">Limite</string>
+    <string name="label_front_rotor">ROTOR DIANTEIRO</string>
+    <string name="label_rear_rotor">ROTOR TRASEIRO</string>
+    <string name="desc_cooling_front">Fluxo de ar direto</string>
+    <string name="desc_cooling_rear">Resguardado nas escoras</string>
+    <string name="label_peak_g_subtitle">Pico do passeio</string>
+    <string name="label_stops_subtitle">Paragens totais</string>
+    <string name="label_absorbed_subtitle">Total absorvido</string>
+    <string name="label_wear_subtitle">Desgaste calços</string>
+    <string name="label_wear">Desgaste</string>
+    <string name="label_zone">ZONA</string>
+    <string name="label_zone_safe">SEGURO</string>
+    <string name="label_zone_warm">MÔRNO</string>
+    <string name="label_zone_hot">QUENTE</string>
+    <string name="label_zone_critical">CRÍTICO</string>
+    <string name="label_front_abbr">D</string>
+    <string name="label_rear_abbr">T</string>
+    <string name="label_peak_short">PICO</string>
+    <string name="label_heat">CALOR</string>
+    <string name="label_power_abbr">POT</string>
+    <string name="label_max_abbr">MÁX</string>
+    <string name="label_safety_limit">Limite Segurança</string>
+    <string name="label_hud">HUD</string>
+    <string name="status_pedal">PEDAL</string>
+    <string name="status_brake">FREIO</string>
+    <string name="status_peloton">PELOTÃO</string>
+
+    <!-- Telas em Andamento -->
+    <string name="widget_gauge_title">1. MANÓMETRO DE TRAVAGEM (GRÁFICO)</string>
+    <string name="widget_gauge_desc">Manómetro dinâmico de 5 zonas, distintivo de estado, marcador de Pico G e equilíbrio F/R.</string>
+    <string name="widget_thermal_title">2. MONITOR TÉRMICO &amp; FADE (GRÁFICO)</string>
+    <string name="widget_thermal_desc">Temperaturas individuais Dianteira e Traseira com 4 zonas de segurança e alerta de carbono.</string>
+    <string name="widget_cockpit_title">3. COCKPIT HUD (GRÁFICO)</string>
+    <string name="widget_cockpit_desc">HUD integral de cockpit: Força de travagem, watts dissipados, calor duplo, inclinação e margem de Kamm.</string>
+
+    <!-- Legenda de Cores -->
+    <string name="color_white">Branco</string>
+    <string name="color_white_desc">Toque inicial e contacto leve (&lt; 1.0 m/s²)</string>
+    <string name="color_pale_yellow">Amarelo Claro</string>
+    <string name="color_pale_yellow_desc">Modulação suave / ajuste de distância (1.0 - 2.0 m/s²)</string>
+    <string name="color_pure_yellow">Amarelo Puro</string>
+    <string name="color_pure_yellow_desc">Travagem padrão / entrada de curva (2.0 - 3.2 m/s²)</string>
+    <string name="color_pure_orange">Laranja Puro</string>
+    <string name="color_pure_orange_desc">Travagem forte / descida íngreme (3.2 - 4.5 m/s²)</string>
+    <string name="color_fiery_red">Vermelho Fogo</string>
+    <string name="color_fiery_red_desc">Travagem de emergência (&gt; 4.5 m/s²)</string>
+    <string name="color_violet">Violeta</string>
+    <string name="color_violet_desc">Modo pelotão (toque suave à roda)</string>
+    <string name="color_green">Verde</string>
+    <string name="color_green_desc">Temperatura normal de trabalho (&lt; 80°C / 176°F)</string>
+    <string name="color_cyan">Ciano</string>
+    <string name="color_cyan_desc">Temperatura tépida de serviço (80 - 160°C)</string>
+    <string name="color_amber">Âmbar</string>
+    <string name="color_amber_desc">Pista quente / acumulação térmica (160 - 230°C)</string>
+    <string name="color_neon_red">Vermelho Neon</string>
+    <string name="color_neon_red_desc">Calor crítico / risco de fading (&gt; 230°C ou limite carbono)</string>
+
+    <!-- Ajustes -->
+    <string name="title_lever_calibration">Curso Livre e Ponto de Contacto da Manete</string>
+    <string name="desc_lever_calibration">Calibra o curso morto e a sensibilidade antes do contacto com o disco ou aro.</string>
+    <string name="title_custom_units">Ajuste Individual de Unidades</string>
+    <string name="desc_choose_temp_unit">Seleciona Celsius (°C) ou Fahrenheit (°F)</string>
+    <string name="desc_choose_decel_unit">Seleciona m/s², Força G ou ft/s²</string>
+
+    <!-- Guia e Ciência -->
+    <string name="title_guide_config">Como Configurar no Hammerhead Karoo</string>
+    <string name="guide_step1">1. Abre um Perfil de Volta nas definições do Karoo.</string>
+    <string name="guide_step2">2. Edita uma página de dados e toca num espaço vazio.</string>
+    <string name="guide_step3">3. Na categoria \'Karoo BBrakers\', seleciona um campo numérico ou gráfico.</string>
+    <string name="guide_step4">4. Os dados são guardados no ficheiro FIT para o Strava e Intervals.icu.</string>
+
+    <string name="title_guide_science">Física e Ciência de Travagem WorldTour</string>
+    <string name="science_topic1_title">1. Transferência Dinâmica de Carga e Repartição Dianteira</string>
+    <string name="science_topic1_desc">Em travagens fortes, a força inercial transfere até 85% da carga para a roda dianteira. A inclinação descendente acentua essa carga. O algoritmo calcula em tempo real o equilíbrio dianteiro/traseiro.</string>
+    <string name="science_topic2_title">2. Círculo de Fricção de Kamm e Prevenção de Quedas</string>
+    <string name="science_topic2_desc">O pneu tem um limite de aderência finito (μ·N). As forças combinadas de travagem e inclinação em curva não devem superá-lo: a_comb = √(a_x² + a_y²) ≤ μ·g. O monitor de margem previne perdas de roda dianteira.</string>
+    <string name="science_topic3_title">3. Termodinâmica Dupla e Proteção de Aros em Carbono</string>
+    <string name="science_topic3_desc">O travão dianteiro recebe fluxo de ar direto, enquanto o traseiro fica nas turbulências das escoras. Em aros de carbono evita-se ultrapassar os 180°C para não degradar a resina epóxi.</string>
+    <string name="science_topic4_title">4. Modulação em Pelotão e Deteção de Atrito Parasita</string>
+    <string name="science_topic4_desc">Andar em pelotão exige toques milimétricos no travão para manter a distância. A app isola esses toques suaves e deteta calços a roçar enquanto pedalas (Watts perdidos).</string>
+
+    <string name="title_fields_catalog">Catálogo Completo dos Campos de Dados</string>
+
+    <!-- Apoio -->
+    <string name="title_support">Apoia o Projeto</string>
+    <string name="desc_support">O Karoo BBrakers é gratuito e de código aberto. Paga-me um café para apoiar futuras melhorias!</string>
     <string name="btn_buy_coffee">☕ Paga-me um café (hesiox)</string>
     <string name="author_credit">Desenvolvido com paixão por hesiox</string>
 </resources>

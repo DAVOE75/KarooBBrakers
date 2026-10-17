@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Karoo BBrakers</string>
     <string name="extension_name">Karoo BBrakers</string>
-    <string name="tagline">Braking Telemetry, Dynamic Safety &amp; Wear Analytics</string>
+    <string name="tagline">Braking Telemetry &amp; Safety</string>
 
     <!-- Data Types -->
     <string name="type_current_decel">Braking Force</string>
@@ -46,13 +46,14 @@
     <string name="desc_front_lever">Free stroke before pads contact front rotor or rim</string>
     <string name="title_rear_lever">Rear Brake Lever Feel</string>
     <string name="desc_rear_lever">Free stroke before rear contact (peloton feathering)</string>
-    <string name="lever_feel_direct">Direct / Short (5-12mm)</string>
-    <string name="lever_feel_standard">Standard / Balanced (15-20mm)</string>
-    <string name="lever_feel_progressive">Progressive / Long (25-35mm - Group Modulation)</string>
+    <string name="lever_feel_direct">Direct (5-12mm)</string>
+    <string name="lever_feel_standard">Standard (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressive (25-35mm)</string>
 
     <string name="title_peloton_mode">Peloton Feathering Mode</string>
     <string name="desc_peloton_mode">Accurately detects subtle rear brake touches in pacelines without false stops</string>
     <string name="screens_gallery_title">In-Ride Data Screens Showcase</string>
+    <string name="screens_gallery_desc">High-contrast visual widgets engineered for instant legibility at 40-70 km/h.</string>
     <string name="screens_color_legend_title">Instant Visual Color Code</string>
 
     <string name="title_total_weight">Total Weight (Rider + Bike + Gear)</string>
@@ -61,10 +62,10 @@
 
     <string name="title_surface">Surface / Terrain Profile</string>
     <string name="desc_surface">Filters out road chatter, cobblestones and rough trail vibrations</string>
-    <string name="surface_road">Road / Paved (Dry)</string>
-    <string name="surface_wet_road">Wet Road / Rain</string>
-    <string name="surface_gravel">Gravel / Cobblestones</string>
-    <string name="surface_mtb">Mountain Bike / Trail</string>
+    <string name="surface_road">Road (Dry)</string>
+    <string name="surface_wet_road">Wet / Rain</string>
+    <string name="surface_gravel">Gravel / Pavé</string>
+    <string name="surface_mtb">MTB / Trail</string>
 
     <!-- Regional Units System (UK, US, Germany, Continental Europe) -->
     <string name="title_unit_system">Regional Units System</string>
@@ -105,11 +106,11 @@
     <string name="alert_thermal_title">BRAKE OVERHEATING RISK</string>
     <string name="alert_thermal_detail">High thermal buildup on %1$s (%2$s). Release brakes periodically to avoid resin damage!</string>
 
-    <!-- UI Tabs & Diagnostic -->
-    <string name="tab_dashboard">Telemetry</string>
-    <string name="tab_screens">Data Screens</string>
-    <string name="tab_settings">Configuration</string>
-    <string name="tab_guide">User Guide</string>
+    <!-- UI Tabs (Short non-truncating labels for 480px) -->
+    <string name="tab_live">Live</string>
+    <string name="tab_screens">Screens</string>
+    <string name="tab_settings">Settings</string>
+    <string name="tab_guide">Guide</string>
     <string name="sensor_active">Sensors Active</string>
     <string name="pedaling_active">Pedaling Active (Brake Locked Out)</string>
     <string name="live_test_title">Live Sensor Diagnostic</string>
@@ -117,11 +118,115 @@
     <string name="btn_save">Save Configuration</string>
     <string name="toast_saved">Configuration saved successfully!</string>
 
-    <!-- User Guide -->
+    <!-- Operational State Badges -->
+    <string name="status_armed">ARMED</string>
+    <string name="status_braking">BRAKING</string>
+    <string name="status_grupeta">PELOTON</string>
+    <string name="status_pedaling">PEDALING</string>
+    <string name="status_coasting">COASTING</string>
+
+    <!-- WorldTour Telemetry Labels & Cards -->
+    <string name="peloton_feathering_active">Peloton Feathering: Rear brake modulation (No false stop)</string>
+    <string name="title_front_rear_balance">Front / Rear Bias</string>
+    <string name="label_road_slope">Grade</string>
+    <string name="label_front">Front</string>
+    <string name="label_rear">Rear</string>
+    <string name="desc_load_transfer">Inertia shifts up to 85% of normal load forward on steep descents or hard braking.</string>
+    <string name="title_kamm_circle">Kamm\'s Friction Circle &amp; Grip</string>
+    <string name="label_margin">Margin</string>
+    <string name="label_roll_lean">Roll Lean</string>
+    <string name="label_lateral_g">Lateral G</string>
+    <string name="label_total_g">Total G</string>
+    <string name="desc_kamm_circle">Monitors tire adhesion limits combining cornering lean with braking to prevent front-wheel slip.</string>
+    <string name="title_power_drag">Kinetic Power &amp; Drag Detection</string>
+    <string name="label_dissipated">Dissipated</string>
+    <string name="alert_brake_drag_detected">BRAKE DRAG: %1$d W WASTED</string>
+    <string name="label_zero_drag">Zero Brake Drag (Pads Clean)</string>
+    <string name="desc_drag_rubbing">Calipers rubbing rotor or pads misaligned.</string>
+    <string name="desc_drag_clean">No parasitic friction detected while pedaling.</string>
+    <string name="title_dual_thermal">Dual Rotor Thermal Monitor</string>
+    <string name="label_limit">Limit</string>
+    <string name="label_front_rotor">FRONT ROTOR</string>
+    <string name="label_rear_rotor">REAR ROTOR</string>
+    <string name="desc_cooling_front">Clean airflow cooling</string>
+    <string name="desc_cooling_rear">Shielded chainstay</string>
+    <string name="label_peak_g_subtitle">Peak in Ride</string>
+    <string name="label_stops_subtitle">Distinct Stops</string>
+    <string name="label_absorbed_subtitle">Total Absorbed</string>
+    <string name="label_wear_subtitle">Pad Wear Index</string>
+    <string name="label_wear">Wear</string>
+    <string name="label_zone">ZONE</string>
+    <string name="label_zone_safe">SAFE</string>
+    <string name="label_zone_warm">WARM</string>
+    <string name="label_zone_hot">HOT</string>
+    <string name="label_zone_critical">CRITICAL</string>
+    <string name="label_front_abbr">F</string>
+    <string name="label_rear_abbr">R</string>
+    <string name="label_peak_short">PK</string>
+    <string name="label_heat">HEAT</string>
+    <string name="label_power_abbr">PWR</string>
+    <string name="label_max_abbr">MAX</string>
+    <string name="label_safety_limit">Safety Limit</string>
+    <string name="label_hud">HUD</string>
+    <string name="status_pedal">PEDAL</string>
+    <string name="status_brake">BRAKE</string>
+    <string name="status_peloton">PELOTON</string>
+
+    <!-- In-Ride Screens Showcase -->
+    <string name="widget_gauge_title">1. BRAKE GAUGE (GRAPHICAL)</string>
+    <string name="widget_gauge_desc">5-segment dynamic intensity meter, status badge, Peak G marker, and front/rear bias bar.</string>
+    <string name="widget_thermal_title">2. DUAL THERMAL &amp; FADE MONITOR</string>
+    <string name="widget_thermal_desc">Individual Front &amp; Rear rotor temperatures with 4-zone safety colors and carbon delamination alert.</string>
+    <string name="widget_cockpit_title">3. MASTER COCKPIT HUD</string>
+    <string name="widget_cockpit_desc">Ultimate cockpit HUD: Deceleration meter, dissipated watts, dual heat, lean angle, and grip margin %.</string>
+
+    <!-- Color Code Legend -->
+    <string name="color_white">White</string>
+    <string name="color_white_desc">Initial bite &amp; light lever touch (&lt; 1.0 m/s²)</string>
+    <string name="color_pale_yellow">Pale Yellow</string>
+    <string name="color_pale_yellow_desc">Subtle modulation / distance trimming (1.0 - 2.0 m/s²)</string>
+    <string name="color_pure_yellow">Pure Yellow</string>
+    <string name="color_pure_yellow_desc">Standard braking / corner entry (2.0 - 3.2 m/s²)</string>
+    <string name="color_pure_orange">Pure Orange</string>
+    <string name="color_pure_orange_desc">Firm braking / steep descents (3.2 - 4.5 m/s²)</string>
+    <string name="color_fiery_red">Fiery Red</string>
+    <string name="color_fiery_red_desc">Emergency braking / hard stop alarm (&gt; 4.5 m/s²)</string>
+    <string name="color_violet">Violet</string>
+    <string name="color_violet_desc">Peloton feathering mode (subtle paceline touch)</string>
+    <string name="color_green">Green</string>
+    <string name="color_green_desc">Normal brake temperature (&lt; 80°C / 176°F)</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_cyan_desc">Warm operating temperature (80 - 160°C)</string>
+    <string name="color_amber">Amber</string>
+    <string name="color_amber_desc">Hot brake track / thermal build-up (160 - 230°C)</string>
+    <string name="color_neon_red">Neon Red</string>
+    <string name="color_neon_red_desc">Critical heat / fade risk (&gt; 230°C or carbon limit)</string>
+
+    <!-- Settings Additional Labels -->
+    <string name="title_lever_calibration">Lever Free Stroke &amp; Bite Point</string>
+    <string name="desc_lever_calibration">Calibrates lever deadband and jerk threshold before pads touch rotor/rim.</string>
+    <string name="title_custom_units">Custom Unit Preferences</string>
+    <string name="desc_choose_temp_unit">Choose Celsius or Fahrenheit</string>
+    <string name="desc_choose_decel_unit">Choose m/s², G-Force or ft/s²</string>
+
+    <!-- User Guide & WorldTour Science -->
+    <string name="title_guide_config">How to Configure on Hammerhead Karoo</string>
     <string name="guide_step1">1. Open any Ride Profile in Karoo device settings.</string>
     <string name="guide_step2">2. Edit your data screens and choose an empty layout slot.</string>
     <string name="guide_step3">3. Under the \'Karoo BBrakers\' section, select any numerical or graphical field.</string>
     <string name="guide_step4">4. Telemetry is saved into your FIT files for Strava &amp; Intervals.icu review.</string>
+
+    <string name="title_guide_science">WorldTour Braking Physics &amp; Science</string>
+    <string name="science_topic1_title">1. Dynamic Load Transfer &amp; Front Bias</string>
+    <string name="science_topic1_desc">Under hard braking, inertial force transfers up to 85% of normal load to the front contact patch. Downhill slope further increases front load. The algorithm dynamically calculates front/rear bias in real time.</string>
+    <string name="science_topic2_title">2. Kamm\'s Friction Circle &amp; Washout Prevention</string>
+    <string name="science_topic2_desc">A tire has a finite adhesion limit (μ·N). Combined longitudinal braking and lateral cornering forces must not exceed this limit: a_comb = √(a_x² + a_y²) ≤ μ·g. Our grip margin monitor protects against catastrophic front wheel washout.</string>
+    <string name="science_topic3_title">3. Dual Thermodynamics &amp; Carbon Rim Fade</string>
+    <string name="science_topic3_desc">Front calipers experience clean oncoming laminar airflow (higher heat transfer coefficient h), while rear calipers are shielded in turbulent chainstay air. Carbon rim tracks cannot exceed 180°C without risking resin delamination.</string>
+    <string name="science_topic4_title">4. Peloton Feathering &amp; Involuntary Drag</string>
+    <string name="science_topic4_desc">Riding in pacelines requires subtle rear brake feathering to trim distance without disrupting the group. The extension isolates feathering from emergency stops and continuously detects parasitic brake rubbing (Wasted Watts).</string>
+
+    <string name="title_fields_catalog">Complete Data Fields Catalog</string>
 
     <!-- Support & Buy Me a Coffee -->
     <string name="title_support">Support the Project</string>

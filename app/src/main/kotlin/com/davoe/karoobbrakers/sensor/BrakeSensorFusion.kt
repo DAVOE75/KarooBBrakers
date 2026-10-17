@@ -223,11 +223,11 @@ class BrakeSensorFusion(
             linY
         }
 
-        // 2. Pedaling & Stationary Lockout
+        // 2. Pedaling Lockout
         val isPedaling = currentCadenceRpm > 5.0 || currentPowerWatts > 25.0
         val isMoving = currentSpeedMs > 0.8 // Bike moving at least ~2.9 km/h
 
-        val rawDecelNonNegative = if (isPedaling || !isMoving) {
+        val rawDecelNonNegative = if (isPedaling) {
             0.0
         } else {
             max(0.0, rawForwardDecel)
@@ -240,8 +240,8 @@ class BrakeSensorFusion(
         filteredDecelMs2 = effectiveAlpha * rawDecelNonNegative + (1.0 - effectiveAlpha) * filteredDecelMs2
 
         // 4. Coasting Inertia Drag Baseline Subtraction
-        // Calculate the passive deceleration caused purely by wind resistance and tire rolling
-        val coastingDragMs2 = calculateCoastingDrag(currentSpeedMs, totalWeightKg, surfaceProfile)
+        // Calculate the passive deceleration caused purely by wind resistance and tire rolling (only when moving)
+        val coastingDragMs2 = if (isMoving) calculateCoastingDrag(currentSpeedMs, totalWeightKg, surfaceProfile) else 0.0
         val netBrakeDecelMs2 = max(0.0, filteredDecelMs2 - coastingDragMs2)
 
         // 5. Jerk (da/dt) Calculation: Detect Lever Touch ("Bite") vs Lever Release ("Soltar")
@@ -259,7 +259,7 @@ class BrakeSensorFusion(
             0.0
         }
 
-        // 6. Fine-Tuned State Machine: Brake Bite vs Coasting Inertia vs Brake Release
+        // 6. Responsive State Machine: Brake Bite vs Coasting Inertia vs Brake Release
         val nowMs = System.currentTimeMillis()
 
         // Threshold for initial pad contact ("toque de freno") calibrated by Lever Feel
@@ -283,11 +283,8 @@ class BrakeSensorFusion(
         val isSpeedDropping = speedDropDecelEstimate > 0.15
 
         if (!isCurrentlyBraking) {
-            // Trigger braking ONLY when:
-            // - Net deceleration exceeds natural coasting drag
-            // - Either sudden positive jerk (lever bite) OR confirmed GPS speed drop
-            // - Cyclist is not pedaling and is actually moving
-            if (isDecelAboveBite && (hasBiteJerk || isSpeedDropping) && !isPedaling && isMoving) {
+            // Trigger braking when net deceleration exceeds bite threshold or sudden lever bite impulse occurs
+            if ((isDecelAboveBite || (hasBiteJerk && netBrakeDecelMs2 >= releaseThreshold)) && !isPedaling) {
                 isCurrentlyBraking = true
                 brakeBiteConfirmed = true
                 eventStartTimeMs = nowMs
@@ -304,9 +301,10 @@ class BrakeSensorFusion(
                 maxRideDecelMs2 = currentEventPeakDecelMs2
             }
 
-            // Power = Force * Velocity = (m * a_net) * v
+            // Power = Force * Velocity = (m * a_net) * v (only dissipated when moving)
+            val effectiveSpeedMs = if (isMoving) currentSpeedMs else 0.0
             val brakingForceNewtons = totalWeightKg * netBrakeDecelMs2
-            val instantaneousPowerWatts = brakingForceNewtons * currentSpeedMs
+            val instantaneousPowerWatts = brakingForceNewtons * effectiveSpeedMs
             val deltaEnergyJoules = instantaneousPowerWatts * dt
             currentEventEnergyJoules += deltaEnergyJoules
             totalEnergyAccumulatedKj += (deltaEnergyJoules / 1000.0)
@@ -320,11 +318,11 @@ class BrakeSensorFusion(
             // Detection of "Soltar el freno" (Brake Lever Release):
             // - Net deceleration drops below release threshold
             // - OR sharp negative jerk indicating sudden lever opening
-            // - OR rider resumed pedaling or came to full stop
-            val hasReleaseJerk = jerkMs3 < -1.2
+            // - OR rider resumed pedaling
+            val hasReleaseJerk = jerkMs3 < -1.0
             val isDebounced = (nowMs - eventStartTimeMs) >= minBrakeHoldDurationMs
 
-            val shouldRelease = isPedaling || !isMoving || (isDebounced && (netBrakeDecelMs2 < releaseThreshold || (hasReleaseJerk && netBrakeDecelMs2 < biteThreshold)))
+            val shouldRelease = isPedaling || (isDebounced && (netBrakeDecelMs2 < releaseThreshold || (hasReleaseJerk && netBrakeDecelMs2 < biteThreshold)))
 
             if (shouldRelease) {
                 endBrakeEvent()
@@ -336,9 +334,9 @@ class BrakeSensorFusion(
         // 7. Road Gradient / Slope Estimation from Longitudinal Gravity Vector
         val roadSlopePercent = ((-gravityEstimate[1] / 9.80665f).toDouble().coerceIn(-0.35, 0.35)) * 100.0
 
-        // 8. Instantaneous Braking Power
-        val activeBrakeDecel = if (isCurrentlyBraking) netBrakeDecelMs2 else 0.0
-        val instantaneousPowerWatts = if (isCurrentlyBraking) {
+        // 8. Instantaneous Braking Deceleration & Kinetic Power
+        val activeBrakeDecel = if (isCurrentlyBraking) netBrakeDecelMs2 else if (!isPedaling && netBrakeDecelMs2 > 0.15) netBrakeDecelMs2 else 0.0
+        val instantaneousPowerWatts = if (isCurrentlyBraking && isMoving) {
             totalWeightKg * activeBrakeDecel * currentSpeedMs
         } else {
             0.0

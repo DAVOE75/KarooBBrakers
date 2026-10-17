@@ -45,6 +45,12 @@ fun BrakeThermalGlanceWidget(
     rearTemp: Double = currentTemp,
     frontTempStatus: TempStatus = tempStatus,
     rearTempStatus: TempStatus = tempStatus,
+    statusText: String? = null,
+    heatLabel: String = "HEAT",
+    maxLabel: String = "MAX",
+    frontLabel: String = "FRONT",
+    rearLabel: String = "REAR",
+    safetyLimitLabel: String = "Limit",
 ) {
     fun colorForStatus(status: TempStatus): Color = when (status) {
         TempStatus.NORMAL -> Color(0xFF00E676)   // Emerald green
@@ -57,12 +63,13 @@ fun BrakeThermalGlanceWidget(
     val frontColor = colorForStatus(frontTempStatus)
     val rearColor = colorForStatus(rearTempStatus)
 
-    val statusText = when (tempStatus) {
+    val defaultStatusText = when (tempStatus) {
         TempStatus.NORMAL -> "OK"
         TempStatus.WARM -> "WARM"
         TempStatus.HOT -> "HOT"
         TempStatus.CRITICAL -> "CRIT!"
     }
+    val finalStatusText = statusText ?: defaultStatusText
 
     Column(
         modifier = GlanceModifier
@@ -79,7 +86,7 @@ fun BrakeThermalGlanceWidget(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "HEAT | $statusText",
+                text = "$heatLabel | $finalStatusText",
                 style = TextStyle(
                     color = ColorProvider(overallColor),
                     fontSize = 11.sp,
@@ -88,7 +95,7 @@ fun BrakeThermalGlanceWidget(
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
             Text(
-                text = String.format(Locale.US, "MAX: %.0f%s", peakTemp, unitSymbol),
+                text = String.format(Locale.US, "%s: %.0f%s", maxLabel, peakTemp, unitSymbol),
                 style = TextStyle(
                     color = ColorProvider(Color(0xFFFFD600)),
                     fontSize = 10.sp,
@@ -111,7 +118,7 @@ fun BrakeThermalGlanceWidget(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "FRONT",
+                    text = frontLabel,
                     style = TextStyle(
                         color = ColorProvider(Color(0xFF00E5FF)),
                         fontSize = 9.sp,
@@ -142,7 +149,7 @@ fun BrakeThermalGlanceWidget(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "REAR",
+                    text = rearLabel,
                     style = TextStyle(
                         color = ColorProvider(Color(0xFFFF9100)),
                         fontSize = 9.sp,
@@ -202,7 +209,7 @@ fun BrakeThermalGlanceWidget(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = String.format(Locale.US, "Safety Limit: %.0f%s", criticalTemp, unitSymbol),
+                text = String.format(Locale.US, "%s: %.0f%s", safetyLimitLabel, criticalTemp, unitSymbol),
                 style = TextStyle(
                     color = ColorProvider(if (tempStatus == TempStatus.CRITICAL) Color(0xFFFF1744) else Color(0xFF78909C)),
                     fontSize = 9.sp,

@@ -55,6 +55,12 @@ fun BrakeCockpitGlanceWidget(
     rearTemp: Double = temperature,
     frontTempStatus: TempStatus = tempStatus,
     rearTempStatus: TempStatus = tempStatus,
+    statusText: String? = null,
+    hudLabel: String = "HUD",
+    peakLabel: String = "PK",
+    powerLabel: String = "PWR",
+    frontLabel: String = "F",
+    rearLabel: String = "R",
 ) {
     // 5-Stage Progressive Spectrum Colors (White -> Yellow -> Orange -> Red)
     val spectrumColors = listOf(
@@ -65,11 +71,18 @@ fun BrakeCockpitGlanceWidget(
         Color(0xFFD50000), // 5. Emergency stop: Fiery Red
     )
 
-    val (statusText, statusColor) = when {
-        isPedaling -> Pair("PEDAL", Color(0xFF78909C))
-        isGroupFeathering -> Pair("GRUPETA", Color(0xFFB388FF))
-        isBraking -> Pair("BRAKE", Color(0xFFFF1744))
-        else -> Pair("ARMED", Color(0xFF00E5FF))
+    val defaultStatusText = when {
+        isPedaling -> "PEDAL"
+        isGroupFeathering -> "GRUPETA"
+        isBraking -> "BRAKE"
+        else -> "ARMED"
+    }
+    val finalStatusText = statusText ?: defaultStatusText
+    val statusColor = when {
+        isPedaling -> Color(0xFF78909C)
+        isGroupFeathering -> Color(0xFFB388FF)
+        isBraking -> Color(0xFFFF1744)
+        else -> Color(0xFF00E5FF)
     }
 
     fun colorForStatus(status: TempStatus): Color = when (status) {
@@ -97,7 +110,7 @@ fun BrakeCockpitGlanceWidget(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "HUD | $statusText",
+                text = "$hudLabel | $finalStatusText",
                 style = TextStyle(
                     color = ColorProvider(statusColor),
                     fontSize = 10.sp,
@@ -114,7 +127,7 @@ fun BrakeCockpitGlanceWidget(
             )
             Spacer(modifier = GlanceModifier.width(6.dp))
             Text(
-                text = String.format(Locale.US, "PK: %.2fG", peakG),
+                text = String.format(Locale.US, "%s: %.2fG", peakLabel, peakG),
                 style = TextStyle(
                     color = ColorProvider(Color(0xFFFFD600)),
                     fontSize = 10.sp,
@@ -190,7 +203,7 @@ fun BrakeCockpitGlanceWidget(
             // Power Dissipation (Watts)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "PWR: ",
+                    text = "$powerLabel: ",
                     style = TextStyle(
                         color = ColorProvider(Color(0xFF90A4AE)),
                         fontSize = 9.sp,
@@ -211,7 +224,7 @@ fun BrakeCockpitGlanceWidget(
             // Dual Heat (F & R)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "F:",
+                    text = "$frontLabel:",
                     style = TextStyle(color = ColorProvider(Color(0xFF00E5FF)), fontSize = 9.sp, fontWeight = FontWeight.Bold),
                 )
                 Text(
@@ -220,7 +233,7 @@ fun BrakeCockpitGlanceWidget(
                 )
                 Spacer(modifier = GlanceModifier.width(4.dp))
                 Text(
-                    text = "R:",
+                    text = "$rearLabel:",
                     style = TextStyle(color = ColorProvider(Color(0xFFFF9100)), fontSize = 9.sp, fontWeight = FontWeight.Bold),
                 )
                 Text(

@@ -2,71 +2,72 @@
 <resources>
     <string name="app_name">Karoo BBrakers</string>
     <string name="extension_name">Karoo BBrakers</string>
-    <string name="tagline">Telemetria di Frenata, Sicurezza Dinamica &amp; Analisi Usura</string>
+    <string name="tagline">Telemetria &amp; Sicurezza</string>
 
     <!-- Tipi di Dati -->
-    <string name="type_current_decel">Forza Frenante</string>
-    <string name="desc_current_decel">Decelerazione istantanea in m/s², G o ft/s²</string>
+    <string name="type_current_decel">Forza di Frenata</string>
+    <string name="desc_current_decel">Forza di decelerazione istantanea in m/s², G o ft/s²</string>
 
     <string name="type_braking_power">Potenza di Frenata</string>
-    <string name="desc_braking_power">Potenza cinetica reale dissipata dai freni in Watt</string>
+    <string name="desc_braking_power">Potenza cinetica dissipata dai freni in Watt</string>
 
-    <string name="type_max_decel">Picco di Frenata (G)</string>
-    <string name="desc_max_decel">Decelerazione massima registrata durante la pedalata</string>
+    <string name="type_max_decel">Picco di Frenata G</string>
+    <string name="desc_max_decel">Massima decelerazione registrata durante l\'uscita</string>
 
     <string name="type_brake_events">Eventi di Frenata</string>
-    <string name="desc_brake_events">Numero totale di frenate rilevate durante l\'attività</string>
+    <string name="desc_brake_events">Numero totale di frenate e tocchi rilevati</string>
 
     <string name="type_brake_energy">Energia Dissipata</string>
-    <string name="desc_brake_energy">Energia cinetica totale assorbita dai freni in kJ</string>
+    <string name="desc_brake_energy">Lavoro cinetico totale assorbito in kJ</string>
 
     <string name="type_pad_wear">Usura Pastiglie</string>
-    <string name="desc_pad_wear">Indice di usura cumulativo basato su energia e mescola dei freni</string>
+    <string name="desc_pad_wear">Indice di usura cumulativo basato su energia e mescola</string>
 
     <string name="type_brake_temperature">Temperatura Freni</string>
     <string name="desc_brake_temperature">Temperatura stimata in tempo reale di pista/disco in °C o °F</string>
 
-    <string name="type_graphical_brake">Manometro di Frenata</string>
-    <string name="desc_graphical_brake">Spettro grafico dinamico da Bianco a Rosso secondo l\'intensità</string>
+    <string name="type_graphical_brake">Manometro Freni</string>
+    <string name="desc_graphical_brake">Misuratore dinamico da Bianco a Rosso secondo l\'intensità di frenata</string>
 
     <string name="type_graphical_thermal">Monitor Termico &amp; Fade</string>
-    <string name="desc_graphical_thermal">Monitor grafico di temperatura con zone termiche e limiti di sicurezza</string>
+    <string name="desc_graphical_thermal">Monitor grafico di temperatura, zone termiche e limiti di sicurezza</string>
 
-    <string name="type_graphical_cockpit">Cockpit HUD di Frenata</string>
-    <string name="desc_graphical_cockpit">HUD completo da corsa con decelerazione, potenza, temperatura e blocco pedalata</string>
+    <string name="type_graphical_cockpit">Cockpit HUD Freni</string>
+    <string name="desc_graphical_cockpit">HUD completo di guida con manometro, potenza, calore e filtro pedalata</string>
 
     <string name="title_brake_type">Tipo di Impianto Frenante</string>
-    <string name="desc_brake_type">Determina coefficiente di attrito, limiti termici e tasso di usura</string>
-    <string name="brake_type_disc">Freni a Disco (Idraulici / Meccanici)</string>
-    <string name="brake_type_rim_alu">Freni a Pattino - Pista Alluminio</string>
-    <string name="brake_type_rim_carbon">Freni a Pattino - Pista Carbonio</string>
+    <string name="desc_brake_type">Determina attrito, limiti termici e velocità di usura</string>
+    <string name="brake_type_disc">Freni a Disco (Idraulico / Meccanico)</string>
+    <string name="brake_type_rim_alu">Freni su Cerchio in Alluminio</string>
+    <string name="brake_type_rim_carbon">Freni su Cerchio in Carbonio</string>
 
-    <!-- Calibrazione Corsa e Punto di Contatto Leve -->
-    <string name="title_front_lever">Corsa Leva Freno Anteriore</string>
-    <string name="desc_front_lever">Corsa a vuoto prima che le pastiglie tocchino il disco/cerchio anteriore</string>
-    <string name="title_rear_lever">Corsa Leva Freno Posteriore</string>
-    <string name="desc_rear_lever">Corsa a vuoto del freno posteriore (modulazione fine in gruppo)</string>
-    <string name="lever_feel_direct">Diretto / Corto (5-12mm)</string>
-    <string name="lever_feel_standard">Standard / Equilibrato (15-20mm)</string>
-    <string name="lever_feel_progressive">Progressivo / Lungo (25-35mm - Modulazione Gruppo)</string>
+    <!-- Calibrazione Corsa e Punto di Contatto Leva -->
+    <string name="title_front_lever">Sensibilità Leva Anteriore</string>
+    <string name="desc_front_lever">Corsa a vuoto prima del contatto delle pastiglie anteriori</string>
+    <string name="title_rear_lever">Sensibilità Leva Posteriore</string>
+    <string name="desc_rear_lever">Corsa a vuoto prima del contatto posteriore (modulazione in gruppo)</string>
+    <string name="lever_feel_direct">Diretto (5-12mm)</string>
+    <string name="lever_feel_standard">Standard (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressivo (25-35mm)</string>
 
-    <string name="title_peloton_mode">Rilevamento Modulazione in Gruppo</string>
-    <string name="desc_peloton_mode">Riconosce i tocchi leggeri del freno posteriore in scia senza falsi allarmi</string>
-    <string name="screens_gallery_title">Vetrina Schermi in Corsa</string>
-    <string name="screens_color_legend_title">Codice Colori Istantaneo</string>
+    <string name="title_peloton_mode">Modalità Gruppo</string>
+    <string name="desc_peloton_mode">Riconosce tocchi lievi al freno posteriore a ruota senza falsi arresti</string>
+    <string name="screens_gallery_title">Galleria Schermate in Corsa</string>
+    <string name="screens_gallery_desc">Widget ad alto contrasto progettati per leggibilità istantanea a 40-70 km/h.</string>
+    <string name="screens_color_legend_title">Codice Colori Immediato</string>
 
-    <string name="title_total_weight">Peso Totale (Ciclista + Bici + Accessori)</string>
-    <string name="desc_total_weight">Fondamentale per calcolare la potenza cinetica reale (P = m·a·v)</string>
+    <string name="title_total_weight">Peso Totale (Ciclista + Bici + Attrezzatura)</string>
+    <string name="desc_total_weight">Essenziale per la potenza cinetica reale (P = m·a·v) e l\'usura</string>
     <string name="weight_unit">kg</string>
 
     <string name="title_surface">Profilo Superficie / Terreno</string>
     <string name="desc_surface">Filtra vibrazioni, buche e pavé per evitare falsi positivi</string>
-    <string name="surface_road">Strada / Asfalto</string>
-    <string name="surface_wet_road">Strada Bagnata / Pioggia</string>
-    <string name="surface_gravel">Gravel / Pavé / Sterrato</string>
-    <string name="surface_mtb">Mountain Bike / Sentiero Tecnico</string>
+    <string name="surface_road">Strada (Asciutto)</string>
+    <string name="surface_wet_road">Bagnato / Pioggia</string>
+    <string name="surface_gravel">Gravel / Pavé</string>
+    <string name="surface_mtb">MTB / Sentiero</string>
 
-    <!-- Sistema di Unità Regionali (UK, USA, Italia, Europa) -->
+    <!-- Sistema di Unità Regionali (Italia, UK, USA) -->
     <string name="title_unit_system">Sistema di Unità Regionale</string>
     <string name="desc_unit_system">Misure configurate per Italia, Regno Unito, USA ed Europa</string>
     <string name="unit_system_metric">Metrico (Italia, Spagna, Europa)</string>
@@ -87,45 +88,149 @@
     <string name="unit_decel_g">Forza G (G)</string>
     <string name="unit_decel_fts2">Piedi/sec² (ft/s²)</string>
 
-    <string name="title_pedaling_filter">Filtro Intelligente Pedalata &amp; Pendenza</string>
-    <string name="desc_pedaling_filter">La frenata è bloccata durante la pedalata per non confondere pendenze o scorrimento libero con una frenata</string>
-    <string name="coasting_active">Inerzia / Scorrimento Libero (Resistenza aerodinamica filtrata)</string>
+    <string name="title_pedaling_filter">Filtro Intelligente Pedalata e Salita</string>
+    <string name="desc_pedaling_filter">La frenata è bloccata durante la pedalata per non confondere perdite di velocità su rampe con frenate</string>
+    <string name="coasting_active">Inerzia / Ruota Libera (Attrito aerodinamico filtrato)</string>
 
     <string name="title_safety_alerts">Avvisi di Sicurezza</string>
-    <string name="alert_hard_braking">Allarme Frenata d\'Emergenza</string>
-    <string name="desc_hard_braking">Segnale acustico e flash sul display per decelerazioni brusche (&gt; 4.2 m/s²)</string>
-    <string name="alert_thermal">Avviso Surriscaldamento</string>
-    <string name="desc_thermal">Avverte del rischio fading su discese lunghe e ripide</string>
+    <string name="alert_hard_braking">Allarme Frenata Brusca</string>
+    <string name="desc_hard_braking">Segnale acustico e lampeggio visivo su frenate improvvise</string>
+    <string name="alert_thermal">Avviso Surriscaldamento Pastiglie</string>
+    <string name="desc_thermal">Avverte del rischio di fading su discese lunghe e ripide</string>
     <string name="alert_beeper">Beeper Hardware Karoo</string>
-    <string name="desc_beeper">Usa il cicalino interno del Karoo per i segnali acustici</string>
+    <string name="desc_beeper">Usa l\'altoparlante interno del Karoo per emettere segnali sonori</string>
 
-    <!-- Avvisi in Corsa -->
-    <string name="alert_hard_braking_title">FRENATA D\'EMERGENZA RILEVATA!</string>
-    <string name="alert_hard_braking_detail">Decelerazione di picco: %1$s (%2$s)</string>
-    <string name="alert_thermal_title">RISCHIO SURRISCALDAMENTO FRENI</string>
-    <string name="alert_thermal_detail">Calore critico su %1$s (%2$s)! Rilascia i freni a intervalli per proteggere la resina.</string>
+    <!-- In-Ride Alerts -->
+    <string name="alert_hard_braking_title">FRENATA D\'EMERGENZA!</string>
+    <string name="alert_hard_braking_detail">Decelerazione picco: %1$s (%2$s)</string>
+    <string name="alert_thermal_title">RISCHIO SURRISCALDAMENTO</string>
+    <string name="alert_thermal_detail">Calore critico su %1$s (%2$s). Rilascia i freni a tratti per proteggere la resina!</string>
 
-    <!-- UI & Diagnostica -->
-    <string name="tab_dashboard">Telemetria</string>
-    <string name="tab_screens">Schermi Corsa</string>
-    <string name="tab_settings">Impostazioni</string>
+    <!-- Schede UI (Brevi senza troncamento) -->
+    <string name="tab_live">Live</string>
+    <string name="tab_screens">Schermi</string>
+    <string name="tab_settings">Setup</string>
     <string name="tab_guide">Guida</string>
     <string name="sensor_active">Sensori Attivi</string>
     <string name="pedaling_active">Pedalata Attiva (Frenata Bloccata)</string>
-    <string name="live_test_title">Diagnostica Sensori dal Vivo</string>
-    <string name="live_test_desc">Inclina la bici o frena per testare la risposta dei sensori</string>
+    <string name="live_test_title">Diagnostica Sensori Live</string>
+    <string name="live_test_desc">Inclina la bici o frena per verificare la risposta dei sensori</string>
     <string name="btn_save">Salva Configurazione</string>
     <string name="toast_saved">Configurazione salvata con successo!</string>
 
-    <!-- Guida Utente -->
-    <string name="guide_step1">1. Apri un Profilo Corsa nelle impostazioni del Karoo.</string>
-    <string name="guide_step2">2. Modifica una schermata dati e seleziona uno spazio vuoto.</string>
-    <string name="guide_step3">3. Nella sezione \'Karoo BBrakers\', scegli il campo numerico o grafico.</string>
-    <string name="guide_step4">4. I dati vengono registrati nel file FIT per Strava e Intervals.icu.</string>
+    <!-- Badge di Stato -->
+    <string name="status_armed">ARMATO</string>
+    <string name="status_braking">FRENATA</string>
+    <string name="status_grupeta">GRUPPO</string>
+    <string name="status_pedaling">PEDALATA</string>
+    <string name="status_coasting">INERZIA</string>
 
-    <!-- Supporto e Donazioni -->
+    <!-- Telemetria WorldTour -->
+    <string name="peloton_feathering_active">Modulazione Gruppo: Tocco posteriore (Nessun falso stop)</string>
+    <string name="title_front_rear_balance">Bilanciamento Ant / Post</string>
+    <string name="label_road_slope">Pendenza</string>
+    <string name="label_front">Anteriore</string>
+    <string name="label_rear">Posteriore</string>
+    <string name="desc_load_transfer">L\'inerzia sposta fino all\'85% del carico sull\'anteriore in discesa o frenata brusca.</string>
+    <string name="title_kamm_circle">Cerchio di Aderenza di Kamm &amp; Grip</string>
+    <string name="label_margin">Margine</string>
+    <string name="label_roll_lean">Inclinazione</string>
+    <string name="label_lateral_g">G Laterale</string>
+    <string name="label_total_g">G Totale</string>
+    <string name="desc_kamm_circle">Monitora il limite di aderenza combinando piega e frenata per prevenire la perdita dell\'anteriore.</string>
+    <string name="title_power_drag">Potenza Cinetica e Sfregamento</string>
+    <string name="label_dissipated">Dissipata</string>
+    <string name="alert_brake_drag_detected">SFREGAMENTO FRENO: %1$d W PERSI</string>
+    <string name="label_zero_drag">Nessuno Sfregamento (Pastiglie libere)</string>
+    <string name="desc_drag_rubbing">Pinze che sfregano sul disco o pastiglie disallineate.</string>
+    <string name="desc_drag_clean">Nessun attrito parassita rilevato durante la pedalata.</string>
+    <string name="title_dual_thermal">Monitor Termico Doppio Rotore</string>
+    <string name="label_limit">Limite</string>
+    <string name="label_front_rotor">ROTORE ANTERIORE</string>
+    <string name="label_rear_rotor">ROTORE POSTERIORE</string>
+    <string name="desc_cooling_front">Flusso d\'aria diretto</string>
+    <string name="desc_cooling_rear">Schermato dai foderi</string>
+    <string name="label_peak_g_subtitle">Picco del giro</string>
+    <string name="label_stops_subtitle">Frenate totali</string>
+    <string name="label_absorbed_subtitle">Totale assorbito</string>
+    <string name="label_wear_subtitle">Usura pastiglie</string>
+    <string name="label_wear">Usura</string>
+    <string name="label_zone">ZONA</string>
+    <string name="label_zone_safe">SICURO</string>
+    <string name="label_zone_warm">TIEPIDO</string>
+    <string name="label_zone_hot">MOLTO CALDO</string>
+    <string name="label_zone_critical">CRITICO</string>
+    <string name="label_front_abbr">ANT</string>
+    <string name="label_rear_abbr">POST</string>
+    <string name="label_peak_short">PICCO</string>
+    <string name="label_heat">CALORE</string>
+    <string name="label_power_abbr">POT</string>
+    <string name="label_max_abbr">MAX</string>
+    <string name="label_safety_limit">Limite Sicurezza</string>
+    <string name="label_hud">HUD</string>
+    <string name="status_pedal">PEDALE</string>
+    <string name="status_brake">FRENO</string>
+    <string name="status_peloton">GRUPPO</string>
+
+    <!-- Schermate in Corsa -->
+    <string name="widget_gauge_title">1. MANOMETRO FRENI (GRAFICO)</string>
+    <string name="widget_gauge_desc">Misuratore dinamico a 5 zone, badge di stato, picco G e bilanciamento F/R.</string>
+    <string name="widget_thermal_title">2. MONITOR TERMICO &amp; FADE (GRAFICO)</string>
+    <string name="widget_thermal_desc">Temperature separate Anteriore e Posteriore con 4 zone di sicurezza e allarme carbonio.</string>
+    <string name="widget_cockpit_title">3. COCKPIT HUD (GRAFICO)</string>
+    <string name="widget_cockpit_desc">HUD cockpit completo: Forza frenante, watt dissipati, doppio calore, piega e margine di Kamm.</string>
+
+    <!-- Legenda Colori -->
+    <string name="color_white">Bianco</string>
+    <string name="color_white_desc">Contatto iniziale e tocco leggero (&lt; 1.0 m/s²)</string>
+    <string name="color_pale_yellow">Giallo Chiaro</string>
+    <string name="color_pale_yellow_desc">Modulazione lieve / aggiustamento distanza (1.0 - 2.0 m/s²)</string>
+    <string name="color_pure_yellow">Giallo Puro</string>
+    <string name="color_pure_yellow_desc">Frenata standard / ingresso curva (2.0 - 3.2 m/s²)</string>
+    <string name="color_pure_orange">Arancione Puro</string>
+    <string name="color_pure_orange_desc">Frenata decisa / discesa ripida (3.2 - 4.5 m/s²)</string>
+    <string name="color_fiery_red">Rosso Fuoco</string>
+    <string name="color_fiery_red_desc">Frenata d\'emergenza / arresto brusco (&gt; 4.5 m/s²)</string>
+    <string name="color_violet">Viola</string>
+    <string name="color_violet_desc">Modalità gruppo (tocco a ruota)</string>
+    <string name="color_green">Verde</string>
+    <string name="color_green_desc">Temperatura normale di lavoro (&lt; 80°C / 176°F)</string>
+    <string name="color_cyan">Ciano</string>
+    <string name="color_cyan_desc">Temperatura tiepida d\'esercizio (80 - 160°C)</string>
+    <string name="color_amber">Ambra</string>
+    <string name="color_amber_desc">Pista calda / accumulo termico (160 - 230°C)</string>
+    <string name="color_neon_red">Rosso Neon</string>
+    <string name="color_neon_red_desc">Calore critico / rischio fading (&gt; 230°C o limite carbonio)</string>
+
+    <!-- Setup -->
+    <string name="title_lever_calibration">Corsa a Vuoto e Punto di Contatto Leva</string>
+    <string name="desc_lever_calibration">Calibra la corsa a vuoto e la sensibilità prima del contatto pastiglie.</string>
+    <string name="title_custom_units">Unità Personalizzate</string>
+    <string name="desc_choose_temp_unit">Scegli Celsius o Fahrenheit</string>
+    <string name="desc_choose_decel_unit">Scegli m/s², Forza G o ft/s²</string>
+
+    <!-- Guida e Scienza -->
+    <string name="title_guide_config">Come Configurare su Hammerhead Karoo</string>
+    <string name="guide_step1">1. Apri un Profilo di Corsa nelle impostazioni del Karoo.</string>
+    <string name="guide_step2">2. Modifica una schermata dati e tocca uno spazio vuoto.</string>
+    <string name="guide_step3">3. Nella sezione \'Karoo BBrakers\', seleziona un campo numerico o grafico.</string>
+    <string name="guide_step4">4. I dati vengono salvati nel file FIT per Strava e Intervals.icu.</string>
+
+    <string name="title_guide_science">Fisica e Scienza della Frenata WorldTour</string>
+    <string name="science_topic1_title">1. Trasferimento Dinamico di Carico e Ripartizione Anteriore</string>
+    <string name="science_topic1_desc">In frenata brusca, l\'inerzia trasferisce fino all\'85% del carico sul pneumatico anteriore. La pendenza accentua questo carico. L\'algoritmo calcola in tempo reale la ripartizione anteriore/posteriore.</string>
+    <string name="science_topic2_title">2. Cerchio di Aderenza di Kamm e Prevenzione Cadute</string>
+    <string name="science_topic2_desc">Il pneumatico ha un limite d\'aderenza finito (μ·N). Le forze combinate di frenata e piega in curva non devono superarlo: a_comb = √(a_x² + a_y²) ≤ μ·g. L\'indicatore ti protegge dalla perdita dell\'anteriore.</string>
+    <string name="science_topic3_title">3. Doppia Termodinamica e Protezione Cerchi in Carbonio</string>
+    <string name="science_topic3_desc">Il freno anteriore riceve aria laminare diretta, mentre il posteriore è coperto dai foderi. Sui cerchi in carbonio si evita di superare i 180°C per non danneggiare la resina epossidica.</string>
+    <string name="science_topic4_title">4. Modulazione in Gruppo e Rilevamento Sfregamento</string>
+    <string name="science_topic4_desc">Pedalare in gruppo richiede tocchi millimetrici per limare la distanza. L\'app isola questi tocchi e rileva continuamente pastiglie che sfregano (Watt sprecati).</string>
+
+    <string name="title_fields_catalog">Catalogo Completo dei Campi Dati</string>
+
+    <!-- Supporto -->
     <string name="title_support">Supporta il Progetto</string>
-    <string name="desc_support">Karoo BBrakers è gratuito e open-source. Offrimi un caffè per sostenere il continuo sviluppo e nuove funzionalità!</string>
+    <string name="desc_support">Karoo BBrakers è gratuito e open-source. Offrimi un caffè per sostenere i futuri aggiornamenti!</string>
     <string name="btn_buy_coffee">☕ Offrimi un caffè (hesiox)</string>
     <string name="author_credit">Sviluppato con passione da hesiox</string>
 </resources>

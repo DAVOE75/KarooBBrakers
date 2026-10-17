@@ -42,6 +42,10 @@ fun BrakeGaugeGlanceWidget(
     isGroupFeathering: Boolean = false,
     frontBias: Int = 60,
     rearBias: Int = 40,
+    statusText: String? = null,
+    peakLabel: String = "PK",
+    frontLabel: String = "F",
+    rearLabel: String = "R",
 ) {
     // 5-Segment Progressive Intensity Colors (White -> Yellow -> Orange -> Red)
     val spectrumColors = listOf(
@@ -52,11 +56,18 @@ fun BrakeGaugeGlanceWidget(
         Color(0xFFD50000), // 5. Emergency stop: Fiery Red
     )
 
-    val (statusText, statusColor) = when {
-        isPedaling -> Pair("PEDAL", Color(0xFF78909C))
-        isGroupFeathering -> Pair("GRUPETA", Color(0xFFB388FF)) // Neon violet
-        isBraking -> Pair("BRAKE", Color(0xFFFF1744)) // Neon red
-        else -> Pair("ARMED", Color(0xFF00E5FF)) // Cyan ready
+    val defaultStatusText = when {
+        isPedaling -> "PEDAL"
+        isGroupFeathering -> "GRUPETA"
+        isBraking -> "BRAKE"
+        else -> "ARMED"
+    }
+    val finalStatusText = statusText ?: defaultStatusText
+    val statusColor = when {
+        isPedaling -> Color(0xFF78909C)
+        isGroupFeathering -> Color(0xFFB388FF)
+        isBraking -> Color(0xFFFF1744)
+        else -> Color(0xFF00E5FF)
     }
 
     Column(
@@ -74,7 +85,7 @@ fun BrakeGaugeGlanceWidget(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = statusText,
+                text = finalStatusText,
                 style = TextStyle(
                     color = ColorProvider(statusColor),
                     fontSize = 11.sp,
@@ -83,7 +94,7 @@ fun BrakeGaugeGlanceWidget(
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
             Text(
-                text = String.format(Locale.US, "PK: %.2fG", peakG),
+                text = String.format(Locale.US, "%s: %.2fG", peakLabel, peakG),
                 style = TextStyle(
                     color = ColorProvider(Color(0xFFFFD600)),
                     fontSize = 10.sp,
@@ -157,7 +168,7 @@ fun BrakeGaugeGlanceWidget(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "F: $frontBias%",
+                text = "$frontLabel: $frontBias%",
                 style = TextStyle(
                     color = ColorProvider(Color(0xFF00E5FF)), // Cyan for Front
                     fontSize = 9.sp,
@@ -188,7 +199,7 @@ fun BrakeGaugeGlanceWidget(
             }
             Spacer(modifier = GlanceModifier.width(4.dp))
             Text(
-                text = "R: $rearBias%",
+                text = "$rearLabel: $rearBias%",
                 style = TextStyle(
                     color = ColorProvider(Color(0xFFFF9100)), // Amber for Rear
                     fontSize = 9.sp,

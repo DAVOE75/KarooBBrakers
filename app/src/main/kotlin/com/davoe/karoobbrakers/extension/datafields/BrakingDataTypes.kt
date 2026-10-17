@@ -4,11 +4,14 @@ import android.content.Context
 import androidx.compose.ui.unit.DpSize
 import androidx.glance.appwidget.ExperimentalGlanceRemoteViewsApi
 import androidx.glance.appwidget.GlanceRemoteViews
+import com.davoe.karoobbrakers.R
 import com.davoe.karoobbrakers.data.BrakePreferences
 import com.davoe.karoobbrakers.extension.ui.BrakeCockpitGlanceWidget
 import com.davoe.karoobbrakers.extension.ui.BrakeGaugeGlanceWidget
 import com.davoe.karoobbrakers.extension.ui.BrakeThermalGlanceWidget
+import com.davoe.karoobbrakers.model.TempStatus
 import com.davoe.karoobbrakers.sensor.BrakeSensorFusion
+import java.util.Locale
 import io.hammerhead.karooext.extension.DataTypeImpl
 import io.hammerhead.karooext.internal.Emitter
 import io.hammerhead.karooext.internal.ViewEmitter
@@ -246,6 +249,16 @@ class BrakeGraphicalDataType(
                 val unitLabel = preferences.getDecelSymbol()
                 val displayVal = preferences.formatDecelValue(metrics.currentDecelMs2)
 
+                val statusText = when {
+                    metrics.isPedalingActive -> context.getString(R.string.status_pedal)
+                    metrics.isBraking -> context.getString(R.string.status_brake)
+                    metrics.isGroupRidingFeathering -> context.getString(R.string.status_peloton)
+                    else -> context.getString(R.string.status_armed)
+                }
+                val peakLabel = context.getString(R.string.label_peak_short)
+                val frontLabel = context.getString(R.string.label_front_abbr)
+                val rearLabel = context.getString(R.string.label_rear_abbr)
+
                 val result = glance.compose(context, DpSize.Unspecified) {
                     BrakeGaugeGlanceWidget(
                         value = displayVal,
@@ -257,6 +270,10 @@ class BrakeGraphicalDataType(
                         isGroupFeathering = metrics.isGroupRidingFeathering,
                         frontBias = metrics.frontBiasPercent,
                         rearBias = metrics.rearBiasPercent,
+                        statusText = statusText,
+                        peakLabel = peakLabel,
+                        frontLabel = frontLabel,
+                        rearLabel = rearLabel,
                     )
                 }
                 emitter.updateView(result.remoteViews)
@@ -314,6 +331,19 @@ class BrakeThermalGraphicalDataType(
                 val brakeType = preferences.getBrakeType()
                 val criticalTemp = tempUnit.fromCelsius(brakeType.criticalTempCelsius)
 
+                val tempStatusText = when (metrics.tempStatus) {
+                    TempStatus.NORMAL -> context.getString(R.string.label_zone_safe)
+                    TempStatus.WARM -> context.getString(R.string.label_zone_warm)
+                    TempStatus.HOT -> context.getString(R.string.label_zone_hot)
+                    TempStatus.CRITICAL -> context.getString(R.string.label_zone_critical)
+                }
+                val heatLabel = context.getString(R.string.label_heat)
+                val maxLabel = context.getString(R.string.label_max_abbr)
+                val frontLabel = context.getString(R.string.label_front).uppercase(Locale.getDefault())
+                val rearLabel = context.getString(R.string.label_rear).uppercase(Locale.getDefault())
+                val safetyLimitLabel = context.getString(R.string.label_safety_limit)
+                val localizedBrakeTypeName = context.getString(brakeType.titleRes)
+
                 val result = glance.compose(context, DpSize.Unspecified) {
                     BrakeThermalGlanceWidget(
                         currentTemp = currentTemp,
@@ -321,12 +351,18 @@ class BrakeThermalGraphicalDataType(
                         criticalTemp = criticalTemp,
                         unitSymbol = tempUnit.symbol,
                         tempStatus = metrics.tempStatus,
-                        brakeTypeName = brakeType.name,
+                        brakeTypeName = localizedBrakeTypeName,
                         padWearScore = metrics.padWearScore,
                         frontTemp = frontTemp,
                         rearTemp = rearTemp,
                         frontTempStatus = metrics.frontTempStatus,
                         rearTempStatus = metrics.rearTempStatus,
+                        statusText = tempStatusText,
+                        heatLabel = heatLabel,
+                        maxLabel = maxLabel,
+                        frontLabel = frontLabel,
+                        rearLabel = rearLabel,
+                        safetyLimitLabel = safetyLimitLabel,
                     )
                 }
                 emitter.updateView(result.remoteViews)
@@ -384,6 +420,18 @@ class BrakeCockpitGraphicalDataType(
                 val frontTemp = tempUnit.fromCelsius(metrics.frontTempCelsius)
                 val rearTemp = tempUnit.fromCelsius(metrics.rearTempCelsius)
 
+                val statusText = when {
+                    metrics.isPedalingActive -> context.getString(R.string.status_pedal)
+                    metrics.isBraking -> context.getString(R.string.status_brake)
+                    metrics.isGroupRidingFeathering -> context.getString(R.string.status_peloton)
+                    else -> context.getString(R.string.status_armed)
+                }
+                val hudLabel = context.getString(R.string.label_hud)
+                val peakLabel = context.getString(R.string.label_peak_short)
+                val powerLabel = context.getString(R.string.label_power_abbr)
+                val frontLabel = context.getString(R.string.label_front_abbr)
+                val rearLabel = context.getString(R.string.label_rear_abbr)
+
                 val result = glance.compose(context, DpSize.Unspecified) {
                     BrakeCockpitGlanceWidget(
                         decelValue = displayDecel,
@@ -404,6 +452,12 @@ class BrakeCockpitGraphicalDataType(
                         rearTemp = rearTemp,
                         frontTempStatus = metrics.frontTempStatus,
                         rearTempStatus = metrics.rearTempStatus,
+                        statusText = statusText,
+                        hudLabel = hudLabel,
+                        peakLabel = peakLabel,
+                        powerLabel = powerLabel,
+                        frontLabel = frontLabel,
+                        rearLabel = rearLabel,
                     )
                 }
                 emitter.updateView(result.remoteViews)

@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Karoo BBrakers</string>
     <string name="extension_name">Karoo BBrakers</string>
-    <string name="tagline">Telemetría de Frenada, Seguridad Dinámica y Desgaste</string>
+    <string name="tagline">Telemetría y Seguridad</string>
 
     <!-- Tipos de Datos -->
     <string name="type_current_decel">Fuerza de Frenada</string>
@@ -46,13 +46,14 @@
     <string name="desc_front_lever">Recorrido libre antes de que las pastillas toquen la rueda o disco delantero</string>
     <string name="title_rear_lever">Tacto Maneta Freno Trasero</string>
     <string name="desc_rear_lever">Recorrido libre antes del contacto trasero (modulación fina en grupeta)</string>
-    <string name="lever_feel_direct">Directo / Corto (5-12mm)</string>
-    <string name="lever_feel_standard">Estándar / Neutro (15-20mm)</string>
-    <string name="lever_feel_progressive">Progresivo / Largo (25-35mm - Especial Grupeta)</string>
+    <string name="lever_feel_direct">Directo (5-12mm)</string>
+    <string name="lever_feel_standard">Estándar (15-20mm)</string>
+    <string name="lever_feel_progressive">Progresivo (25-35mm)</string>
 
     <string name="title_peloton_mode">Modo Grupeta / Pelotón</string>
     <string name="desc_peloton_mode">Reconoce toques suaves de freno trasero a rueda en grupo sin falsas alarmas</string>
     <string name="screens_gallery_title">Muestrario de Pantallas en Ruta</string>
+    <string name="screens_gallery_desc">Widgets visuales de alto contraste diseñados para lectura instantánea a 40-70 km/h.</string>
     <string name="screens_color_legend_title">Código de Colores Visual al Instante</string>
 
     <string name="title_total_weight">Peso Total (Ciclista + Bici + Equipamiento)</string>
@@ -61,10 +62,10 @@
 
     <string name="title_surface">Perfil de Terreno / Superficie</string>
     <string name="desc_surface">Filtra vibraciones, baches y adoquines para evitar falsos positivos</string>
-    <string name="surface_road">Carretera / Asfalto</string>
-    <string name="surface_wet_road">Carretera Mojada / Lluvia</string>
-    <string name="surface_gravel">Gravel / Pavé / Tierra</string>
-    <string name="surface_mtb">Montaña / Sendero Técnico</string>
+    <string name="surface_road">Asfalto (Seco)</string>
+    <string name="surface_wet_road">Mojado / Lluvia</string>
+    <string name="surface_gravel">Gravel / Pavé</string>
+    <string name="surface_mtb">MTB / Trail</string>
 
     <!-- Sistema de Unidades Regionales (UK, USA, Alemania, España) -->
     <string name="title_unit_system">Sistema de Unidades Regional</string>
@@ -105,11 +106,11 @@
     <string name="alert_thermal_title">RIESGO DE SOBRECALENTAMIENTO</string>
     <string name="alert_thermal_detail">Calentamiento crítico en %1$s (%2$s). ¡Suelta frenos intermitentemente para evitar daños en la resina!</string>
 
-    <!-- UI y Diagnóstico -->
-    <string name="tab_dashboard">Telemetría</string>
-    <string name="tab_screens">Pantallas Ruta</string>
-    <string name="tab_settings">Configuración</string>
-    <string name="tab_guide">Guía de Uso</string>
+    <!-- Pestañas UI (Nombres concisos que no se truncan en 480px) -->
+    <string name="tab_live">En Vivo</string>
+    <string name="tab_screens">Pantallas</string>
+    <string name="tab_settings">Ajustes</string>
+    <string name="tab_guide">Guía</string>
     <string name="sensor_active">Sensores Activos</string>
     <string name="pedaling_active">Pedaleo Activo (Frenada Bloqueada)</string>
     <string name="live_test_title">Diagnóstico de Sensores en Vivo</string>
@@ -117,11 +118,115 @@
     <string name="btn_save">Guardar Configuración</string>
     <string name="toast_saved">¡Configuración guardada correctamente!</string>
 
-    <!-- Guía de Usuario -->
+    <!-- Insignias de Estado Operativo -->
+    <string name="status_armed">ARMADO</string>
+    <string name="status_braking">FRENANDO</string>
+    <string name="status_grupeta">GRUPETA</string>
+    <string name="status_pedaling">PEDALEO</string>
+    <string name="status_coasting">INERCIA</string>
+
+    <!-- Etiquetas y Tarjetas de Telemetría WorldTour -->
+    <string name="peloton_feathering_active">Modulación Grupeta: Toque fino trasero (Sin falsa parada)</string>
+    <string name="title_front_rear_balance">Reparto Freno Del / Tras</string>
+    <string name="label_road_slope">Pendiente</string>
+    <string name="label_front">Delantero</string>
+    <string name="label_rear">Trasero</string>
+    <string name="desc_load_transfer">La inercia traslada hasta el 85% de la carga a la rueda delantera en bajadas o frenadas fuertes.</string>
+    <string name="title_kamm_circle">Círculo de Fricción de Kamm &amp; Agarre</string>
+    <string name="label_margin">Margen</string>
+    <string name="label_roll_lean">Inclinación</string>
+    <string name="label_lateral_g">Fuerza Lat. G</string>
+    <string name="label_total_g">Fuerza Total G</string>
+    <string name="desc_kamm_circle">Monitoriza el límite de adherencia combinando inclinación en curva con frenada para evitar caídas.</string>
+    <string name="title_power_drag">Potencia Cinética y Arrastre</string>
+    <string name="label_dissipated">Disipada</string>
+    <string name="alert_brake_drag_detected">ROCE DE FRENO: %1$d W PERDIDOS</string>
+    <string name="label_zero_drag">Cero Roce de Frenos (Pastillas Libres)</string>
+    <string name="desc_drag_rubbing">Las pinzas rozan el disco o las pastillas están desalineadas.</string>
+    <string name="desc_drag_clean">Sin fricción parásita detectada mientras pedaleas.</string>
+    <string name="title_dual_thermal">Monitor Térmico de Rotores</string>
+    <string name="label_limit">Límite</string>
+    <string name="label_front_rotor">DISCO DELANTERO</string>
+    <string name="label_rear_rotor">DISCO TRASERO</string>
+    <string name="desc_cooling_front">Flujo laminar directo</string>
+    <string name="desc_cooling_rear">Resguardado en vainas</string>
+    <string name="label_peak_g_subtitle">Máximo en ruta</string>
+    <string name="label_stops_subtitle">Detenciones totales</string>
+    <string name="label_absorbed_subtitle">Total absorbido</string>
+    <string name="label_wear_subtitle">Desgaste acumulado</string>
+    <string name="label_wear">Desgaste</string>
+    <string name="label_zone">ZONA</string>
+    <string name="label_zone_safe">SEGURO</string>
+    <string name="label_zone_warm">TEMPLADO</string>
+    <string name="label_zone_hot">CALIENTE</string>
+    <string name="label_zone_critical">CRÍTICO</string>
+    <string name="label_front_abbr">D</string>
+    <string name="label_rear_abbr">T</string>
+    <string name="label_peak_short">PICO</string>
+    <string name="label_heat">CALOR</string>
+    <string name="label_power_abbr">POT</string>
+    <string name="label_max_abbr">MÁX</string>
+    <string name="label_safety_limit">Límite Seguridad</string>
+    <string name="label_hud">HUD</string>
+    <string name="status_pedal">PEDAL</string>
+    <string name="status_brake">FRENO</string>
+    <string name="status_peloton">GRUPETA</string>
+
+    <!-- Muestrario de Pantallas en Ruta -->
+    <string name="widget_gauge_title">1. MANÓMETRO DE FRENADA (GRÁFICO)</string>
+    <string name="widget_gauge_desc">Manómetro dinámico de 5 zonas, insignia de estado, marcador de Pico G y reparto F/R.</string>
+    <string name="widget_thermal_title">2. MONITOR TÉRMICO &amp; FADE (GRÁFICO)</string>
+    <string name="widget_thermal_desc">Temperaturas individuales Delantera y Trasera con 4 zonas de seguridad y alerta de carbono.</string>
+    <string name="widget_cockpit_title">3. COCKPIT HUD DE CABINA (GRÁFICO)</string>
+    <string name="widget_cockpit_desc">HUD integral de cabina: Fuerza de frenada, vatios disipados, calor dual, inclinación y margen de Kamm.</string>
+
+    <!-- Código de Colores -->
+    <string name="color_white">Blanco</string>
+    <string name="color_white_desc">Mordida inicial y toque leve (&lt; 1.0 m/s²)</string>
+    <string name="color_pale_yellow">Amarillo Claro</string>
+    <string name="color_pale_yellow_desc">Modulación suave / ajuste de distancia (1.0 - 2.0 m/s²)</string>
+    <string name="color_pure_yellow">Amarillo Puro</string>
+    <string name="color_pure_yellow_desc">Frenada estándar / entrada en curva (2.0 - 3.2 m/s²)</string>
+    <string name="color_pure_orange">Naranja Puro</string>
+    <string name="color_pure_orange_desc">Frenada firme / bajada pronunciada (3.2 - 4.5 m/s²)</string>
+    <string name="color_fiery_red">Rojo Fuego</string>
+    <string name="color_fiery_red_desc">Frenada de emergencia / alarma brusca (&gt; 4.5 m/s²)</string>
+    <string name="color_violet">Violeta</string>
+    <string name="color_violet_desc">Modo grupeta (toque fino a rueda)</string>
+    <string name="color_green">Verde</string>
+    <string name="color_green_desc">Temperatura normal de trabajo (&lt; 80°C / 176°F)</string>
+    <string name="color_cyan">Cian</string>
+    <string name="color_cyan_desc">Temperatura templada de funcionamiento (80 - 160°C)</string>
+    <string name="color_amber">Ámbar</string>
+    <string name="color_amber_desc">Pista caliente / acumulación térmica (160 - 230°C)</string>
+    <string name="color_neon_red">Rojo Neón</string>
+    <string name="color_neon_red_desc">Calor crítico / riesgo de fade (&gt; 230°C o límite de carbono)</string>
+
+    <!-- Etiquetas de Configuración -->
+    <string name="title_lever_calibration">Recorrido Libre y Mordida de Maneta</string>
+    <string name="desc_lever_calibration">Calibra el recorrido muerto y la sensibilidad antes del contacto con el disco o llanta.</string>
+    <string name="title_custom_units">Ajuste Individual de Unidades</string>
+    <string name="desc_choose_temp_unit">Selecciona Celsius (°C) o Fahrenheit (°F)</string>
+    <string name="desc_choose_decel_unit">Selecciona m/s², Fuerza G o ft/s²</string>
+
+    <!-- Guía de Usuario y Ciencia WorldTour -->
+    <string name="title_guide_config">Cómo Configurar en Hammerhead Karoo</string>
     <string name="guide_step1">1. Entra en los Ajustes de Perfiles de Ruta de tu Karoo.</string>
     <string name="guide_step2">2. Edita una página de datos y toca un hueco libre.</string>
     <string name="guide_step3">3. En la categoría \'Karoo BBrakers\', añade el campo numérico o gráfico.</string>
     <string name="guide_step4">4. Los datos de desaceleración y temperatura se graban en el archivo FIT para Strava e Intervals.icu.</string>
+
+    <string name="title_guide_science">Física y Ciencia de Frenada WorldTour</string>
+    <string name="science_topic1_title">1. Transferencia Dinámica de Carga y Reparto Delantero</string>
+    <string name="science_topic1_desc">En frenadas fuertes, la fuerza inercial transfiere hasta el 85% de la carga normal al neumático delantero. La pendiente descendente incrementa aún más esta carga. El algoritmo calcula en tiempo real el reparto delantero/trasero.</string>
+    <string name="science_topic2_title">2. Círculo de Fricción de Kamm y Prevención de Caídas</string>
+    <string name="science_topic2_desc">El neumático tiene un límite finito de adherencia (μ·N). Las fuerzas longitudinales de frenado y laterales en curva no deben superarlo: a_comb = √(a_x² + a_y²) ≤ μ·g. El monitor de margen de agarre te protege de caídas por lavado de rueda delantera.</string>
+    <string name="science_topic3_title">3. Termodinámica Dual y Protección de Llantas de Carbono</string>
+    <string name="science_topic3_desc">El freno delantero recibe aire limpio laminar (mayor coeficiente de disipación h), mientras que el trasero está resguardado en el aire turbulento de las vainas. En llantas de carbono se evita superar los 180°C para impedir la delaminación de la resina.</string>
+    <string name="science_topic4_title">4. Modo Grupeta y Detección de Arrastre Parásito</string>
+    <string name="science_topic4_desc">Rodar en grupeta exige toques milimétricos del freno trasero para mantener la distancia sin romper el ritmo del grupo. La app aísla estos toques suaves y detecta en continuo roces parásitos de pastillas (Vatios Perdidos).</string>
+
+    <string name="title_fields_catalog">Catálogo Completo de Campos de Datos</string>
 
     <!-- Apoyo y Donaciones -->
     <string name="title_support">Apoya el Proyecto</string>
