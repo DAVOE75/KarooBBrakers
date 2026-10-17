@@ -63,4 +63,18 @@
         icon="@drawable/ic_brake_gauge"
         graphical="true" />
 
+    <DataType
+        typeId="graphical_thermal"
+        displayName="@string/type_graphical_thermal"
+        description="@string/desc_graphical_thermal"
+        icon="@drawable/ic_brake_thermal"
+        graphical="true" />
+
+    <DataType
+        typeId="graphical_cockpit"
+        displayName="@string/type_graphical_cockpit"
+        description="@string/desc_graphical_cockpit"
+        icon="@drawable/ic_brake_cockpit"
+        graphical="true" />
+
 </ExtensionInfo>

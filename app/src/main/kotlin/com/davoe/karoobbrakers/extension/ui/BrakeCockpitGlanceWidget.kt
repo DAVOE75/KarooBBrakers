@@ -1,0 +1,233 @@
+package com.davoe.karoobbrakers.extension.ui
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.glance.GlanceModifier
+import androidx.glance.background
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.Box
+import androidx.glance.layout.Column
+import androidx.glance.layout.Row
+import androidx.glance.layout.Spacer
+import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
+import androidx.glance.layout.padding
+import androidx.glance.layout.width
+import androidx.glance.text.FontWeight
+import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
+import com.davoe.karoobbrakers.model.TempStatus
+import java.util.Locale
+
+/**
+ * All-In-One Integrated Brake Cockpit HUD widget for Karoo 2 & Karoo 3.
+ *
+ * Provides instant in-ride visibility of:
+ * - Real-time deceleration with unit (m/s², G, ft/s²)
+ * - 5-Stage progressive intensity spectrum bar (White -> Pale Yellow -> Yellow -> Orange -> Red)
+ * - Operational state pill: ARMED (Cyan) | BRAKE (Neon Red) | GRUPETA (Violet) | PEDAL (Slate Blue)
+ * - Kinetic power dissipation (Watts) in Cyan
+ * - Dual-channel Front (Cyan) vs Rear (Amber) bias
+ * - Dual-channel Front & Rear temperature readouts
+ * - Peak G-Force marker
+ */
+@Composable
+fun BrakeCockpitGlanceWidget(
+    decelValue: Double,
+    decelUnit: String,
+    powerWatts: Double,
+    temperature: Double,
+    tempUnit: String,
+    tempStatus: TempStatus,
+    intensityPercent: Int,
+    isBraking: Boolean,
+    isPedaling: Boolean,
+    peakG: Double,
+    eventsCount: Int,
+    isGroupFeathering: Boolean = false,
+    frontBias: Int = 60,
+    rearBias: Int = 40,
+    frontTemp: Double = temperature,
+    rearTemp: Double = temperature,
+    frontTempStatus: TempStatus = tempStatus,
+    rearTempStatus: TempStatus = tempStatus,
+) {
+    // 5-Stage Progressive Spectrum Colors (White -> Yellow -> Orange -> Red)
+    val spectrumColors = listOf(
+        Color(0xFFFFFFFF), // 1. Initial bite: Pure White
+        Color(0xFFFFF176), // 2. Light decel: Pale Yellow
+        Color(0xFFFFD600), // 3. Medium decel: Pure Yellow
+        Color(0xFFFF6D00), // 4. Strong decel: Pure Orange
+        Color(0xFFD50000), // 5. Emergency stop: Fiery Red
+    )
+
+    val (statusText, statusColor) = when {
+        isPedaling -> Pair("PEDAL", Color(0xFF78909C))
+        isGroupFeathering -> Pair("GRUPETA", Color(0xFFB388FF))
+        isBraking -> Pair("BRAKE", Color(0xFFFF1744))
+        else -> Pair("ARMED", Color(0xFF00E5FF))
+    }
+
+    fun colorForStatus(status: TempStatus): Color = when (status) {
+        TempStatus.NORMAL -> Color(0xFF00E676)
+        TempStatus.WARM -> Color(0xFF00E5FF)
+        TempStatus.HOT -> Color(0xFFFF9100)
+        TempStatus.CRITICAL -> Color(0xFFFF1744)
+    }
+
+    val frontColor = colorForStatus(frontTempStatus)
+    val rearColor = colorForStatus(rearTempStatus)
+
+    Column(
+        modifier = GlanceModifier
+            .fillMaxSize()
+            .background(Color(0xFF080B10))
+            .padding(horizontal = 6.dp, vertical = 3.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        // --- 1. Top Header Bar: Status Badge | Stops Counter | Peak G ---
+        Row(
+            modifier = GlanceModifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "HUD | $statusText",
+                style = TextStyle(
+                    color = ColorProvider(statusColor),
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(modifier = GlanceModifier.defaultWeight())
+            Text(
+                text = "#$eventsCount",
+                style = TextStyle(
+                    color = ColorProvider(Color(0xFF78909C)),
+                    fontSize = 10.sp,
+                ),
+            )
+            Spacer(modifier = GlanceModifier.width(6.dp))
+            Text(
+                text = String.format(Locale.US, "PK: %.2fG", peakG),
+                style = TextStyle(
+                    color = ColorProvider(Color(0xFFFFD600)),
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+        }
+
+        Spacer(modifier = GlanceModifier.height(1.dp))
+
+        // --- 2. Central High-Contrast Deceleration Readout ---
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = if (isBraking) String.format(Locale.US, "%.1f", decelValue) else "0.0",
+                style = TextStyle(
+                    color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(modifier = GlanceModifier.width(2.dp))
+            Text(
+                text = decelUnit,
+                style = TextStyle(
+                    color = ColorProvider(Color(0xFF00E5FF)),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
+                ),
+            )
+        }
+
+        Spacer(modifier = GlanceModifier.height(2.dp))
+
+        // --- 3. 5-Segment Progressive Intensity Bar ---
+        Row(
+            modifier = GlanceModifier
+                .fillMaxWidth()
+                .height(5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val segments = 5
+            val filledSegments = if (isPedaling) {
+                0
+            } else if (isBraking) {
+                ((intensityPercent / 100.0) * segments).toInt().coerceIn(1, segments)
+            } else 0
+
+            for (i in 0 until segments) {
+                val isActive = i < filledSegments
+                val segmentColor = if (isActive) spectrumColors[i] else Color(0xFF1E2530)
+
+                Box(
+                    modifier = GlanceModifier
+                        .defaultWeight()
+                        .height(5.dp)
+                        .padding(horizontal = 1.dp)
+                        .background(segmentColor)
+                ) {}
+            }
+        }
+
+        Spacer(modifier = GlanceModifier.height(2.dp))
+
+        // --- 4. Sub-Telemetry Row: Dissipated Power & Dual Heat Readout ---
+        Row(
+            modifier = GlanceModifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Power Dissipation (Watts)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "PWR: ",
+                    style = TextStyle(
+                        color = ColorProvider(Color(0xFF90A4AE)),
+                        fontSize = 9.sp,
+                    ),
+                )
+                Text(
+                    text = if (isBraking) String.format(Locale.US, "%.0fW", powerWatts) else "0W",
+                    style = TextStyle(
+                        color = ColorProvider(if (isBraking) Color(0xFF00E5FF) else Color(0xFF78909C)),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+            }
+
+            Spacer(modifier = GlanceModifier.defaultWeight())
+
+            // Dual Heat (F & R)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "F:",
+                    style = TextStyle(color = ColorProvider(Color(0xFF00E5FF)), fontSize = 9.sp, fontWeight = FontWeight.Bold),
+                )
+                Text(
+                    text = String.format(Locale.US, "%.0f°", frontTemp),
+                    style = TextStyle(color = ColorProvider(frontColor), fontSize = 10.sp, fontWeight = FontWeight.Bold),
+                )
+                Spacer(modifier = GlanceModifier.width(4.dp))
+                Text(
+                    text = "R:",
+                    style = TextStyle(color = ColorProvider(Color(0xFFFF9100)), fontSize = 9.sp, fontWeight = FontWeight.Bold),
+                )
+                Text(
+                    text = String.format(Locale.US, "%.0f°", rearTemp),
+                    style = TextStyle(color = ColorProvider(rearColor), fontSize = 10.sp, fontWeight = FontWeight.Bold),
+                )
+            }
+        }
+    }
+}

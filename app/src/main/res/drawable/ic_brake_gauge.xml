@@ -3,21 +3,70 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Speedometer / decel gauge arc -->
+    <!-- Outer Gauge Gauge Housing Arc -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#2C3440"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M4,18 A9.5,9.5 0 1,1 20,18" />
+
+    <!-- Progressive Colored Gauge Perimeter Arc -->
+    <!-- Green/Cyan Zone (0 to 0.2G) -->
     <path
         android:fillColor="#00000000"
         android:strokeColor="#00E5FF"
-        android:strokeWidth="2"
+        android:strokeWidth="2.0"
         android:strokeLineCap="round"
-        android:pathData="M4,17 A9,9 0 1,1 20,17" />
-    <!-- Gauge needle pointing to heavy brake -->
+        android:pathData="M4,18 A9.5,9.5 0 0,1 6.5,10" />
+
+    <!-- Yellow Zone (0.2G to 0.4G) -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#FF3D00"
-        android:strokeWidth="2.5"
-        android:strokeLineCap="round"
-        android:pathData="M12,14 L17,8" />
+        android:strokeColor="#FFD600"
+        android:strokeWidth="2.0"
+        android:pathData="M6.5,10 A9.5,9.5 0 0,1 12,2.5" />
+
+    <!-- Orange Zone (0.4G to 0.6G) -->
     <path
-        android:fillColor="#FF9100"
-        android:pathData="M12,12 A2,2 0 1,0 14,14 A2,2 0 0,0 12,12Z" />
+        android:fillColor="#00000000"
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2.0"
+        android:pathData="M12,2.5 A9.5,9.5 0 0,1 17.5,10" />
+
+    <!-- Red Extreme Brake Zone (0.6G to 1.0G) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FF1744"
+        android:strokeWidth="2.0"
+        android:strokeLineCap="round"
+        android:pathData="M17.5,10 A9.5,9.5 0 0,1 20,18" />
+
+    <!-- Graduated Gauge Radial Ticks -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#90A4AE"
+        android:strokeWidth="1.0"
+        android:strokeLineCap="round"
+        android:pathData="M5.5,16.5L7,15.5 M8,9.5L9.2,10.5 M12,4.5L12,6 M16,9.5L14.8,10.5 M18.5,16.5L17,15.5" />
+
+    <!-- Needle Pivot Center -->
+    <path
+        android:fillColor="#151A24"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.5"
+        android:pathData="M12,14A2.5,2.5 0 1,0 14.5,16.5A2.5,2.5 0 0,0 12,14Z" />
+
+    <!-- Sharp Racing Decel Needle pointing into Heavy Brake Zone -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FF1744"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M12,14 L16.5,7.5" />
+
+    <!-- Needle Tip Glow Dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16.5,7.5A1,1 0 1,0 17.5,8.5A1,1 0 0,0 16.5,7.5Z" />
 </vector>

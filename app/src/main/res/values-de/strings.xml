@@ -29,12 +29,31 @@
     <string name="type_graphical_brake">Bremsanzeige-Grafik</string>
     <string name="desc_graphical_brake">Dynamisches Spektrum von Weiß bis Rot zur Anzeige der Bremsintensität</string>
 
-    <!-- Einstellungen & Konfiguration -->
+    <string name="type_graphical_thermal">Temperatur- &amp; Fading-Monitor</string>
+    <string name="desc_graphical_thermal">Grafischer Echtzeit-Temperaturmonitor mit Wärmezonen und Grenzwertwarnung</string>
+
+    <string name="type_graphical_cockpit">Brems-Cockpit HUD</string>
+    <string name="desc_graphical_cockpit">Integriertes Cockpit-HUD mit Bremskraft, Leistung, Temperatur und Tretfilter</string>
+
     <string name="title_brake_type">Bremssystemtyp</string>
     <string name="desc_brake_type">Bestimmt Reibungskoeffizienten, thermische Grenzen und Verschleißrate</string>
     <string name="brake_type_disc">Scheibenbremsen (Hydraulisch / Mechanisch)</string>
     <string name="brake_type_rim_alu">Felgenbremsen - Aluminium-Bremsflanke</string>
     <string name="brake_type_rim_carbon">Felgenbremsen - Carbon-Bremsflanke</string>
+
+    <!-- Hebelweg & Druckpunkt-Kalibrierung -->
+    <string name="title_front_lever">Hebelweg Vorderradbremse</string>
+    <string name="desc_front_lever">Leerweg bis Beläge vordere Scheibe/Felge berühren</string>
+    <string name="title_rear_lever">Hebelweg Hinterradbremse</string>
+    <string name="desc_rear_lever">Leerweg der Hinterradbremse (Feindosierung in der Gruppe)</string>
+    <string name="lever_feel_direct">Direkt / Kurz (5-12mm)</string>
+    <string name="lever_feel_standard">Standard / Ausgewogen (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressiv / Lang (25-35mm - Gruppen-Modulation)</string>
+
+    <string name="title_peloton_mode">Gruppen-Schleifbrems-Erkennung</string>
+    <string name="desc_peloton_mode">Erkennt sanfte Bremskorrekturen im Windschatten ohne Fehlalarme</string>
+    <string name="screens_gallery_title">Fahrt-Bildschirme Übersicht</string>
+    <string name="screens_color_legend_title">Farbcodierung auf einen Blick</string>
 
     <string name="title_total_weight">Gesamtgewicht (Fahrer + Fahrrad + Ausrüstung)</string>
     <string name="desc_total_weight">Unerlässlich zur Berechnung der kinetischen Leistung (P = m·a·v)</string>
@@ -43,6 +62,7 @@
     <string name="title_surface">Untergrund- / Geländeprofil</string>
     <string name="desc_surface">Filtert Erschütterungen, Schlaglöcher und Kopfsteinpflaster heraus</string>
     <string name="surface_road">Straße / Asphalt</string>
+    <string name="surface_wet_road">Nasse Straße / Regen</string>
     <string name="surface_gravel">Gravel / Kopfsteinpflaster / Schotter</string>
     <string name="surface_mtb">Mountainbike / Technischer Trail</string>
 
@@ -87,6 +107,7 @@
 
     <!-- UI & Diagnose -->
     <string name="tab_dashboard">Telemetrie</string>
+    <string name="tab_screens">Fahrt-Screens</string>
     <string name="tab_settings">Einstellungen</string>
     <string name="tab_guide">Anleitung</string>
     <string name="sensor_active">Sensoren Aktiv</string>

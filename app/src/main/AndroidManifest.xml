@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
 
+        <meta-data
+            android:name="io.hammerhead.karooext.MANIFEST_URL"
+            android:value="https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/manifest.json" />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

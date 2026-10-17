@@ -4,14 +4,16 @@ import android.content.Intent
 import android.os.IBinder
 import com.davoe.karoobbrakers.R
 import com.davoe.karoobbrakers.data.BrakePreferences
+import com.davoe.karoobbrakers.extension.datafields.BrakeCockpitGraphicalDataType
 import com.davoe.karoobbrakers.extension.datafields.BrakeEnergyDataType
 import com.davoe.karoobbrakers.extension.datafields.BrakeEventsCountDataType
 import com.davoe.karoobbrakers.extension.datafields.BrakeGraphicalDataType
+import com.davoe.karoobbrakers.extension.datafields.BrakeTemperatureDataType
+import com.davoe.karoobbrakers.extension.datafields.BrakeThermalGraphicalDataType
 import com.davoe.karoobbrakers.extension.datafields.BrakingPowerDataType
 import com.davoe.karoobbrakers.extension.datafields.CurrentBrakeDataType
 import com.davoe.karoobbrakers.extension.datafields.MaxBrakeDataType
 import com.davoe.karoobbrakers.extension.datafields.PadWearDataType
-import com.davoe.karoobbrakers.extension.datafields.BrakeTemperatureDataType
 import com.davoe.karoobbrakers.sensor.BrakeSensorFusion
 import io.hammerhead.karooext.KarooSystemService
 import io.hammerhead.karooext.extension.DataTypeImpl
@@ -108,6 +110,8 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.0.0") {
             PadWearDataType(extension, sensorFusion),
             BrakeTemperatureDataType(extension, sensorFusion, preferences),
             BrakeGraphicalDataType(extension, sensorFusion, preferences),
+            BrakeThermalGraphicalDataType(extension, sensorFusion, preferences),
+            BrakeCockpitGraphicalDataType(extension, sensorFusion, preferences),
         )
     }
 

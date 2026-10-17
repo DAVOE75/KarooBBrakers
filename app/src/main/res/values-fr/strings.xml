@@ -29,12 +29,31 @@
     <string name="type_graphical_brake">Jauge de Freinage</string>
     <string name="desc_graphical_brake">Spectre graphique dynamique du Blanc au Rouge selon l\'intensité</string>
 
-    <!-- Configuration -->
+    <string name="type_graphical_thermal">Moniteur Thermique &amp; Fading</string>
+    <string name="desc_graphical_thermal">Moniteur graphique de température avec zones thermiques et limites de sécurité</string>
+
+    <string name="type_graphical_cockpit">Cockpit HUD de Freinage</string>
+    <string name="desc_graphical_cockpit">HUD tout-en-un avec décélération, puissance, température et filtre de pédalage</string>
+
     <string name="title_brake_type">Type de Système de Freinage</string>
     <string name="desc_brake_type">Définit le coefficient de friction, limites thermiques et usure</string>
     <string name="brake_type_disc">Freins à Disque (Hydraulique / Mécanique)</string>
     <string name="brake_type_rim_alu">Freins sur Jante - Piste Aluminium</string>
     <string name="brake_type_rim_carbon">Freins sur Jante - Piste Carbone</string>
+
+    <!-- Calibrage de la Garde et du Toucher des Leviers -->
+    <string name="title_front_lever">Garde du Levier Avant</string>
+    <string name="desc_front_lever">Course morte avant contact des plaquettes/patins sur la roue avant</string>
+    <string name="title_rear_lever">Garde du Levier Arrière</string>
+    <string name="desc_rear_lever">Course morte du frein arrière (idéal modulation en peloton)</string>
+    <string name="lever_feel_direct">Direct / Court (5-12mm)</string>
+    <string name="lever_feel_standard">Standard / Équilibré (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressif / Long (25-35mm - Modulation Peloton)</string>
+
+    <string name="title_peloton_mode">Détection Modulation en Peloton</string>
+    <string name="desc_peloton_mode">Reconnaît les légers effleurements du frein arrière en peloton sans fausses alertes</string>
+    <string name="screens_gallery_title">Galerie des Écrans de Route</string>
+    <string name="screens_color_legend_title">Code Couleur Visuel Instantané</string>
 
     <string name="title_total_weight">Poids Total (Cycliste + Vélo + Équipement)</string>
     <string name="desc_total_weight">Indispensable pour calculer la puissance cinétique réelle (P = m·a·v)</string>
@@ -43,6 +62,7 @@
     <string name="title_surface">Profil du Terrain / Surface</string>
     <string name="desc_surface">Filtre les vibrations, nids-de-poule et pavés pour éviter les faux positifs</string>
     <string name="surface_road">Route / Asphalte</string>
+    <string name="surface_wet_road">Route Mouillée / Pluie</string>
     <string name="surface_gravel">Gravel / Pavés / Terre</string>
     <string name="surface_mtb">VTT / Sentier Technique</string>
 
@@ -87,6 +107,7 @@
 
     <!-- UI & Diagnostic -->
     <string name="tab_dashboard">Télémétrie</string>
+    <string name="tab_screens">Écrans Route</string>
     <string name="tab_settings">Configuration</string>
     <string name="tab_guide">Guide</string>
     <string name="sensor_active">Capteurs Actifs</string>

@@ -29,12 +29,31 @@
     <string name="type_graphical_brake">Brake Gauge</string>
     <string name="desc_graphical_brake">Dynamic graphical meter with White to Red brake intensity spectrum</string>
 
-    <!-- Settings & Configuration -->
+    <string name="type_graphical_thermal">Thermal &amp; Fade Monitor</string>
+    <string name="desc_graphical_thermal">Graphical real-time temperature, heat zones and material limit warnings</string>
+
+    <string name="type_graphical_cockpit">Brake Cockpit HUD</string>
+    <string name="desc_graphical_cockpit">All-in-one glance HUD with decel gauge, power, temp and pedaling filter</string>
+
     <string name="title_brake_type">Brake System Type</string>
     <string name="desc_brake_type">Determines friction coefficient, heat limits and pad wear rate</string>
     <string name="brake_type_disc">Disc Brakes (Hydraulic / Mechanical)</string>
     <string name="brake_type_rim_alu">Rim Brakes - Aluminum Wheel Track</string>
     <string name="brake_type_rim_carbon">Rim Brakes - Carbon Wheel Track</string>
+
+    <!-- Lever Travel & Free Stroke Calibration -->
+    <string name="title_front_lever">Front Brake Lever Feel</string>
+    <string name="desc_front_lever">Free stroke before pads contact front rotor or rim</string>
+    <string name="title_rear_lever">Rear Brake Lever Feel</string>
+    <string name="desc_rear_lever">Free stroke before rear contact (peloton feathering)</string>
+    <string name="lever_feel_direct">Direct / Short (5-12mm)</string>
+    <string name="lever_feel_standard">Standard / Balanced (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressive / Long (25-35mm - Group Modulation)</string>
+
+    <string name="title_peloton_mode">Peloton Feathering Mode</string>
+    <string name="desc_peloton_mode">Accurately detects subtle rear brake touches in pacelines without false stops</string>
+    <string name="screens_gallery_title">In-Ride Data Screens Showcase</string>
+    <string name="screens_color_legend_title">Instant Visual Color Code</string>
 
     <string name="title_total_weight">Total Weight (Rider + Bike + Gear)</string>
     <string name="desc_total_weight">Essential for kinetic power (P = m·a·v) and energy dissipation</string>
@@ -42,7 +61,8 @@
 
     <string name="title_surface">Surface / Terrain Profile</string>
     <string name="desc_surface">Filters out road chatter, cobblestones and rough trail vibrations</string>
-    <string name="surface_road">Road / Paved</string>
+    <string name="surface_road">Road / Paved (Dry)</string>
+    <string name="surface_wet_road">Wet Road / Rain</string>
     <string name="surface_gravel">Gravel / Cobblestones</string>
     <string name="surface_mtb">Mountain Bike / Trail</string>
 
@@ -87,6 +107,7 @@
 
     <!-- UI Tabs & Diagnostic -->
     <string name="tab_dashboard">Telemetry</string>
+    <string name="tab_screens">Data Screens</string>
     <string name="tab_settings">Configuration</string>
     <string name="tab_guide">User Guide</string>
     <string name="sensor_active">Sensors Active</string>

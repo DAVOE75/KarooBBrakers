@@ -4,72 +4,100 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Emblem Shield Border -->
+
+    <!-- Aerodynamic Shield Outline (DAVOE75 Signature Carbon Series) -->
+    <path
+        android:fillColor="#12161F"
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2.2"
+        android:strokeLineJoin="round"
+        android:pathData="M22,20 L86,20 A4,4 0 0,1 90,24 L90,66 C90,78 54,92 54,92 C54,92 18,78 18,66 L18,24 A4,4 0 0,1 22,20 Z" />
+
+    <!-- Inner Shield Border Cyan Glow -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#FF3D00"
-        android:strokeWidth="1.8"
-        android:pathData="M24,20L84,20A6,6 0 0,1 90,26L90,72A12,12 0 0,1 78,84L30,84A12,12 0 0,1 18,72L18,26A6,6 0 0,1 24,20Z" />
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.2"
+        android:strokeLineJoin="round"
+        android:pathData="M25,23 L83,23 A2,2 0 0,1 85,25 L85,64 C85,74 54,86 54,86 C54,86 23,74 23,64 L23,25 A2,2 0 0,1 25,23 Z" />
 
-    <!-- Bicycle White Silhouette -->
+    <!-- BICYCLE SILHOUETTE (Pure White, Aero Geometry) -->
     <!-- Rear Wheel -->
     <path
         android:fillColor="#00000000"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="1.6"
-        android:pathData="M35,55A12,12 0 1,0 35,55.01" />
+        android:strokeWidth="1.8"
+        android:pathData="M35,53A10.5,10.5 0 1,0 35,53.01" />
+
     <!-- Front Wheel -->
     <path
         android:fillColor="#00000000"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="1.6"
-        android:pathData="M73,55A12,12 0 1,0 73,55.01" />
+        android:strokeWidth="1.8"
+        android:pathData="M73,53A10.5,10.5 0 1,0 73,53.01" />
 
-    <!-- Heated Brake Rotors inside wheels -->
+    <!-- Glowing Heated Brake Rotors (Orange/Red) -->
     <path
         android:fillColor="#00000000"
         android:strokeColor="#FF3D00"
-        android:strokeWidth="1.5"
-        android:pathData="M35,55A5,5 0 1,0 35,55.01" />
+        android:strokeWidth="1.8"
+        android:pathData="M35,53A4.5,4.5 0 1,0 35,53.01" />
     <path
         android:fillColor="#00000000"
-        android:strokeColor="#FF3D00"
-        android:strokeWidth="1.5"
-        android:pathData="M73,55A5,5 0 1,0 73,55.01" />
+        android:strokeColor="#FF1744"
+        android:strokeWidth="1.8"
+        android:pathData="M73,53A4.5,4.5 0 1,0 73,53.01" />
 
-    <!-- Bicycle Frame Geometry (White) -->
+    <!-- Bicycle Frame Tubing (Aero Road Geometry) -->
+    <!-- Rear triangle: dropouts to BB to seat cluster -->
     <path
         android:fillColor="#00000000"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="2.0"
+        android:strokeWidth="2.2"
         android:strokeLineJoin="round"
         android:strokeLineCap="round"
-        android:pathData="M35,55 L48,55 L44,40 L35,55 M48,55 L62,40 L44,40 M62,40 L73,55 M44,40 L43,36 M62,40 L63,35 L67,35 L67,38" />
+        android:pathData="M35,53 L49,53 L45,39 L35,53" />
+    <!-- Front triangle: BB to headtube to seat cluster -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M49,53 L63,38 L45,39" />
+    <!-- Fork & Handlebars -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M63,38 L73,53 M45,39 L44,35 M63,38 L64,33 L69,33 L69,36" />
 
-    <!-- Crank / Chainring -->
+    <!-- Bottom Bracket Chainring -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M49,53A2.8,2.8 0 1,0 49,53.01" />
+
+    <!-- PROGRESSIVE BRAKE INTENSITY SPECTRUM (White -> Pale Yellow -> Yellow -> Orange -> Red) -->
+    <!-- 1. Pure White (Initial Bite) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M48,55A2.5,2.5 0 1,0 48,55.01" />
-
-    <!-- Bottom Intensity Spectrum: White -> Yellow -> Orange -> Red -->
-    <!-- Segment 1: White -->
+        android:pathData="M26,71h9v4h-9z" />
+    <!-- 2. Pale Yellow (Light Mod) -->
     <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M24,74h10v5h-10z" />
-    <!-- Segment 2: Pale Yellow -->
-    <path
-        android:fillColor="#FFF176"
-        android:pathData="M37,74h10v5h-10z" />
-    <!-- Segment 3: Yellow -->
+        android:fillColor="#FFF59D"
+        android:pathData="M37,71h9v4h-9z" />
+    <!-- 3. Pure Yellow (Medium Decel) -->
     <path
         android:fillColor="#FFD600"
-        android:pathData="M50,74h10v5h-10z" />
-    <!-- Segment 4: Orange -->
+        android:pathData="M48,71h9v4h-9z" />
+    <!-- 4. Pure Orange (Strong Decel) -->
     <path
         android:fillColor="#FF6D00"
-        android:pathData="M63,74h10v5h-10z" />
-    <!-- Segment 5: Red -->
+        android:pathData="M59,71h9v4h-9z" />
+    <!-- 5. Fiery Red (Emergency Stop) -->
     <path
         android:fillColor="#D50000"
-        android:pathData="M76,74h10v5h-10z" />
+        android:pathData="M70,71h9v4h-9z" />
 </vector>

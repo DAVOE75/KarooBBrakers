@@ -1,0 +1,31 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Outer cockpit HUD frame -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M3,5h4M17,5h4M3,19h4M17,19h4" />
+    <!-- Dynamic HUD Arc -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FF9100"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M6,15 A7,7 0 1,1 18,15" />
+    <!-- Center target / needle -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M12,12m-2,0a2,2 0 1,0 4,0a2,2 0 1,0 -4,0" />
+    <!-- Telemetry crosshair -->
+    <path
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M12,7v2M12,15v2M7,12h2M15,12h2" />
+</vector>

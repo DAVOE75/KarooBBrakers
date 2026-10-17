@@ -26,15 +26,34 @@
     <string name="type_brake_temperature">Temperatura dos Travões</string>
     <string name="desc_brake_temperature">Temperatura estimada em tempo real da pista/disco em °C ou °F</string>
 
-    <string name="type_graphical_brake">Indicador Gráfico</string>
+    <string name="type_graphical_brake">Manómetro de Travagem</string>
     <string name="desc_graphical_brake">Espetro dinâmico de Branco a Vermelho conforme a intensidade</string>
 
-    <!-- Configuração -->
+    <string name="type_graphical_thermal">Monitor Térmico &amp; Fade</string>
+    <string name="desc_graphical_thermal">Monitor gráfico de temperatura com zonas térmicas e limites de segurança</string>
+
+    <string name="type_graphical_cockpit">Cockpit HUD de Travagem</string>
+    <string name="desc_graphical_cockpit">HUD completo de rota com desaceleração, potência, temperatura e filtro de pedalada</string>
+
     <string name="title_brake_type">Tipo de Sistema de Travagem</string>
     <string name="desc_brake_type">Define o coeficiente de atrito, limites térmicos e taxa de desgaste</string>
     <string name="brake_type_disc">Travões de Disco (Hidráulicos / Mecânicos)</string>
     <string name="brake_type_rim_alu">Travões de Calço - Pista de Alumínio</string>
     <string name="brake_type_rim_carbon">Travões de Calço - Pista de Carbono</string>
+
+    <!-- Calibração do Curso e Tato das Manetes -->
+    <string name="title_front_lever">Tato Manete Travão Dianteiro</string>
+    <string name="desc_front_lever">Curso livre antes do contacto das pastilhas na roda ou disco dianteiro</string>
+    <string name="title_rear_lever">Tato Manete Travão Traseiro</string>
+    <string name="desc_rear_lever">Curso livre do travão traseiro (modulação suave em grupeta)</string>
+    <string name="lever_feel_direct">Direto / Curto (5-12mm)</string>
+    <string name="lever_feel_standard">Padrão / Equilibrado (15-20mm)</string>
+    <string name="lever_feel_progressive">Progressivo / Longo (25-35mm - Especial Grupeta)</string>
+
+    <string name="title_peloton_mode">Deteção de Modulação em Grupeta</string>
+    <string name="desc_peloton_mode">Reconhece toques suaves de travão traseiro em grupo sem falsos alarmes</string>
+    <string name="screens_gallery_title">Amostra de Ecrãs de Rota</string>
+    <string name="screens_color_legend_title">Código de Cores Visual ao Instante</string>
 
     <string name="title_total_weight">Peso Total (Ciclista + Bicicleta + Equipamento)</string>
     <string name="desc_total_weight">Fundamental para calcular a potência cinética real (P = m·a·v)</string>
@@ -43,6 +62,7 @@
     <string name="title_surface">Perfil de Superfície / Terreno</string>
     <string name="desc_surface">Filtra vibrações, buracos e empedrado para evitar falsos positivos</string>
     <string name="surface_road">Estrada / Asfalto</string>
+    <string name="surface_wet_road">Estrada Molhada / Chuva</string>
     <string name="surface_gravel">Gravel / Calçada / Terra</string>
     <string name="surface_mtb">BTT / Trilho Técnico</string>
 
@@ -87,6 +107,7 @@
 
     <!-- UI & Diagnóstico -->
     <string name="tab_dashboard">Telemetria</string>
+    <string name="tab_screens">Ecrãs de Rota</string>
     <string name="tab_settings">Configurações</string>
     <string name="tab_guide">Guia</string>
     <string name="sensor_active">Sensores Ativos</string>

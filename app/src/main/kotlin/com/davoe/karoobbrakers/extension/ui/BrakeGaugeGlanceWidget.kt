@@ -22,6 +22,15 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import java.util.Locale
 
+/**
+ * In-Ride Dynamic Braking Intensity Gauge Widget.
+ *
+ * Designed for high-speed instant recognition (at 40-70 km/h) using vivid color coding:
+ * - Pure White -> Pale Yellow -> Pure Yellow -> Pure Orange -> Fiery Red intensity spectrum.
+ * - Multi-state status pill: ARMED (Cyan) | BRAKE (Neon Red) | GRUPETA (Violet) | PEDAL (Slate Blue).
+ * - Dual-channel Front (Cyan) vs Rear (Amber) bias indicator.
+ * - Peak G-Force memory marker.
+ */
 @Composable
 fun BrakeGaugeGlanceWidget(
     value: Double,
@@ -30,37 +39,35 @@ fun BrakeGaugeGlanceWidget(
     isBraking: Boolean,
     isPedaling: Boolean,
     peakG: Double,
+    isGroupFeathering: Boolean = false,
+    frontBias: Int = 60,
+    rearBias: Int = 40,
 ) {
-    // Progressive spectrum colors from White -> Pale Yellow -> Yellow -> Orange -> Red
+    // 5-Segment Progressive Intensity Colors (White -> Yellow -> Orange -> Red)
     val spectrumColors = listOf(
         Color(0xFFFFFFFF), // 1. Initial bite: Pure White
         Color(0xFFFFF176), // 2. Light decel: Pale Yellow
         Color(0xFFFFD600), // 3. Medium decel: Pure Yellow
         Color(0xFFFF6D00), // 4. Strong decel: Pure Orange
-        Color(0xFFD50000), // 5. Severe/Emergency: Fiery Red
+        Color(0xFFD50000), // 5. Emergency stop: Fiery Red
     )
 
-    val statusText = when {
-        isPedaling -> "PEDAL"
-        isBraking -> "BRAKE"
-        else -> "ARMED"
-    }
-
-    val statusColor = when {
-        isPedaling -> Color(0xFF78909C)
-        isBraking -> Color(0xFFFF5252)
-        else -> Color(0xFF00E5FF)
+    val (statusText, statusColor) = when {
+        isPedaling -> Pair("PEDAL", Color(0xFF78909C))
+        isGroupFeathering -> Pair("GRUPETA", Color(0xFFB388FF)) // Neon violet
+        isBraking -> Pair("BRAKE", Color(0xFFFF1744)) // Neon red
+        else -> Pair("ARMED", Color(0xFF00E5FF)) // Cyan ready
     }
 
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
-            .background(Color(0xFF0D1017))
-            .padding(horizontal = 6.dp, vertical = 4.dp),
+            .background(Color(0xFF090C12))
+            .padding(horizontal = 6.dp, vertical = 3.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Top status row: Status Badge & Peak marker
+        // --- 1. Top Status Row: Badge | Peak G Marker ---
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,15 +85,16 @@ fun BrakeGaugeGlanceWidget(
             Text(
                 text = String.format(Locale.US, "PK: %.2fG", peakG),
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFF90A4AE)),
+                    color = ColorProvider(Color(0xFFFFD600)),
                     fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
                 ),
             )
         }
 
-        Spacer(modifier = GlanceModifier.height(2.dp))
+        Spacer(modifier = GlanceModifier.height(1.dp))
 
-        // Center big numeric display
+        // --- 2. Central High-Contrast Deceleration Readout ---
         Row(
             verticalAlignment = Alignment.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -110,13 +118,13 @@ fun BrakeGaugeGlanceWidget(
             )
         }
 
-        Spacer(modifier = GlanceModifier.height(4.dp))
+        Spacer(modifier = GlanceModifier.height(3.dp))
 
-        // Dynamic 5-segment Progressive Intensity Spectrum (White -> Yellow -> Orange -> Red)
+        // --- 3. Dynamic 5-Segment Progressive Intensity Spectrum Bar ---
         Row(
             modifier = GlanceModifier
                 .fillMaxWidth()
-                .height(8.dp),
+                .height(6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val segments = 5
@@ -138,6 +146,55 @@ fun BrakeGaugeGlanceWidget(
                         .background(segmentColor)
                 ) {}
             }
+        }
+
+        Spacer(modifier = GlanceModifier.height(3.dp))
+
+        // --- 4. Sub-Row: Dual Brake Distribution (Front vs Rear) ---
+        Row(
+            modifier = GlanceModifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "F: $frontBias%",
+                style = TextStyle(
+                    color = ColorProvider(Color(0xFF00E5FF)), // Cyan for Front
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(modifier = GlanceModifier.width(4.dp))
+            // Dual mini split bar
+            Row(
+                modifier = GlanceModifier
+                    .defaultWeight()
+                    .height(3.dp)
+                    .background(Color(0xFF1E2530)),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = GlanceModifier
+                        .defaultWeight()
+                        .height(3.dp)
+                        .background(if (isBraking) Color(0xFF00E5FF) else Color(0xFF2C3440))
+                ) {}
+                Box(
+                    modifier = GlanceModifier
+                        .defaultWeight()
+                        .height(3.dp)
+                        .background(if (isBraking) Color(0xFFFF9100) else Color(0xFF2C3440))
+                ) {}
+            }
+            Spacer(modifier = GlanceModifier.width(4.dp))
+            Text(
+                text = "R: $rearBias%",
+                style = TextStyle(
+                    color = ColorProvider(Color(0xFFFF9100)), // Amber for Rear
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
         }
     }
 }

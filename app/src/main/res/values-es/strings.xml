@@ -26,15 +26,34 @@
     <string name="type_brake_temperature">Temperatura de Frenos</string>
     <string name="desc_brake_temperature">Temperatura estimada en tiempo real de pista/disco en °C o °F</string>
 
-    <string name="type_graphical_brake">Medidor Gráfico</string>
+    <string name="type_graphical_brake">Manómetro de Frenada</string>
     <string name="desc_graphical_brake">Espectro dinámico de Blanco a Rojo según la intensidad de frenada</string>
 
-    <!-- Configuración -->
+    <string name="type_graphical_thermal">Monitor Térmico &amp; Fade</string>
+    <string name="desc_graphical_thermal">Monitor gráfico en ruta de temperatura, zonas de calor y límites de seguridad</string>
+
+    <string name="type_graphical_cockpit">Cockpit HUD de Frenada</string>
+    <string name="desc_graphical_cockpit">HUD integral de ruta con manómetro, potencia, temperatura y filtro de pedaleo</string>
+
     <string name="title_brake_type">Tipo de Sistema de Frenos</string>
     <string name="desc_brake_type">Define el coeficiente de fricción, límites térmicos y velocidad de desgaste</string>
     <string name="brake_type_disc">Frenos de Disco (Hidráulico / Mecánico)</string>
     <string name="brake_type_rim_alu">Frenos de Zapata - Llanta de Aluminio</string>
     <string name="brake_type_rim_carbon">Frenos de Zapata - Llanta de Carbono</string>
+
+    <!-- Calibración del Recorrido y Tacto de Manetas -->
+    <string name="title_front_lever">Tacto Maneta Freno Delantero</string>
+    <string name="desc_front_lever">Recorrido libre antes de que las pastillas toquen la rueda o disco delantero</string>
+    <string name="title_rear_lever">Tacto Maneta Freno Trasero</string>
+    <string name="desc_rear_lever">Recorrido libre antes del contacto trasero (modulación fina en grupeta)</string>
+    <string name="lever_feel_direct">Directo / Corto (5-12mm)</string>
+    <string name="lever_feel_standard">Estándar / Neutro (15-20mm)</string>
+    <string name="lever_feel_progressive">Progresivo / Largo (25-35mm - Especial Grupeta)</string>
+
+    <string name="title_peloton_mode">Modo Grupeta / Pelotón</string>
+    <string name="desc_peloton_mode">Reconoce toques suaves de freno trasero a rueda en grupo sin falsas alarmas</string>
+    <string name="screens_gallery_title">Muestrario de Pantallas en Ruta</string>
+    <string name="screens_color_legend_title">Código de Colores Visual al Instante</string>
 
     <string name="title_total_weight">Peso Total (Ciclista + Bici + Equipamiento)</string>
     <string name="desc_total_weight">Crucial para calcular la potencia cinética real (P = m·a·v) y el desgaste</string>
@@ -43,6 +62,7 @@
     <string name="title_surface">Perfil de Terreno / Superficie</string>
     <string name="desc_surface">Filtra vibraciones, baches y adoquines para evitar falsos positivos</string>
     <string name="surface_road">Carretera / Asfalto</string>
+    <string name="surface_wet_road">Carretera Mojada / Lluvia</string>
     <string name="surface_gravel">Gravel / Pavé / Tierra</string>
     <string name="surface_mtb">Montaña / Sendero Técnico</string>
 
@@ -87,6 +107,7 @@
 
     <!-- UI y Diagnóstico -->
     <string name="tab_dashboard">Telemetría</string>
+    <string name="tab_screens">Pantallas Ruta</string>
     <string name="tab_settings">Configuración</string>
     <string name="tab_guide">Guía de Uso</string>
     <string name="sensor_active">Sensores Activos</string>

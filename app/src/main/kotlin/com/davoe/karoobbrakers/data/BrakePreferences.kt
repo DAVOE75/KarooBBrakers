@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.davoe.karoobbrakers.model.BrakeType
 import com.davoe.karoobbrakers.model.DecelUnit
+import com.davoe.karoobbrakers.model.LeverFeel
 import com.davoe.karoobbrakers.model.SurfaceProfile
 import com.davoe.karoobbrakers.model.TemperatureUnit
 import com.davoe.karoobbrakers.model.UnitSystem
@@ -49,6 +50,15 @@ class BrakePreferences(context: Context) {
     private val _thermalWarningFlow = MutableStateFlow(loadThermalWarningEnabled())
     val thermalWarningFlow: StateFlow<Boolean> = _thermalWarningFlow.asStateFlow()
 
+    private val _frontLeverFeelFlow = MutableStateFlow(loadFrontLeverFeel())
+    val frontLeverFeelFlow: StateFlow<LeverFeel> = _frontLeverFeelFlow.asStateFlow()
+
+    private val _rearLeverFeelFlow = MutableStateFlow(loadRearLeverFeel())
+    val rearLeverFeelFlow: StateFlow<LeverFeel> = _rearLeverFeelFlow.asStateFlow()
+
+    private val _pelotonModeFlow = MutableStateFlow(loadPelotonModeEnabled())
+    val pelotonModeFlow: StateFlow<Boolean> = _pelotonModeFlow.asStateFlow()
+
     fun getBrakeType(): BrakeType = _brakeTypeFlow.value
     fun getTotalWeightKg(): Float = _weightFlow.value
     fun getSurfaceProfile(): SurfaceProfile = _surfaceFlow.value
@@ -61,6 +71,24 @@ class BrakePreferences(context: Context) {
     fun getHardBrakeThresholdMs2(): Float = prefs.getFloat(KEY_HARD_BRAKE_THRESHOLD, 4.2f)
     fun isBeeperEnabled(): Boolean = _beeperEnabledFlow.value
     fun isThermalWarningEnabled(): Boolean = _thermalWarningFlow.value
+    fun getFrontLeverFeel(): LeverFeel = _frontLeverFeelFlow.value
+    fun getRearLeverFeel(): LeverFeel = _rearLeverFeelFlow.value
+    fun isPelotonModeEnabled(): Boolean = _pelotonModeFlow.value
+
+    fun setFrontLeverFeel(feel: LeverFeel) {
+        prefs.edit().putString(KEY_FRONT_LEVER_FEEL, feel.id).apply()
+        _frontLeverFeelFlow.value = feel
+    }
+
+    fun setRearLeverFeel(feel: LeverFeel) {
+        prefs.edit().putString(KEY_REAR_LEVER_FEEL, feel.id).apply()
+        _rearLeverFeelFlow.value = feel
+    }
+
+    fun setPelotonModeEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_PELOTON_MODE, enabled).apply()
+        _pelotonModeFlow.value = enabled
+    }
 
     fun setBrakeType(brakeType: BrakeType) {
         prefs.edit().putString(KEY_BRAKE_TYPE, brakeType.id).apply()
@@ -208,6 +236,18 @@ class BrakePreferences(context: Context) {
     private fun loadBeeperEnabled(): Boolean = prefs.getBoolean(KEY_BEEPER_ENABLED, true)
     private fun loadThermalWarningEnabled(): Boolean = prefs.getBoolean(KEY_THERMAL_WARNING, true)
 
+    private fun loadFrontLeverFeel(): LeverFeel {
+        val id = prefs.getString(KEY_FRONT_LEVER_FEEL, LeverFeel.STANDARD.id) ?: LeverFeel.STANDARD.id
+        return LeverFeel.fromId(id)
+    }
+
+    private fun loadRearLeverFeel(): LeverFeel {
+        val id = prefs.getString(KEY_REAR_LEVER_FEEL, LeverFeel.PROGRESSIVE_LONG.id) ?: LeverFeel.PROGRESSIVE_LONG.id
+        return LeverFeel.fromId(id)
+    }
+
+    private fun loadPelotonModeEnabled(): Boolean = prefs.getBoolean(KEY_PELOTON_MODE, true)
+
     companion object {
         private const val PREFS_NAME = "karoobbrakers_prefs"
         private const val KEY_BRAKE_TYPE = "brake_type"
@@ -222,5 +262,8 @@ class BrakePreferences(context: Context) {
         private const val KEY_HARD_BRAKE_THRESHOLD = "hard_brake_threshold"
         private const val KEY_BEEPER_ENABLED = "beeper_enabled"
         private const val KEY_THERMAL_WARNING = "thermal_warning"
+        private const val KEY_FRONT_LEVER_FEEL = "front_lever_feel"
+        private const val KEY_REAR_LEVER_FEEL = "rear_lever_feel"
+        private const val KEY_PELOTON_MODE = "peloton_mode"
     }
 }
