@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -149,17 +150,14 @@ fun HeaderView(metrics: BrakeMetrics) {
     ) {
         Box(
             modifier = Modifier
-                .size(38.dp)
-                .clip(CircleShape)
-                .background(Color(0xFF14171D))
-                .border(1.5.dp, AccentOrange, CircleShape),
+                .size(40.dp)
+                .clip(RoundedCornerShape(8.dp)),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_brake_sense),
+            Image(
+                painter = painterResource(R.drawable.app_logo),
                 contentDescription = "Logo",
-                tint = Color.Unspecified,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(40.dp),
             )
         }
 
