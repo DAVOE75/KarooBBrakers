@@ -1,8 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ExtensionInfo
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="karoobbrakers"
     displayName="@string/extension_name"
-    icon="@drawable/ic_launcher_foreground"
-    id="template-id"
-    scansDevices="false">
-    <!-- DataType ... -->
+    icon="@drawable/ic_brake_sense"
+    scansDevices="false"
+    fitFile="true">
+
+    <DataType
+        typeId="current_decel"
+        displayName="@string/type_current_decel"
+        description="@string/desc_current_decel"
+        icon="@drawable/ic_brake_sense"
+        graphical="false" />
+
+    <DataType
+        typeId="braking_power"
+        displayName="@string/type_braking_power"
+        description="@string/desc_braking_power"
+        icon="@drawable/ic_brake_power"
+        graphical="false" />
+
+    <DataType
+        typeId="max_decel"
+        displayName="@string/type_max_decel"
+        description="@string/desc_max_decel"
+        icon="@drawable/ic_brake_sense"
+        graphical="false" />
+
+    <DataType
+        typeId="brake_events"
+        displayName="@string/type_brake_events"
+        description="@string/desc_brake_events"
+        icon="@drawable/ic_brake_sense"
+        graphical="false" />
+
+    <DataType
+        typeId="brake_energy"
+        displayName="@string/type_brake_energy"
+        description="@string/desc_brake_energy"
+        icon="@drawable/ic_wear"
+        graphical="false" />
+
+    <DataType
+        typeId="pad_wear"
+        displayName="@string/type_pad_wear"
+        description="@string/desc_pad_wear"
+        icon="@drawable/ic_wear"
+        graphical="false" />
+
+    <DataType
+        typeId="graphical_brake"
+        displayName="@string/type_graphical_brake"
+        description="@string/desc_graphical_brake"
+        icon="@drawable/ic_brake_gauge"
+        graphical="true" />
+
 </ExtensionInfo>

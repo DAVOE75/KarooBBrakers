@@ -1,0 +1,33 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Outer brake rotor track -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2"
+        android:pathData="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2Z" />
+    <!-- Inner rotor ring -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFAB40"
+        android:strokeWidth="1.5"
+        android:pathData="M12,6A6,6 0 1,0 18,12A6,6 0 0,0 12,6Z" />
+    <!-- Center hub -->
+    <path
+        android:fillColor="#FFD180"
+        android:pathData="M12,10A2,2 0 1,0 14,12A2,2 0 0,0 12,10Z" />
+    <!-- Rotor cooling slots / spokes -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M12,6L12,2 M12,18L12,22 M6,12L2,12 M18,12L22,12 M7.75,7.75L4.92,4.92 M16.25,16.25L19.08,19.08 M16.25,7.75L19.08,4.92 M7.75,16.25L4.92,19.08" />
+    <!-- Brake caliper bite indicator -->
+    <path
+        android:fillColor="#FF3D00"
+        android:pathData="M18,3 C20.5,4.5 22,7.2 22,10 L19,10 C19,8 18,6.2 16.5,5 Z" />
+</vector>

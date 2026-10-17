@@ -1,5 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">template</string>
-    <string name="hello_karoo">Hello Karoo!</string>
-    <string name="extension_name">template</string>
+    <string name="app_name">Karoo BBrakers</string>
+    <string name="extension_name">Karoo BBrakers</string>
+    <string name="tagline">Braking Telemetry, Dynamic Safety &amp; Wear Analytics</string>
+
+    <!-- Data Types -->
+    <string name="type_current_decel">Braking Force</string>
+    <string name="desc_current_decel">Instantaneous deceleration force in m/s² or G</string>
+
+    <string name="type_braking_power">Braking Power</string>
+    <string name="desc_braking_power">Real-time kinetic power dissipated by brakes in Watts</string>
+
+    <string name="type_max_decel">Peak Brake G</string>
+    <string name="desc_max_decel">Maximum braking deceleration recorded during the ride</string>
+
+    <string name="type_brake_events">Braking Events</string>
+    <string name="desc_brake_events">Total number of distinct brake applications detected</string>
+
+    <string name="type_brake_energy">Brake Energy</string>
+    <string name="desc_brake_energy">Total kinetic energy absorbed by brakes in kJ</string>
+
+    <string name="type_pad_wear">Brake Pad Wear</string>
+    <string name="desc_pad_wear">Cumulative pad wear index based on energy &amp; brake compound</string>
+
+    <string name="type_graphical_brake">Brake Gauge</string>
+    <string name="desc_graphical_brake">Dynamic graphical meter showing braking intensity and peak</string>
+
+    <!-- Settings & Configuration -->
+    <string name="title_brake_type">Brake System Type</string>
+    <string name="desc_brake_type">Determines friction coefficient, heat limits and pad wear rate</string>
+    <string name="brake_type_disc">Disc Brakes (Hydraulic / Mechanical)</string>
+    <string name="brake_type_rim_alu">Rim Brakes - Aluminum Wheel Track</string>
+    <string name="brake_type_rim_carbon">Rim Brakes - Carbon Wheel Track</string>
+
+    <string name="title_total_weight">Total Weight (Rider + Bike + Gear)</string>
+    <string name="desc_total_weight">Essential for kinetic power (P = m·a·v) and energy dissipation</string>
+    <string name="weight_unit">kg</string>
+
+    <string name="title_surface">Surface / Terrain Profile</string>
+    <string name="desc_surface">Filters out road chatter, cobblestones and rough trail vibrations</string>
+    <string name="surface_road">Road / Paved</string>
+    <string name="surface_gravel">Gravel / Cobblestones</string>
+    <string name="surface_mtb">Mountain Bike / Trail</string>
+
+    <string name="title_unit">Deceleration Unit</string>
+    <string name="unit_decel_ms2">m/s²</string>
+    <string name="unit_decel_g">G-Force (G)</string>
+
+    <string name="title_pedaling_filter">Smart Pedaling &amp; Incline Rejection</string>
+    <string name="desc_pedaling_filter">Braking is strictly suppressed when cadence &gt; 0 or power &gt; 25W to prevent false positives on uphill ramps</string>
+
+    <string name="title_safety_alerts">Safety &amp; Warning Alerts</string>
+    <string name="alert_hard_braking">Emergency Braking Alarm</string>
+    <string name="desc_hard_braking">Audible beeper alarm and banner warning on abrupt decelerations</string>
+    <string name="alert_thermal">Pad Overheating Warning</string>
+    <string name="desc_thermal">Warns of thermal fading risk on sustained steep descents</string>
+    <string name="alert_beeper">Hardware Beeper Alarm</string>
+    <string name="desc_beeper">Uses Karoo internal hardware beeper for audio alerts</string>
+
+    <!-- In-Ride Alerts -->
+    <string name="alert_hard_braking_title">EMERGENCY BRAKING</string>
+    <string name="alert_hard_braking_detail">Peak deceleration: %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_thermal_title">BRAKE OVERHEATING RISK</string>
+    <string name="alert_thermal_detail">High heat dissipation on %s. Release brakes periodically to cool.</string>
+
+    <!-- UI Tabs & Diagnostic -->
+    <string name="tab_dashboard">Telemetry</string>
+    <string name="tab_settings">Configuration</string>
+    <string name="tab_guide">User Guide</string>
+    <string name="sensor_active">Sensors Active</string>
+    <string name="pedaling_active">Pedaling Active (Brake Locked Out)</string>
+    <string name="live_test_title">Live Sensor Diagnostic</string>
+    <string name="live_test_desc">Tilt bike or apply brakes to preview live readings</string>
+    <string name="btn_save">Save Configuration</string>
+    <string name="toast_saved">Configuration saved successfully!</string>
+
+    <!-- User Guide -->
+    <string name="guide_step1">1. Open any Ride Profile in Karoo device settings.</string>
+    <string name="guide_step2">2. Edit your data screens and choose an empty layout slot.</string>
+    <string name="guide_step3">3. Under the \'Karoo BBrakers\' section, select any numerical or graphical field.</string>
+    <string name="guide_step4">4. Telemetry is saved into your FIT files for Strava &amp; Intervals.icu review.</string>
 </resources>

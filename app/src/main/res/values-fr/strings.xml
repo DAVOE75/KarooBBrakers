@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Karoo BBrakers</string>
+    <string name="extension_name">Karoo BBrakers</string>
+    <string name="tagline">Télémétrie de Freinage, Sécurité Dynamique &amp; Analyse d\'Usure</string>
+
+    <!-- Types de Données -->
+    <string name="type_current_decel">Force de Freinage</string>
+    <string name="desc_current_decel">Décélération instantanée en m/s² ou G</string>
+
+    <string name="type_braking_power">Puissance de Freinage</string>
+    <string name="desc_braking_power">Puissance cinétique réelle dissipée par les freins en Watts</string>
+
+    <string name="type_max_decel">Pic de Freinage (G)</string>
+    <string name="desc_max_decel">Décélération maximale enregistrée pendant la sortie</string>
+
+    <string name="type_brake_events">Événements de Freinage</string>
+    <string name="desc_brake_events">Nombre total de freinages détectés pendant la sortie</string>
+
+    <string name="type_brake_energy">Énergie Dissipée</string>
+    <string name="desc_brake_energy">Énergie cinétique totale absorbée par les freins en kJ</string>
+
+    <string name="type_pad_wear">Usure des Plaquettes</string>
+    <string name="desc_pad_wear">Indice d\'usure cumulé selon l\'énergie et le type de frein</string>
+
+    <string name="type_graphical_brake">Jauge de Freinage</string>
+    <string name="desc_graphical_brake">Indicateur graphique dynamique avec intensité et pic de freinage</string>
+
+    <!-- Configuration -->
+    <string name="title_brake_type">Type de Système de Freinage</string>
+    <string name="desc_brake_type">Définit le coefficient de friction, limites thermiques et usure</string>
+    <string name="brake_type_disc">Freins à Disque (Hydraulique / Mécanique)</string>
+    <string name="brake_type_rim_alu">Freins sur Jante - Piste Aluminium</string>
+    <string name="brake_type_rim_carbon">Freins sur Jante - Piste Carbone</string>
+
+    <string name="title_total_weight">Poids Total (Cycliste + Vélo + Équipement)</string>
+    <string name="desc_total_weight">Indispensable pour calculer la puissance cinétique réelle (P = m·a·v)</string>
+    <string name="weight_unit">kg</string>
+
+    <string name="title_surface">Profil du Terrain / Surface</string>
+    <string name="desc_surface">Filtre les vibrations, nids-de-poule et pavés pour éviter les faux positifs</string>
+    <string name="surface_road">Route / Asphalte</string>
+    <string name="surface_gravel">Gravel / Pavés / Terre</string>
+    <string name="surface_mtb">VTT / Sentier Technique</string>
+
+    <string name="title_unit">Unité de Décélération</string>
+    <string name="unit_decel_ms2">m/s²</string>
+    <string name="unit_decel_g">Force G (G)</string>
+
+    <string name="title_pedaling_filter">Filtre Intelligent de Pédalage &amp; Pente</string>
+    <string name="desc_pedaling_filter">Le freinage est verrouillé si cadence &gt; 0 ou puissance &gt; 25W pour ne pas confondre pente et frein</string>
+
+    <string name="title_safety_alerts">Alertes de Sécurité</string>
+    <string name="alert_hard_braking">Alarme de Freinage d\'Urgence</string>
+    <string name="desc_hard_braking">Signal sonore et flash visuel en cas de freinage brutal (&gt; 4.2 m/s²)</string>
+    <string name="alert_thermal">Avertissement de Surchauffe</string>
+    <string name="desc_thermal">Prévient de l\'échauffement critique lors de longues descentes raides</string>
+    <string name="alert_beeper">Bipeur Matériel Karoo</string>
+    <string name="desc_beeper">Utilise le bipeur interne du Karoo pour les alertes sonores</string>
+
+    <!-- Alertes en Course -->
+    <string name="alert_hard_braking_title">FREINAGE D\'URGENCE DÉTECTÉ</string>
+    <string name="alert_hard_braking_detail">Décélération maximale : %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_thermal_title">RISQUE DE SURCHAUFFE DES FREINS</string>
+    <string name="alert_thermal_detail">Forte dissipation thermique sur %s. Relâchez régulièrement les freins.</string>
+
+    <!-- Onglets UI & Diagnostic -->
+    <string name="tab_dashboard">Télémétrie</string>
+    <string name="tab_settings">Paramètres</string>
+    <string name="tab_guide">Guide</string>
+    <string name="sensor_active">Capteurs Actifs</string>
+    <string name="pedaling_active">Pédalage Actif (Frein Verrouillé)</string>
+    <string name="live_test_title">Diagnostic Capteur en Direct</string>
+    <string name="live_test_desc">Inclinez le vélo ou freinez pour tester la réponse du capteur</string>
+    <string name="btn_save">Enregistrer la Configuration</string>
+    <string name="toast_saved">Configuration enregistrée avec succès !</string>
+
+    <!-- Guide d\'Utilisation -->
+    <string name="guide_step1">1. Ouvrez un profil de parcours dans les paramètres Karoo.</string>
+    <string name="guide_step2">2. Modifiez une page de données et touchez un champ vide.</string>
+    <string name="guide_step3">3. Dans la section \'Karoo BBrakers\', choisissez votre métrique préférée.</string>
+    <string name="guide_step4">4. Les données sont enregistrées dans le fichier FIT pour Strava &amp; Intervals.icu.</string>
+</resources>

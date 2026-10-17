@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Karoo BBrakers</string>
+    <string name="extension_name">Karoo BBrakers</string>
+    <string name="tagline">Telemetria di Frenata, Sicurezza Dinamica &amp; Analisi Usura</string>
+
+    <!-- Tipi di Dati -->
+    <string name="type_current_decel">Forza Frenante</string>
+    <string name="desc_current_decel">Decelerazione istantanea in m/s² o G</string>
+
+    <string name="type_braking_power">Potenza Frenante</string>
+    <string name="desc_braking_power">Potenza cinetica reale dissipata dai freni in Watt</string>
+
+    <string name="type_max_decel">Picco di Frenata (G)</string>
+    <string name="desc_max_decel">Massima decelerazione registrata durante l\'uscita</string>
+
+    <string name="type_brake_events">Eventi di Frenata</string>
+    <string name="desc_brake_events">Numero totale di frenate rilevate durante la corsa</string>
+
+    <string name="type_brake_energy">Energia Dissipata</string>
+    <string name="desc_brake_energy">Energia cinetica totale assorbita dai freni in kJ</string>
+
+    <string name="type_pad_wear">Usura Pastiglie</string>
+    <string name="desc_pad_wear">Indice cumulativo di usura in base a energia e tipo di freno</string>
+
+    <string name="type_graphical_brake">Indicatore Grafico di Frenata</string>
+    <string name="desc_graphical_brake">Barra dinamica colorata con intensità e picco di frenata</string>
+
+    <!-- Configurazione -->
+    <string name="title_brake_type">Tipo di Impianto Frenante</string>
+    <string name="desc_brake_type">Determina coefficiente di attrito, limiti termici e usura</string>
+    <string name="brake_type_disc">Freni a Disco (Idraulico / Meccanico)</string>
+    <string name="brake_type_rim_alu">Freni a Pattino - Pista Alluminio</string>
+    <string name="brake_type_rim_carbon">Freni a Pattino - Pista Carbonio</string>
+
+    <string name="title_total_weight">Peso Totale (Ciclista + Bici + Accessori)</string>
+    <string name="desc_total_weight">Fondamentale per calcolare la reale potenza cinetica (P = m·a·v)</string>
+    <string name="weight_unit">kg</string>
+
+    <string name="title_surface">Profilo Terreno / Superficie</string>
+    <string name="desc_surface">Filtra vibrazioni da buche, ciottoli e sterrato per evitare falsi allarmi</string>
+    <string name="surface_road">Strada / Asfalto</string>
+    <string name="surface_gravel">Gravel / Pavé / Sterrato</string>
+    <string name="surface_mtb">Mountain Bike / Sentiero Tecnico</string>
+
+    <string name="title_unit">Unità di Decelerazione</string>
+    <string name="unit_decel_ms2">m/s²</string>
+    <string name="unit_decel_g">Forza G (G)</string>
+
+    <string name="title_pedaling_filter">Filtro Intelligente Pedalata e Salita</string>
+    <string name="desc_pedaling_filter">La frenata è bloccata se cadenza &gt; 0 o potenza &gt; 25W per non confondere la pendenza con i freni</string>
+
+    <string name="title_safety_alerts">Avvisi di Sicurezza</string>
+    <string name="alert_hard_braking">Allarme Frenata Brusca</string>
+    <string name="desc_hard_braking">Segnale acustico e flash visivo su frenate improvvise (&gt; 4.2 m/s²)</string>
+    <string name="alert_thermal">Avviso Surriscaldamento Pastiglie</string>
+    <string name="desc_thermal">Avverte del rischio di fading termico su lunghe discese ripide</string>
+    <string name="alert_beeper">Beeper Hardware Karoo</string>
+    <string name="desc_beeper">Utilizza il beeper interno del Karoo per segnali sonori</string>
+
+    <!-- Avvisi Durante la Corsa -->
+    <string name="alert_hard_braking_title">FRENATA BRUSCA RILEVATA!</string>
+    <string name="alert_hard_braking_detail">Decelerazione massima: %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_thermal_title">RISCHIO SURRISCALDAMENTO FRENI</string>
+    <string name="alert_thermal_detail">Elevata energia termica su %s. Rilascia periodicamente i freni per raffreddare.</string>
+
+    <!-- UI & Diagnostica -->
+    <string name="tab_dashboard">Telemetria</string>
+    <string name="tab_settings">Impostazioni</string>
+    <string name="tab_guide">Guida</string>
+    <string name="sensor_active">Sensori Attivi</string>
+    <string name="pedaling_active">Pedalata Attiva (Freno Bloccato)</string>
+    <string name="live_test_title">Diagnostica Sensori Live</string>
+    <string name="live_test_desc">Inclina la bici o frena per testare la risposta dei sensori</string>
+    <string name="btn_save">Salva Configurazione</string>
+    <string name="toast_saved">Configurazione salvata con successo!</string>
+
+    <!-- Guida Utente -->
+    <string name="guide_step1">1. Apri un Profilo Corsa nelle impostazioni del Karoo.</string>
+    <string name="guide_step2">2. Modifica una schermata dati e tocca un riquadro vuoto.</string>
+    <string name="guide_step3">3. Nella sezione \'Karoo BBrakers\', scegli il campo numerico o grafico desiderato.</string>
+    <string name="guide_step4">4. I dati vengono registrati nei file FIT per l\'analisi su Strava o Intervals.icu.</string>
+</resources>

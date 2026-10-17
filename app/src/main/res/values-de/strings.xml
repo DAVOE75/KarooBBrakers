@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Karoo BBrakers</string>
+    <string name="extension_name">Karoo BBrakers</string>
+    <string name="tagline">Bremstelemetrie, Dynamische Sicherheit &amp; Verschleißanalyse</string>
+
+    <!-- Datentypen -->
+    <string name="type_current_decel">Bremskraft</string>
+    <string name="desc_current_decel">Momentane Verzögerungskraft in m/s² oder G</string>
+
+    <string name="type_braking_power">Bremsleistung</string>
+    <string name="desc_braking_power">Echte kinetische Bremsleistung in Watt (W)</string>
+
+    <string name="type_max_decel">Spitzenverzögerung (G)</string>
+    <string name="desc_max_decel">Maximale Bremsverzögerung während der Fahrt</string>
+
+    <string name="type_brake_events">Bremsvorgänge</string>
+    <string name="desc_brake_events">Gesamtzahl der erfassten Bremsvorgänge</string>
+
+    <string name="type_brake_energy">Dissipierte Energie</string>
+    <string name="desc_brake_energy">Gesamte von den Bremsen aufgenommene kinetische Energie in kJ</string>
+
+    <string name="type_pad_wear">Bremsbelagverschleiß</string>
+    <string name="desc_pad_wear">Kumulierter Verschleißindex basierend auf Energie &amp; Bremsentyp</string>
+
+    <string name="type_graphical_brake">Bremsanzeige-Grafik</string>
+    <string name="desc_graphical_brake">Dynamische Farbanzeige für Bremsintensität und Spitzenwert</string>
+
+    <!-- Einstellungen & Konfiguration -->
+    <string name="title_brake_type">Bremssystemtyp</string>
+    <string name="desc_brake_type">Bestimmt Reibungskoeffizienten, thermische Grenzen und Verschleißrate</string>
+    <string name="brake_type_disc">Scheibenbremsen (Hydraulisch / Mechanisch)</string>
+    <string name="brake_type_rim_alu">Felgenbremsen - Aluminium-Bremsflanke</string>
+    <string name="brake_type_rim_carbon">Felgenbremsen - Carbon-Bremsflanke</string>
+
+    <string name="title_total_weight">Gesamtgewicht (Fahrer + Fahrrad + Ausrüstung)</string>
+    <string name="desc_total_weight">Unerlässlich zur Berechnung der kinetischen Leistung (P = m·a·v)</string>
+    <string name="weight_unit">kg</string>
+
+    <string name="title_surface">Untergrund- / Geländeprofil</string>
+    <string name="desc_surface">Filtert Erschütterungen, Schlaglöcher und Kopfsteinpflaster heraus</string>
+    <string name="surface_road">Straße / Asphalt</string>
+    <string name="surface_gravel">Gravel / Kopfsteinpflaster / Schotter</string>
+    <string name="surface_mtb">Mountainbike / Technischer Trail</string>
+
+    <string name="title_unit">Verzögerungseinheit</string>
+    <string name="unit_decel_ms2">m/s²</string>
+    <string name="unit_decel_g">G-Kraft (G)</string>
+
+    <string name="title_pedaling_filter">Intelligenter Tret- &amp; Steigungsfilter</string>
+    <string name="desc_pedaling_filter">Bremsen wird gesperrt wenn Trittfrequenz &gt; 0 oder Leistung &gt; 25W, um Steigungen nicht als Bremsen zu werten</string>
+
+    <string name="title_safety_alerts">Sicherheitswarnungen</string>
+    <string name="alert_hard_braking">Notbremsungs-Alarm</string>
+    <string name="desc_hard_braking">Akustischer Signalton und Display-Blinken bei abruptem Bremsen (&gt; 4.2 m/s²)</string>
+    <string name="alert_thermal">Überhitzungswarnung</string>
+    <string name="desc_thermal">Warnt vor Fading und Überhitzung bei langen steilen Abfahrten</string>
+    <string name="alert_beeper">Hardware-Piepser des Karoo</string>
+    <string name="desc_beeper">Nutzt den internen Piepser des Karoo für akustische Warnungen</string>
+
+    <!-- Warnmeldungen während der Fahrt -->
+    <string name="alert_hard_braking_title">NOTBREMSUNG ERKANNT!</string>
+    <string name="alert_hard_braking_detail">Spitzenverzögerung: %1$.1f m/s² (%2$.2f G)</string>
+    <string name="alert_thermal_title">GEFAHR DER BREMSÜBERHITZUNG</string>
+    <string name="alert_thermal_detail">Hohe Wärmeentwicklung auf %s. Bremsen zur Kühlung zeitweise lösen.</string>
+
+    <!-- UI & Diagnose -->
+    <string name="tab_dashboard">Telemetrie</string>
+    <string name="tab_settings">Einstellungen</string>
+    <string name="tab_guide">Anleitung</string>
+    <string name="sensor_active">Sensoren Aktiv</string>
+    <string name="pedaling_active">Pedalieren Aktiv (Bremsen blockiert)</string>
+    <string name="live_test_title">Echtzeit-Sensordiagnose</string>
+    <string name="live_test_desc">Fahrrad neigen oder bremsen, um Sensorreaktion zu testen</string>
+    <string name="btn_save">Konfiguration Speichern</string>
+    <string name="toast_saved">Konfiguration erfolgreich gespeichert!</string>
+
+    <!-- Benutzerhandbuch -->
+    <string name="guide_step1">1. Öffne ein Fahrprofil in den Karoo-Einstellungen.</string>
+    <string name="guide_step2">2. Bearbeite eine Datenseite und wähle ein leeres Feld aus.</string>
+    <string name="guide_step3">3. Wähle unter \'Karoo BBrakers\' den gewünschten Wert oder die Grafik.</string>
+    <string name="guide_step4">4. Die Daten werden in der FIT-Datei zur Analyse in Strava &amp; Intervals.icu gespeichert.</string>
+</resources>
