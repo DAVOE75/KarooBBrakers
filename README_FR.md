@@ -1,29 +1,33 @@
-# Karoo BBrakers 🚴‍♂️💨🛑
+<p align="center">
+  <img src="art/logo.png" alt="Karoo BBrakers Logo" width="280">
+</p>
+
+# Karoo BBrakers
 ### Télémétrie de Freinage Niveau WorldTour, Transfert de Charge Dynamique, Cercle de Frottement de Kamm & Moniteur Thermique pour Hammerhead Karoo 2 et Karoo 3
 
 <p align="center">
-  <b>Documentation par Langue / Language Documentation:</b><br>
-  <a href="README.md"><b>English 🇬🇧</b></a> | 
-  <a href="README_ES.md"><b>Español 🇪🇸</b></a> | 
-  <a href="README_DE.md"><b>Deutsch 🇩🇪</b></a> | 
-  <a href="README_FR.md"><b>Français 🇫🇷</b></a> | 
-  <a href="README_IT.md"><b>Italiano 🇮🇹</b></a> | 
-  <a href="README_PT.md"><b>Português 🇵🇹</b></a>
+  <b>Langue / Language:</b> 
+  <a href="README.md"><b>English</b></a> | 
+  <a href="README_ES.md"><b>Español</b></a> | 
+  <a href="README_DE.md"><b>Deutsch</b></a> | 
+  <a href="README_FR.md"><b>Français</b></a> | 
+  <a href="README_IT.md"><b>Italiano</b></a> | 
+  <a href="README_PT.md"><b>Português</b></a>
 </p>
 
 ---
 
-## 📖 Vue d'ensemble
-**Karoo BBrakers** est la toute première extension au monde dédiée à la télémétrie complète de freinage, à la dynamique inertielle et à la sécurité active spécialement conçue pour l'écosystème **Hammerhead Karoo** (Karoo 2 et le nouveau Karoo 3).
+## Vue d'ensemble
+**Karoo BBrakers** est une extension complète de télémétrie de freinage, de dynamique inertielle et de sécurité active spécialement conçue pour l'écosystème **Hammerhead Karoo** (Karoo 2 et Karoo 3).
 
 L'analyse de la performance cycliste moderne s'est historiquement concentrée sur les capteurs de puissance, la fréquence cardiaque et la cadence. Cependant, sur route en compétition, dans les descentes de gravel ou en VTT, **les courses se gagnent et les chutes s'évitent sur les freins** : retarder le point de freinage, maîtriser le *trail braking* jusqu'au point de corde et gérer l'échauffement thermique des disques et des jantes. Karoo BBrakers métamorphose votre compteur cycliste en un cockpit de télémétrie digne de la Formule 1 ou du MotoGP.
 
 ---
 
-## 🔬 Science, Physique & Algorithmes WorldTour
+## Science, Physique & Algorithmes WorldTour
 
 ### 1. Décélération Inertielle Continue (Échantillonnage Matériel à 50 Hz)
-- Exploite les capteurs physiques IMU intégrés au Karoo (`Sensor.TYPE_LINEAR_ACCELERATION` & `Sensor.TYPE_ACCELEROMETER`) à **50 Hz (mise à jour toutes les 20 ms)**.
+- Exploite les capteurs physiques IMU intégrés au Karoo (`Sensor.TYPE_LINEAR_ACCELERATION` et `Sensor.TYPE_ACCELEROMETER`) à **50 Hz (mise à jour toutes les 20 ms)**.
 - **Compensation de la Gravité et de la Pente en Temps Réel** : L'algorithme isole l'inclinaison statique de la pente routière grâce à des filtres complémentaires. La décélération est mesurée en unités physiques directes ($\text{m/s}^2$ ou Force $G$) avec une réactivité instantanée.
 - **Découplage de la Résistance Aérodynamique et de Roulement** : La traînée naturelle de l'air ($F_{aero} = \frac{1}{2}\rho C_d A v^2$) et le frottement des pneumatiques ($C_{rr}$) sont soustraits dynamiquement afin d'éviter qu'une décélération en roue libre sur le plat ne soit comptabilisée à tort comme un freinage.
 
@@ -55,7 +59,7 @@ L'analyse de la performance cycliste moderne s'est historiquement concentrée su
 
 ---
 
-## 📊 Catalogue Complet des Champs de Données (10 Types Karoo)
+## Catalogue Complet des Champs de Données (10 Types Karoo)
 
 Karoo BBrakers enregistre 10 types de données natifs dans l'OS Hammerhead (`extension_info.xml`) :
 
@@ -68,25 +72,25 @@ Karoo BBrakers enregistre 10 types de données natifs dans l'OS Hammerhead (`ext
 | `brake_energy` | **Énergie Absorbée** | Numérique | Énergie cinétique totale absorbée en kilojoules ($\text{kJ}$). |
 | `pad_wear` | **Usure des Plaquettes** | Numérique | Indice d'usure cumulé selon l'énergie de frottement et la garniture. |
 | `brake_temperature`| **Température des Freins** | Numérique | Température estimée en temps réel du disque/jante en °C ou °F. |
-| `graphical_brake` | **Jauge de Freinage** | Graphique | Indicateur dynamique à 5 segments (Blanc $\to$ Jaune $\to$ Orange $\to$ Rouge). |
+| `graphical_brake` | **Jauge de Freinage** | Graphique | Indicateur dynamique à 5 segments (Blanc vers Jaune vers Orange vers Rouge). |
 | `graphical_thermal`| **Moniteur Thermique & Fade** | Graphique | Températures différentielles Av/Ar, zones thermiques et limites. |
 | `graphical_cockpit`| **Cockpit HUD de Freinage** | Graphique | HUD tout-en-un avec jauge, puissance, chaleur et marge d'adhérence. |
 
 ---
 
-## 🎨 Code Couleur Visuel en Course
+## Code Couleur Visuel en Course
 Conçu pour une lisibilité instantanée à haute vitesse (40 à 70 km/h) :
-- ⚪ **Blanc Pur** ($< 1,0\text{ m/s}^2$) : Contact initial des plaquettes / effleurement très doux.
-- 🟡 **Jaune Clair** ($1,0 - 2,0\text{ m/s}^2$) : Régulation fine de l'allure.
-- 🟡 **Jaune Vif** ($2,0 - 3,2\text{ m/s}^2$) : Freinage standard d'approche de virage.
-- 🟠 **Orange Vif** ($3,2 - 4,5\text{ m/s}^2$) : Décélération ferme en descente raide.
-- 🔴 **Rouge Éclatant** ($> 4,5\text{ m/s}^2$) : Freinage d'urgence / arrêt brutal.
-- 🟣 **Violet** : Mode peloton actif (ajustement subtil de la trajectoire).
-- 🟢 **Vert** : Température dans la plage optimale et sûre ($< 80^\circ\text{C}$).
+- **Blanc Pur** ($< 1,0\text{ m/s}^2$) : Contact initial des plaquettes / effleurement très doux.
+- **Jaune Clair** ($1,0 - 2,0\text{ m/s}^2$) : Régulation fine de l'allure.
+- **Jaune Vif** ($2,0 - 3,2\text{ m/s}^2$) : Freinage standard d'approche de virage.
+- **Orange Vif** ($3,2 - 4,5\text{ m/s}^2$) : Décélération ferme en descente raide.
+- **Rouge Éclatant** ($> 4,5\text{ m/s}^2$) : Freinage d'urgence / arrêt brutal.
+- **Violet** : Mode peloton actif (ajustement subtil de la trajectoire).
+- **Vert** : Température dans la plage optimale et sûre ($< 80^\circ\text{C}$).
 
 ---
 
-## 📱 Champs FIT Developer pour l'Analyse Post-Course
+## Champs FIT Developer pour l'Analyse Post-Course
 Pendant l'enregistrement de vos sorties, Karoo BBrakers intègre des champs développeur FIT à 1 Hz :
 - `BrakingDeceleration` ($\text{m/s}^2$)
 - `BrakingPower` ($\text{Watts}$)
@@ -98,14 +102,14 @@ Parfaitement compatible avec **Strava**, **Intervals.icu**, **GoldenCheetah** et
 
 ---
 
-## ⚙️ Installation & Mises à Jour Directes (OTA)
+## Installation & Mises à Jour Directes (OTA)
 
 ### Option 1 : Via l'URL du Manifeste sur le Karoo (Recommandé)
 1. Copiez l'URL du manifeste :
    ```
    https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/manifest.json
    ```
-2. Sur votre Hammerhead Karoo, accédez à **Paramètres $\to$ Extensions $\to$ Ajouter une extension**.
+2. Sur votre Hammerhead Karoo, accédez à **Paramètres -> Extensions -> Ajouter une extension**.
 3. Collez l'URL. Karoo OS installera l'extension automatiquement et vous préviendra dès qu'une mise à jour sera disponible.
 
 ### Option 2 : Installation manuelle via ADB
@@ -115,7 +119,7 @@ adb install -r karoobbrakers.apk
 
 ---
 
-## 👨‍💻 Auteur & Crédits
+## Auteur & Crédits
 - **Développeur** : hesiox ([DAVOE75](https://github.com/DAVOE75))
 - **Matériel supporté** : Hammerhead Karoo 2 et Karoo 3 (Android 8.1 - 12+)
 - **SDK** : Hammerhead Karoo Extension SDK (`io.hammerhead.karooext`)
