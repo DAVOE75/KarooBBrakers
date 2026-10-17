@@ -101,4 +101,10 @@
     <string name="guide_step2">2. Edita una página de datos y toca un hueco libre.</string>
     <string name="guide_step3">3. En la categoría \'Karoo BBrakers\', añade el campo numérico o gráfico.</string>
     <string name="guide_step4">4. Los datos de desaceleración y temperatura se graban en el archivo FIT para Strava e Intervals.icu.</string>
+
+    <!-- Apoyo y Donaciones -->
+    <string name="title_support">Apoya el Proyecto</string>
+    <string name="desc_support">Karoo BBrakers es libre y de código abierto. ¡Invítame a un café para apoyar el desarrollo continuo y nuevas mejoras!</string>
+    <string name="btn_buy_coffee">☕ Invítame a un café (hesiox)</string>
+    <string name="author_credit">Desarrollado con pasión por hesiox</string>
 </resources>

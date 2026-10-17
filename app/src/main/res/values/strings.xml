@@ -101,4 +101,10 @@
     <string name="guide_step2">2. Edit your data screens and choose an empty layout slot.</string>
     <string name="guide_step3">3. Under the \'Karoo BBrakers\' section, select any numerical or graphical field.</string>
     <string name="guide_step4">4. Telemetry is saved into your FIT files for Strava &amp; Intervals.icu review.</string>
+
+    <!-- Support & Buy Me a Coffee -->
+    <string name="title_support">Support the Project</string>
+    <string name="desc_support">Karoo BBrakers is free and open-source. Buy me a coffee to support continuous updates and new features!</string>
+    <string name="btn_buy_coffee">☕ Buy Me a Coffee (hesiox)</string>
+    <string name="author_credit">Developed with passion by hesiox</string>
 </resources>

@@ -101,4 +101,10 @@
     <string name="guide_step2">2. Modifiez une page de données et sélectionnez un emplacement libre.</string>
     <string name="guide_step3">3. Dans la section \'Karoo BBrakers\', choisissez la valeur ou le graphique souhaité.</string>
     <string name="guide_step4">4. Les données sont sauvegardées dans le fichier FIT pour Strava et Intervals.icu.</string>
+
+    <!-- Soutien & Dons -->
+    <string name="title_support">Soutenir le Projet</string>
+    <string name="desc_support">Karoo BBrakers est gratuit et open-source. Offrez-moi un café pour soutenir les futures mises à jour !</string>
+    <string name="btn_buy_coffee">☕ M\'offrir un café (hesiox)</string>
+    <string name="author_credit">Développé avec passion par hesiox</string>
 </resources>

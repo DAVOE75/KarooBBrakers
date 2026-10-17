@@ -18,6 +18,7 @@
   <img src="https://img.shields.io/badge/Kotlin-2.0.0-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin">
   <img src="https://img.shields.io/badge/Units-Metric%20%26%20Imperial%20(UK%20%7C%20US%20%7C%20EU)-00E5FF" alt="Units">
   <img src="https://img.shields.io/badge/Languages-EN%20%7C%20ES%20%7C%20FR%20%7C%20IT%20%7C%20PT%20%7C%20DE-7F52FF" alt="i18n">
+  <a href="https://www.buymeacoffee.com/hesiox"><img src="https://img.shields.io/badge/Buy_Me_a_Coffee-hesiox-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
   <img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License">
 </p>
 
@@ -117,6 +118,18 @@ Compiled APK binary location:
 * 🇫🇷 **Français** (`res/values-fr/`)
 * 🇮🇹 **Italiano** (`res/values-it/`)
 * 🇵🇹 **Português** (`res/values-pt/`)
+
+---
+
+## ☕ Buy Me a Coffee
+
+If you enjoy **Karoo BBrakers** and other extensions in the ecosystem, you can support continuous development, hardware testing, and new features by buying me a coffee:
+
+<p align="center">
+  <a href="https://www.buymeacoffee.com/hesiox" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee (hesiox)" height="52" />
+  </a>
+</p>
 
 ---
 

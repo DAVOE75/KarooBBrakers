@@ -1,7 +1,10 @@
 package com.davoe.karoobbrakers.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -45,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -1041,6 +1045,9 @@ fun SettingsTab(preferences: BrakePreferences) {
                 )
             }
         }
+
+        // Support Card (Buy Me a Coffee)
+        BuyMeACoffeeCard()
     }
 }
 
@@ -1147,6 +1154,86 @@ fun GuideTab() {
                 DataFieldItem("Brake Temperature", "Estimated real-time rim/rotor temperature in °C or °F with carbon overheat alert")
                 DataFieldItem("Brake Gauge (Graphical)", "Dynamic White to Red spectrum meter with peak marker")
             }
+        }
+
+        // Support Card (Buy Me a Coffee)
+        BuyMeACoffeeCard()
+    }
+}
+
+@Composable
+fun BuyMeACoffeeCard() {
+    val context = LocalContext.current
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF141820)),
+        shape = RoundedCornerShape(14.dp),
+        border = BorderStroke(1.2.dp, Color(0xFFFFDD00).copy(alpha = 0.5f)),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Text(text = "☕", fontSize = 22.sp)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.title_support),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFFFDD00),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = stringResource(R.string.desc_support),
+                fontSize = 11.sp,
+                color = TextSecondary,
+                textAlign = TextAlign.Center,
+                lineHeight = 16.sp,
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/hesiox"))
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFDD00),
+                    contentColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(42.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.btn_buy_coffee),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = stringResource(R.string.author_credit),
+                fontSize = 10.sp,
+                color = TextSecondary.copy(alpha = 0.7f),
+            )
         }
     }
 }
