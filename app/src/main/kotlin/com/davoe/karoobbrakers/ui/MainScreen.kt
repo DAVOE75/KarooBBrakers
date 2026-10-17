@@ -78,6 +78,11 @@ import com.davoe.karoobbrakers.ui.theme.DarkCard
 import com.davoe.karoobbrakers.ui.theme.DarkSurface
 import com.davoe.karoobbrakers.ui.theme.TextPrimary
 import com.davoe.karoobbrakers.ui.theme.TextSecondary
+import com.davoe.karoobbrakers.ui.theme.BarlowCondensed
+import com.davoe.karoobbrakers.ui.theme.DataScreenContainer
+import com.davoe.karoobbrakers.ui.theme.DataScreenNumberStyle50Width
+import com.davoe.karoobbrakers.ui.theme.DataScreenStyleBold700
+import androidx.compose.ui.text.style.TextGeometricTransform
 import java.util.Locale
 
 @Composable
@@ -301,8 +306,9 @@ fun TelemetryTab(
                     }
                     Text(
                         text = String.format(Locale.US, "%.2f", displayDecel),
-                        fontSize = 42.sp,
-                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 46.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = DataScreenNumberStyle50Width,
                         color = decelColor,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -310,6 +316,7 @@ fun TelemetryTab(
                         text = unitLabel,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = BarlowCondensed,
                         color = AccentCyan,
                         modifier = Modifier.padding(bottom = 6.dp),
                     )
@@ -1051,7 +1058,13 @@ fun ScreensTab(
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.Bottom) {
-                    Text(text = "2.85", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, color = TextPrimary)
+                    Text(
+                        text = "2.85",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = DataScreenNumberStyle50Width,
+                        color = TextPrimary
+                    )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(text = decelUnit.symbol, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = AccentCyan)
                     Spacer(modifier = Modifier.weight(1f))
@@ -1129,7 +1142,13 @@ fun ScreensTab(
                             .padding(6.dp),
                     ) {
                         Text(text = stringResource(R.string.label_front_rotor), fontSize = 11.sp, color = AccentCyan, fontWeight = FontWeight.Bold)
-                        Text(text = "118${tempUnit.symbol}", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = AccentCyan)
+                        Text(
+                            text = "118${tempUnit.symbol}",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = DataScreenNumberStyle50Width,
+                            color = AccentCyan
+                        )
                         Text(
                             text = "${stringResource(R.string.label_zone)}: ${stringResource(R.string.label_zone_warm)}",
                             fontSize = 10.5.sp,
@@ -1145,7 +1164,13 @@ fun ScreensTab(
                             .padding(6.dp),
                     ) {
                         Text(text = stringResource(R.string.label_rear_rotor), fontSize = 11.sp, color = Color(0xFFFFB74D), fontWeight = FontWeight.Bold)
-                        Text(text = "72${tempUnit.symbol}", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = AccentGreen)
+                        Text(
+                            text = "72${tempUnit.symbol}",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = DataScreenNumberStyle50Width,
+                            color = AccentGreen
+                        )
                         Text(
                             text = "${stringResource(R.string.label_zone)}: ${stringResource(R.string.label_zone_safe)}",
                             fontSize = 10.5.sp,
@@ -1185,7 +1210,13 @@ fun ScreensTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column {
-                        Text(text = "1.92 ${decelUnit.symbol}", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = TextPrimary)
+                        Text(
+                            text = "1.92 ${decelUnit.symbol}",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            style = DataScreenNumberStyle50Width,
+                            color = TextPrimary
+                        )
                         Text(text = "340 W ${stringResource(R.string.label_dissipated)}", fontSize = 11.sp, color = AccentCyan, fontWeight = FontWeight.SemiBold)
                     }
                     Column(horizontalAlignment = Alignment.End) {
@@ -1308,7 +1339,9 @@ fun WidgetMockupCard(
             Spacer(modifier = Modifier.height(3.dp))
             Text(text = description, fontSize = 11.sp, color = TextSecondary, lineHeight = 15.sp)
             Spacer(modifier = Modifier.height(8.dp))
-            content()
+            DataScreenContainer {
+                content()
+            }
         }
     }
 }
@@ -2345,8 +2378,9 @@ fun MetricCard(
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = value,
-                fontSize = 18.5.sp,
-                fontWeight = FontWeight.ExtraBold,
+                fontSize = 19.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = BarlowCondensed,
                 color = color,
                 maxLines = 1,
             )

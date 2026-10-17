@@ -16,12 +16,15 @@ import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.width
+import androidx.glance.text.FontFamily
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.davoe.karoobbrakers.model.TempStatus
 import java.util.Locale
+
+private val DataScreenFontCondensed = FontFamily("sans-serif-condensed")
 
 /**
  * In-Ride Dual Brake Thermal & Fade Safety Monitor Widget.
@@ -91,6 +94,7 @@ fun BrakeThermalGlanceWidget(
                     color = ColorProvider(overallColor),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
@@ -100,6 +104,7 @@ fun BrakeThermalGlanceWidget(
                     color = ColorProvider(Color(0xFFFFD600)),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
         }
@@ -123,6 +128,7 @@ fun BrakeThermalGlanceWidget(
                         color = ColorProvider(Color(0xFF00E5FF)),
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = DataScreenFontCondensed,
                     ),
                 )
                 Text(
@@ -131,6 +137,7 @@ fun BrakeThermalGlanceWidget(
                         color = ColorProvider(frontColor),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = DataScreenFontCondensed,
                     ),
                 )
             }
@@ -154,6 +161,7 @@ fun BrakeThermalGlanceWidget(
                         color = ColorProvider(Color(0xFFFF9100)),
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = DataScreenFontCondensed,
                     ),
                 )
                 Text(
@@ -162,6 +170,7 @@ fun BrakeThermalGlanceWidget(
                         color = ColorProvider(rearColor),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = DataScreenFontCondensed,
                     ),
                 )
             }
@@ -213,7 +222,8 @@ fun BrakeThermalGlanceWidget(
                 style = TextStyle(
                     color = ColorProvider(if (tempStatus == TempStatus.CRITICAL) Color(0xFFFF1744) else Color(0xFF78909C)),
                     fontSize = 9.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
@@ -222,6 +232,8 @@ fun BrakeThermalGlanceWidget(
                 style = TextStyle(
                     color = ColorProvider(Color(0xFF90A4AE)),
                     fontSize = 9.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
         }

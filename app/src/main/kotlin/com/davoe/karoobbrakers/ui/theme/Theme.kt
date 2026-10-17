@@ -2,7 +2,6 @@ package com.davoe.karoobbrakers.ui.theme
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -11,7 +10,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextGeometricTransform
 import com.davoe.karoobbrakers.R
 
 val DarkCarbon = Color(0xFF0F1318)
@@ -32,23 +31,34 @@ val BarlowCondensed = FontFamily(
     Font(R.font.barlow_condensed_bold, FontWeight.ExtraBold),
 )
 
-val KarooTypography = Typography(
-    displayLarge = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 57.sp),
-    displayMedium = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 45.sp),
-    displaySmall = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 36.sp),
-    headlineLarge = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 32.sp),
-    headlineMedium = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 28.sp),
-    headlineSmall = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 24.sp),
-    titleLarge = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 22.sp),
-    titleMedium = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 16.sp),
-    titleSmall = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 14.sp),
-    bodyLarge = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Normal, fontSize = 16.sp),
-    bodyMedium = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Normal, fontSize = 14.sp),
-    bodySmall = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Normal, fontSize = 12.sp),
-    labelLarge = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Bold, fontSize = 14.sp),
-    labelMedium = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.SemiBold, fontSize = 12.sp),
-    labelSmall = TextStyle(fontFamily = BarlowCondensed, fontWeight = FontWeight.Medium, fontSize = 11.sp),
+// Tipografía Barlow Condensed con grosor 700 (Bold) para pantallas de datos
+val DataScreenStyleBold700 = TextStyle(
+    fontFamily = BarlowCondensed,
+    fontWeight = FontWeight.Bold,
 )
+
+// Tipografía Barlow Condensed con grosor 700 (Bold) y ancho 50% para cifras numéricas
+val DataScreenNumberStyle50Width = TextStyle(
+    fontFamily = BarlowCondensed,
+    fontWeight = FontWeight.Bold,
+    textGeometricTransform = TextGeometricTransform(scaleX = 0.5f),
+)
+
+// Contenedor temático que inyecta Barlow Condensed Bold 700 exclusivamente en las pantallas de datos
+@Composable
+fun DataScreenContainer(
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(
+        LocalTextStyle provides TextStyle(
+            fontFamily = BarlowCondensed,
+            fontWeight = FontWeight.Bold,
+            color = TextPrimary,
+        )
+    ) {
+        content()
+    }
+}
 
 private val DarkColorScheme = darkColorScheme(
     primary = AccentOrange,
@@ -62,22 +72,19 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = TextPrimary,
 )
 
+/**
+ * Tema principal para el panel de control de la extensión.
+ * Mantiene la tipografía estándar del sistema (Roboto) para una legibilidad
+ * limpia y nativa en menús, ajustes, selectores, guías y configuración.
+ */
 @Composable
 fun KarooBBrakersTheme(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
         colorScheme = DarkColorScheme,
-        typography = KarooTypography,
-    ) {
-        CompositionLocalProvider(
-            LocalTextStyle provides TextStyle(
-                fontFamily = BarlowCondensed,
-                color = TextPrimary,
-            )
-        ) {
-            content()
-        }
-    }
+        content = content,
+    )
 }
+
 

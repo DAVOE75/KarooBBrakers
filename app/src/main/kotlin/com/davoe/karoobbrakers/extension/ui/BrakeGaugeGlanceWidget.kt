@@ -16,11 +16,14 @@ import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.width
+import androidx.glance.text.FontFamily
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import java.util.Locale
+
+private val DataScreenFontCondensed = FontFamily("sans-serif-condensed")
 
 /**
  * In-Ride Dynamic Braking Intensity Gauge Widget.
@@ -90,6 +93,7 @@ fun BrakeGaugeGlanceWidget(
                     color = ColorProvider(statusColor),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
@@ -99,6 +103,7 @@ fun BrakeGaugeGlanceWidget(
                     color = ColorProvider(Color(0xFFFFD600)),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
         }
@@ -116,6 +121,7 @@ fun BrakeGaugeGlanceWidget(
                     color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
             Spacer(modifier = GlanceModifier.width(3.dp))
@@ -124,7 +130,8 @@ fun BrakeGaugeGlanceWidget(
                 style = TextStyle(
                     color = ColorProvider(Color(0xFF00E5FF)),
                     fontSize = 11.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
         }
@@ -173,6 +180,7 @@ fun BrakeGaugeGlanceWidget(
                     color = ColorProvider(Color(0xFF00E5FF)), // Cyan for Front
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
             Spacer(modifier = GlanceModifier.width(4.dp))
@@ -204,6 +212,7 @@ fun BrakeGaugeGlanceWidget(
                     color = ColorProvider(Color(0xFFFF9100)), // Amber for Rear
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = DataScreenFontCondensed,
                 ),
             )
         }
