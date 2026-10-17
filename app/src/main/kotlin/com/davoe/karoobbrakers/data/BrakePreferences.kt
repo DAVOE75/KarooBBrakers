@@ -74,6 +74,12 @@ class BrakePreferences(context: Context) {
     val descentEfficiencyAlertFlow: StateFlow<Boolean> get() = descentEfficiencyFlow
     val cumulativePadEnergyKjFlow: StateFlow<Double> get() = cumulativePadKjFlow
 
+    private val _cornerWarningFlow = MutableStateFlow(loadCornerWarningEnabled())
+    val cornerWarningFlow: StateFlow<Boolean> = _cornerWarningFlow.asStateFlow()
+
+    private val _gripLimitAlertFlow = MutableStateFlow(loadGripLimitAlertEnabled())
+    val gripLimitAlertFlow: StateFlow<Boolean> = _gripLimitAlertFlow.asStateFlow()
+
     fun getBrakeType(): BrakeType = _brakeTypeFlow.value
     fun getPadCompound(): PadCompound = _padCompoundFlow.value
     fun getCumulativePadKj(): Double = _cumulativePadKjFlow.value
@@ -93,6 +99,8 @@ class BrakePreferences(context: Context) {
     fun getRearLeverFeel(): LeverFeel = _rearLeverFeelFlow.value
     fun isPelotonModeEnabled(): Boolean = _pelotonModeFlow.value
     fun isDescentEfficiencyEnabled(): Boolean = _descentEfficiencyFlow.value
+    fun isCornerWarningAlertEnabled(): Boolean = _cornerWarningFlow.value
+    fun isGripLimitAlertEnabled(): Boolean = _gripLimitAlertFlow.value
 
     fun setPadCompound(compound: PadCompound) {
         prefs.edit().putString(KEY_PAD_COMPOUND, compound.id).apply()
@@ -142,6 +150,16 @@ class BrakePreferences(context: Context) {
     fun setDescentEfficiencyEnabled(enabled: Boolean) {
         prefs.edit().putBoolean(KEY_DESCENT_EFFICIENCY, enabled).apply()
         _descentEfficiencyFlow.value = enabled
+    }
+
+    fun setCornerWarningEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_CORNER_WARNING, enabled).apply()
+        _cornerWarningFlow.value = enabled
+    }
+
+    fun setGripLimitAlertEnabled(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_GRIP_LIMIT_ALERT, enabled).apply()
+        _gripLimitAlertFlow.value = enabled
     }
 
     fun setBrakeType(brakeType: BrakeType) {
@@ -300,6 +318,8 @@ class BrakePreferences(context: Context) {
     private fun loadBeeperEnabled(): Boolean = prefs.getBoolean(KEY_BEEPER_ENABLED, true)
     private fun loadThermalWarningEnabled(): Boolean = prefs.getBoolean(KEY_THERMAL_WARNING, true)
     private fun loadDescentEfficiencyEnabled(): Boolean = prefs.getBoolean(KEY_DESCENT_EFFICIENCY, true)
+    private fun loadCornerWarningEnabled(): Boolean = prefs.getBoolean(KEY_CORNER_WARNING, true)
+    private fun loadGripLimitAlertEnabled(): Boolean = prefs.getBoolean(KEY_GRIP_LIMIT_ALERT, true)
 
     private fun loadFrontLeverFeel(): LeverFeel {
         val id = prefs.getString(KEY_FRONT_LEVER_FEEL, LeverFeel.STANDARD.id) ?: LeverFeel.STANDARD.id
@@ -334,5 +354,7 @@ class BrakePreferences(context: Context) {
         private const val KEY_REAR_LEVER_FEEL = "rear_lever_feel"
         private const val KEY_PELOTON_MODE = "peloton_mode"
         private const val KEY_DESCENT_EFFICIENCY = "descent_efficiency"
+        private const val KEY_CORNER_WARNING = "corner_warning"
+        private const val KEY_GRIP_LIMIT_ALERT = "grip_limit_alert"
     }
 }

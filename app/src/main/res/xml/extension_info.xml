@@ -100,6 +100,27 @@
         graphical="true" />
 
     <DataType
+        typeId="corner_radar"
+        displayName="@string/type_corner_radar"
+        description="@string/desc_corner_radar"
+        icon="@drawable/ic_corner_radar"
+        graphical="false" />
+
+    <DataType
+        typeId="metabolic_burn"
+        displayName="@string/type_metabolic_burn"
+        description="@string/desc_metabolic_burn"
+        icon="@drawable/ic_metabolic"
+        graphical="false" />
+
+    <DataType
+        typeId="peloton_smoothness"
+        displayName="@string/type_peloton_smoothness"
+        description="@string/desc_peloton_smoothness"
+        icon="@drawable/ic_peloton"
+        graphical="false" />
+
+    <DataType
         typeId="graphical_cockpit"
         displayName="@string/type_graphical_cockpit"
         description="@string/desc_graphical_cockpit"

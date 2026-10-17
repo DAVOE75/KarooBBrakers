@@ -283,6 +283,35 @@
 
     <string name="title_fields_catalog">Catalogo Completo dei Campi Dati</string>
 
+    <!-- WorldTour PRO Corner Radar, Grip & Peloton -->
+    <string name="type_corner_radar">Radar Curva &amp; Velocità Punto di Corda</string>
+    <string name="desc_corner_radar">Telemetria di ingresso curva, mantenimento punto di corda e rilancio</string>
+    <string name="type_metabolic_burn">Energia Metabolica Sprecata</string>
+    <string name="desc_metabolic_burn">Chilojoule metabolici distrutti in frenata secondo l\'efficienza muscolare umana (21,5%)</string>
+    <string name="type_peloton_smoothness">Indice di Fluidità in Gruppo</string>
+    <string name="desc_peloton_smoothness">Efficienza in scia (0-100%) e resistenza all\'effetto fisarmonica</string>
+
+    <string name="alert_corner_braking_title">FRENA PRIMA DELLA CURVA!</string>
+    <string name="alert_corner_braking_detail">Curva a %1$dm: decelera da %2$.0f a %3$.0f km/h</string>
+    <string name="alert_grip_limit_title">LIMITE DI ADERENZA PNEUMATICO!</string>
+    <string name="alert_grip_limit_detail">Riserva di aderenza al %1$d%% a %2$.0f° di piega! Modula il freno per evitare scivolate.</string>
+
+    <string name="title_corner_warning">Avviso Predittivo Frenata in Curva</string>
+    <string name="desc_corner_warning">Calcola lo spazio di arresto necessario prima delle curve strette</string>
+    <string name="title_grip_limit_alert">Avviso Limite di Aderenza Cerchio di Kamm</string>
+    <string name="desc_grip_limit_alert">Avvisa quando piega e frenata raggiungono il limite di tenuta del pneumatico</string>
+
+    <string name="label_apex_speed">Velocità Corda</string>
+    <string name="label_apex_retention">Mantenimento Corda</string>
+    <string name="label_corner_score">Punteggio Curva</string>
+    <string name="label_metabolic_kj">Perdita Metabolica</string>
+    <string name="label_peloton_pei">Gruppo PEI</string>
+
+    <string name="science_topic7_title">7. Distruzione Cinetica vs kJ Metabolici del Ciclista</string>
+    <string name="science_topic7_desc">Ogni frenata distrugge energia cinetica (1/2·m·Δv²). Con un\'efficienza muscolare del ~21,5%, recuperare 15 kJ di velocità persa richiede di bruciare quasi 70 kJ di glicogeno. Guidare con decisione preserva le riserve per la salita finale.</string>
+    <string name="science_topic8_title">8. Effetto Fisarmonica in Gruppo e Indice PEI</string>
+    <string name="science_topic8_desc">Una micro-frenata in testa si amplifica a ritroso in un\'onda d\'urto. I ciclisti in coda subiscono continue frenate e rilanci a 800W. L\'indice PEI (0-100%) misura la fluidità in scia per insegnare a risparmiare watt preziosi.</string>
+
     <!-- Supporto -->
     <string name="title_support">Supporta il Progetto</string>
     <string name="desc_support">Karoo BBrakers è gratuito e open-source. Offrimi un caffè per sostenere i futuri aggiornamenti!</string>

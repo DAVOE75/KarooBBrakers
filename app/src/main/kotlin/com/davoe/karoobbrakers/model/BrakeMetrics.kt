@@ -67,10 +67,21 @@ data class BrakeMetrics(
     val isGroupRidingFeathering: Boolean = false,
     val apexSpeedKmh: Double = 0.0,
     val exitSpeedDeltaKmh: Double = 0.0,
+    val cornerEntrySpeedKmh: Double = 0.0,
+    val apexSpeedRetentionPercent: Int = 100,
+    val cornerScore: Int = 100,
 
     // 7. WorldTour PRO Descent Efficiency Score (DES)
     val descentEfficiencyScore: Int = 100,
     val isDescending: Boolean = false,
+
+    // 8. WorldTour PRO Bioenergetics, Grip Alarm & Peloton Dynamics
+    val metabolicKjBurned: Double = 0.0,
+    val pelotonSmoothnessIndex: Int = 100,
+    val isGripAlarmActive: Boolean = false,
+    val isCornerBrakeWarning: Boolean = false,
+    val targetBrakingDistanceMeters: Int = 0,
+    val targetCornerSpeedKmh: Double = 0.0,
 ) {
     val brakingIntensityPercent: Int
         get() = ((currentDecelMs2 / 5.0) * 100.0).coerceIn(0.0, 100.0).toInt()

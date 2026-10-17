@@ -3,12 +3,12 @@
   "name": "Karoo BBrakers",
   "packageName": "com.davoe.karoobbrakers",
   "extensionId": "com.davoe.karoobbrakers",
-  "latestApkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.1.0/karoobbrakers.apk",
-  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.1.0/karoobbrakers.apk",
-  "latestVersion": "1.1.0",
-  "latestVersionCode": 3,
+  "latestApkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.0/karoobbrakers.apk",
+  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.0/karoobbrakers.apk",
+  "latestVersion": "1.2.0",
+  "latestVersionCode": 4,
   "iconUrl": "https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/app/src/main/res/drawable/app_logo.png",
   "developer": "DAVOE75 (hesiox)",
-  "description": "WorldTour-grade Braking Telemetry, Dynamic Load Transfer, Kamm Friction Circle, Dual Rotor Thermal & Fade Safety Monitor and Peloton Feathering for Hammerhead Karoo 2 & Karoo 3.",
-  "releaseNotes": "v1.1.0 WorldTour PRO Upgrade: Descent Efficiency Score (DES 0-100%), Trail-Braking Radar with lean angle dynamics, Digital Pad Service Odometer with resin/semi-metallic/sintered compound ratings, Involuntary Brake Drag (Wasted Watts) detection, Pad Glazing in-ride acoustic alerts, 4 new data fields (descent_efficiency, pad_life, wasted_watts, grip_margin), Glance RemoteViews Binder IPC throttle (8Hz) for optimal battery life, unified telemetry sharing between background service and UI, zero emojis with official emblem, 100% synchronized 6-language localization."
+  "description": "WorldTour PRO Braking Telemetry, Dynamic Load Transfer, Corner Radar & Apex Speed Retention, Kamm Friction Circle Traction Limit, Metabolic Energy Burned, Peloton Smoothness (PEI), Dual Rotor Thermal & Fade Safety Monitor for Hammerhead Karoo 2 & Karoo 3.",
+  "releaseNotes": "v1.2.0 WorldTour PRO Elite Suite: Desk/Stationary speed lockout (< 4 km/h) eliminates 100% false positives without micro-switches; Gravity pitch decoupling cancels false hill-climb readings; Corner Radar & Apex Speed Retention (0-100%); Predictive Corner Braking Warnings with stopping distance; Kamm Friction Circle tire traction limit alarm with wet road safety profile; Wasted Metabolic Energy calculation (21.5% muscular efficiency); Peloton Smoothness Index (PEI 0-100%) against accordion waves; 3 new native Karoo data fields (17 total); 12 FIT developer fields for WKO5 & GoldenCheetah; 100% 6-language localization parity; zero emojis."
 }

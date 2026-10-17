@@ -601,3 +601,83 @@ class BrakeCockpitGraphicalDataType(
         const val TYPE_ID = "graphical_cockpit"
     }
 }
+
+class CornerRadarDataType(
+    extension: String,
+    private val sensorFusion: BrakeSensorFusion,
+) : DataTypeImpl(extension, TYPE_ID) {
+
+    override fun startStream(emitter: Emitter<StreamState>) {
+        val job = CoroutineScope(Dispatchers.Default).launch {
+            sensorFusion.metrics.collect { metrics ->
+                val displayVal = if (metrics.apexSpeedKmh > 0.0) metrics.apexSpeedKmh else metrics.cornerEntrySpeedKmh
+                emitter.onNext(
+                    StreamState.Streaming(
+                        DataPoint(
+                            dataTypeId = dataTypeId,
+                            values = mapOf(DataType.Field.SINGLE to displayVal),
+                        )
+                    )
+                )
+            }
+        }
+        emitter.setCancellable { job.cancel() }
+    }
+
+    companion object {
+        const val TYPE_ID = "corner_radar"
+    }
+}
+
+class MetabolicBurnDataType(
+    extension: String,
+    private val sensorFusion: BrakeSensorFusion,
+) : DataTypeImpl(extension, TYPE_ID) {
+
+    override fun startStream(emitter: Emitter<StreamState>) {
+        val job = CoroutineScope(Dispatchers.Default).launch {
+            sensorFusion.metrics.collect { metrics ->
+                emitter.onNext(
+                    StreamState.Streaming(
+                        DataPoint(
+                            dataTypeId = dataTypeId,
+                            values = mapOf(DataType.Field.SINGLE to metrics.metabolicKjBurned),
+                        )
+                    )
+                )
+            }
+        }
+        emitter.setCancellable { job.cancel() }
+    }
+
+    companion object {
+        const val TYPE_ID = "metabolic_burn"
+    }
+}
+
+class PelotonSmoothnessDataType(
+    extension: String,
+    private val sensorFusion: BrakeSensorFusion,
+) : DataTypeImpl(extension, TYPE_ID) {
+
+    override fun startStream(emitter: Emitter<StreamState>) {
+        val job = CoroutineScope(Dispatchers.Default).launch {
+            sensorFusion.metrics.collect { metrics ->
+                emitter.onNext(
+                    StreamState.Streaming(
+                        DataPoint(
+                            dataTypeId = dataTypeId,
+                            values = mapOf(DataType.Field.SINGLE to metrics.pelotonSmoothnessIndex.toDouble()),
+                        )
+                    )
+                )
+            }
+        }
+        emitter.setCancellable { job.cancel() }
+    }
+
+    companion object {
+        const val TYPE_ID = "peloton_smoothness"
+    }
+}
+

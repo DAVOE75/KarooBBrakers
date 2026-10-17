@@ -3,7 +3,7 @@
 </p>
 
 # Karoo BBrakers
-### WorldTour PRO Braking Telemetry, Trail-Braking Radar, Descent Efficiency & Digital Pad Odometer for Hammerhead Karoo 2 & Karoo 3
+### WorldTour PRO Braking Telemetry, Corner Radar & Apex Speed, Kamm Grip Limit, Metabolic Energy & Peloton Smoothness (PEI) for Hammerhead Karoo 2 & Karoo 3
 
 <p align="center">
   <b>Language:</b> 
@@ -26,71 +26,84 @@
 ---
 
 ## Overview
-**Karoo BBrakers** is a comprehensive cycling braking telemetry, inertial dynamics, and active safety extension engineered specifically for the **Hammerhead Karoo** platform (Karoo 2 and Karoo 3).
+**Karoo BBrakers** is a comprehensive cycling braking telemetry, inertial dynamics, predictive safety, and race intelligence extension engineered specifically for the **Hammerhead Karoo** platform (Karoo 2 and Karoo 3).
 
-Modern cycling performance analysis has focused almost exclusively on power meters, heart rate, and cadence. Yet, in competitive road racing, alpine descents, gravel riding, and mountain biking, **races are won and crashes avoided through braking efficiency, late-apex trail braking, and thermal management**. Karoo BBrakers turns your Hammerhead cycling computer into a WorldTour telemetry cockpit.
+Modern cycling performance analysis has focused almost exclusively on power meters, heart rate, and cadence. Yet, in competitive road racing, alpine descents, gravel riding, and mountain biking, **races are won and crashes avoided through braking efficiency, late-apex trail braking, corner exit speed carry, and thermal management**. Karoo BBrakers turns your Hammerhead cycling computer into a WorldTour telemetry cockpit.
 
 ---
 
 ## Core Physics & WorldTour Engineering
 
-### 1. Dynamic Inertial Deceleration (50 Hz Hardware Sampling)
-- Utilizes the Karoo's internal hardware IMU (`Sensor.TYPE_LINEAR_ACCELERATION` and `Sensor.TYPE_ACCELEROMETER`) running at **50 Hz (20 ms updates)**.
-- **Continuous Decoupled Calculation**: Gravity pitch tilt and road grade are isolated using continuous complementary filters. Deceleration is measured directly in physical units ($\text{m/s}^2$ or $G$-Force) with instant responsiveness.
-- **Aerodynamic & Rolling Resistance Baseline Filtering**: Natural coasting drag caused by wind resistance ($F_{aero} = \frac{1}{2}\rho C_d A v^2$) and tire rolling friction ($C_{rr}$) is mathematically decoupled so that coasting on flats is never falsely detected as braking.
+### 1. Stationary Zero-Lockout & False Positive Immunity (< 4 km/h)
+- Without physical micro-switches or lever hydraulic transducers, a desk test or stationary bike must never register braking.
+- When GPS or wheel sensor speed is under $1.11\text{ m/s}$ ($4.0\text{ km/h}$), all deceleration vectors are strictly zeroed ($0.00\text{ m/s}^2$). The system remains in the rock-solid **ARMED** state and instant detection activates the millisecond the bike begins rolling.
 
-### 2. Descent Efficiency Score (DES 0–100%)
+### 2. Gravity Pitch Decoupling on Steep Climbs
+- On steep uphill gradients, gravity pulls backward on the internal accelerometer along the bike's longitudinal axis ($g \cdot \sin(\theta)$).
+- Karoo BBrakers calculates instantaneous pitch angle $\theta = \arcsin\left(\frac{-g_y}{9.80665}\right)$ and subtracts the uphill gravity component:
+  $$a_{\text{forward, net}} = a_{\text{measured, y}} - \max(0, g \cdot \sin(\theta))$$
+- Steep $15\% - 25\%$ climbs never register false deceleration.
+
+### 3. Corner Radar & Apex Speed Retention (0–100%)
+- Tracks entry speed ($v_{\text{entry}}$), apex minimum speed ($v_{\text{apex}}$), and exit acceleration ($\Delta v_{\text{exit}}$).
+- Calculates the **Apex Speed Retention %**:
+  $$\text{Apex Retention} = \left(\frac{v_{\text{apex}}}{v_{\text{entry}}}\right) \cdot 100\%$$
+- WorldTour technical descenders aim for $> 75\%$ retention on sweeping bends, carrying kinetic energy rather than over-braking.
+
+### 4. Predictive Corner Braking Warnings
+- Using upcoming turn curvature and speed, the extension computes real-time stopping distance:
+  $$d_{\text{stop}} = \frac{v_{\text{current}}^2 - v_{\text{safe}}^2}{2 \cdot a_{\text{safe}}}$$
+- Triggers a proactive audio beep and Karoo `InRideAlert` with target deceleration distance ahead of tight bends.
+
+### 5. Kamm’s Friction Circle & Washout Alarm
+- Total tire adhesion is limited by friction:
+  $$F_{\text{total}} = \sqrt{F_{\text{braking}}^2 + F_{\text{cornering}}^2} \le \mu \cdot N$$
+- In wet conditions (`WET_ROAD` profile, $\mu \approx 0.45$), combining hard braking with roll lean risks instantaneous front-wheel washout.
+- Karoo BBrakers continuously calculates your **Grip Margin %** and triggers an emergency alarm when margin drops below critical thresholds.
+
+### 6. Wasted Metabolic Energy Burned (kJ & kcal)
+- Every brake event destroys mechanical kinetic energy ($\Delta E = \frac{1}{2} m (v_1^2 - v_2^2)$).
+- Based on human gross muscular efficiency ($\eta \approx 21.5\%$), recovering that momentum requires burning nearly 5 times more metabolic glycogen:
+  $$E_{\text{metabolic}} = \frac{\Delta E_{\text{kinetic}}}{0.215}$$
+- Tracks total kilojoules and kilocalories burned due to braking over the course of the ride.
+
+### 7. Peloton Smoothness Index (PEI 0–100%)
+- Micro-braking in a paceline triggers backward accordion shockwaves, forcing trailing riders into repeated 800W sprint closures.
+- Over a rolling 60-second window, the PEI scores drafting fluidity from 0 to 100%, coaching riders to maintain position through aerodynamic drag modulation rather than brake snatching.
+
+### 8. Descent Efficiency Score (DES 0–100%)
 - Alpine descents reward short, firm braking pulses before corner entry and penalize continuous lever dragging.
 - Continuous dragging prevents rotor heat shedding and leads to thermal glazing (resin vitrification).
-- The DES algorithm scores every descent from 0 to 100%, rewarding riders who brake cleanly and release the levers to allow convective rotor cooling.
+- The DES algorithm scores every descent from 0 to 100%, rewarding riders who brake cleanly and release levers to allow convective cooling.
 
-### 3. Trail-Braking Radar & Corner Entry Telemetry
-- Trail-braking carries braking force past the corner entry point, smoothly tapering deceleration as roll lean angle ($\theta_{lean}$) peaks at the apex.
-- Karoo BBrakers tracks roll angle and longitudinal jerk ($da/dt$) in real time to grade modulation into 4 WorldTour classes:
-  - **PERFECT**: High entry deceleration smoothly tapered as lean angle deepens to the apex.
-  - **GOOD**: Well-controlled modulation with balanced speed reduction.
-  - **EARLY RELEASE**: Brakes released prematurely before turn entry, losing momentum.
-  - **PANIC LEAN**: Dangerous abrupt braking while already deeply leaned over in the corner.
-
-### 4. Dynamic Load Transfer & Front/Rear Bias
+### 9. Dynamic Load Transfer & Front/Rear Bias
 - When a cyclist decelerates, inertia shifts weight forward onto the front tire contact patch:
-  $$\Delta W = \frac{m \cdot a \cdot h_{CG}}{L_{wheelbase}}$$
-- On downhill descents, front wheel normal load can surge up to **85%**. Karoo BBrakers computes real-time **Front vs Rear braking distribution**, helping riders optimize lever modulation and avoid rear-wheel lockups.
+  $$\Delta W = \frac{m \cdot a \cdot h_{\text{CG}}}{L_{\text{wheelbase}}}$$
+- On downhill descents, front wheel normal load can surge up to **85%**. Karoo BBrakers computes real-time **Front vs Rear braking distribution**, helping riders optimize lever modulation.
 
-### 5. Kamm’s Friction Circle & Washout Prevention
-- A tire possesses a finite vector adhesion limit:
-  $$F_{total} = \sqrt{F_{braking}^2 + F_{cornering}^2} \le \mu \cdot N$$
-- Combining high braking force with deep cornering lean dramatically increases the risk of catastrophic front-wheel washouts.
-- Karoo BBrakers continuously calculates your **Grip Margin %** in real time, alerting riders before exceeding tire slip limits.
+### 10. Digital Pad Service Odometer
+- Tracks cumulative lifetime energy absorbed by brake pads in kilojoules ($\text{kJ}$):
+  - **Resin / Organic**: ~2500 kJ rated capacity.
+  - **Semi-Metallic**: ~4500 kJ rated capacity.
+  - **Sintered / Metallic**: ~7000 kJ rated capacity.
+- Displays **Pad Life Remaining %** with one-touch odometer reset after servicing.
 
-### 6. Digital Pad Service Odometer
-- Tracks cumulative lifetime energy absorbed by your brake pads in kilojoules ($\text{kJ}$).
-- Calibrated ratings per compound:
-  - **Resin / Organic**: ~2500 kJ rated capacity. High bite, silent, lower thermal threshold.
-  - **Semi-Metallic**: ~4500 kJ rated capacity. Balanced performance for all weather.
-  - **Sintered / Metallic**: ~7000 kJ rated capacity. Extreme heat tolerance, maximum longevity.
-- Provides real-time **Pad Life Remaining %** and one-touch in-app odometer reset after replacing pads.
-
-### 7. Dual Thermodynamic Heat & Pad Glazing Warnings
-- **Differential Rotor Cooling**: Front calipers receive clean laminar airflow ($h_{front} \propto v^{0.8}$), while rear calipers are shielded in turbulent chainstay air ($h_{rear} \approx 0.65 \cdot h_{front}$).
+### 11. Dual Thermodynamic Heat & Pad Glazing Warnings
+- **Differential Rotor Cooling**: Front calipers receive clean laminar airflow ($h_{\text{front}} \propto v^{0.8}$), while rear calipers are shielded in turbulent chainstay air ($h_{\text{rear}} \approx 0.65 \cdot h_{\text{front}}$).
 - **Material Safety Limits**:
   - **Disc Brakes**: Safe up to 350°C.
   - **Rim Brakes (Aluminium)**: Safe up to 150°C.
   - **Rim Brakes (Carbon Wheel Track)**: High warning at 145°C, critical delamination alarm at **180°C**.
-- **Pad Glazing Acoustic Alarm**: Warns immediately if continuous dragging exceeds 22 seconds at temperatures above the compound vitrification threshold.
 
-### 8. Involuntary Brake Drag Detection (Wasted Watts)
+### 12. Involuntary Brake Drag Detection (Wasted Watts)
 - Continuously identifies stuck caliper pistons, warped rotors, or pad rubbing while pedaling.
-- Calculates instantaneous **Wasted Watts** ($P = F_{rub} \cdot v$) so riders can immediately detect parasitic power loss.
-
-### 9. Glance RemoteViews Binder IPC Throttling (8 Hz)
-- Data view renders to Hammerhead Karoo OS are throttled to 120 ms (~8 Hz), eliminating Binder transaction pressure and significantly extending battery runtime on long rides.
+- Calculates instantaneous **Wasted Watts** ($P = F_{\text{rub}} \cdot v$) so riders can immediately detect parasitic power loss.
 
 ---
 
-## Complete Data Fields Catalog (14 Karoo Types)
+## Complete Data Fields Catalog (17 Native Karoo Types)
 
-Karoo BBrakers registers 14 native DataTypes in Karoo OS (`extension_info.xml`):
+Karoo BBrakers registers 17 native DataTypes in Karoo OS (`extension_info.xml`):
 
 | Type ID | Display Name (English) | Format | Description |
 |---|---|---|---|
@@ -105,9 +118,30 @@ Karoo BBrakers registers 14 native DataTypes in Karoo OS (`extension_info.xml`):
 | `wasted_watts` | **Wasted Watts (Drag)** | Numeric | Parasitic power lost to brake rubbing or stuck pistons in Watts. |
 | `grip_margin` | **Cornering Grip Margin** | Numeric | Kamm friction circle safety buffer percentage before tire slip. |
 | `brake_temperature`| **Brake Temperature** | Numeric | Real-time estimated rotor/rim temperature in °C or °F. |
+| `corner_radar` | **Corner Radar & Apex Speed** | Numeric | Live corner entry, apex speed retention and exit acceleration telemetry. |
+| `metabolic_burn` | **Wasted Metabolic Energy** | Numeric | Metabolic kilojoules wasted in braking based on 21.5% muscular efficiency. |
+| `peloton_smoothness`| **Peloton Smoothness Index** | Numeric | Group ride drafting efficiency (0-100%) and accordion shockwave resistance. |
 | `graphical_brake` | **Brake Gauge (Graphical)**| Graphic | 5-segment color gauge (White to Yellow to Orange to Red). |
 | `graphical_thermal`| **Thermal & Fade Monitor** | Graphic | Dual front/rear temperatures, safety zones, and material limits. |
 | `graphical_cockpit`| **Brake Cockpit HUD** | Graphic | Comprehensive glance HUD with gauge, power, temp, lean, and trail badge. |
+
+---
+
+## FIT Developer Data Fields & Analytics (WKO5 & GoldenCheetah)
+
+During recorded rides, Karoo BBrakers injects 12 standard FIT Developer Fields at 1 Hz:
+- `BrakeDecel` ($\text{m/s}^2$)
+- `BrakingPower` ($\text{Watts}$)
+- `IsBraking` ($0/1\text{ flag}$)
+- `BrakeTemperature` ($^\circ\text{C}$)
+- `DescentEfficiency` ($\%$)
+- `GripMargin` ($\%$)
+- `MetabolicBurn` ($\text{kJ}$)
+- `PelotonSmoothness` ($\%$)
+- `ApexRetention` ($\%$)
+- Summary Session fields: `TotalBrakeEvents`, `MaxBrakeDecel`, `TotalBrakeEnergy`, and `PadWearScore`.
+
+For detailed WKO5 chart formulas, GoldenCheetah scripts, and WorldTour coaching models, see the [WKO5 Integration Guide](wko5/README.md).
 
 ---
 
@@ -120,20 +154,6 @@ The graphical widgets use high-contrast color indexing for instant legibility at
 - **Red** ($> 4.5\text{ m/s}^2$): Emergency hard braking / panic stop alert.
 - **Violet**: Peloton feathering active in paceline.
 - **Green**: Rotor temperature in optimal safety zone ($< 80^\circ\text{C}$).
-
----
-
-## FIT Developer Data Fields & Post-Ride Analysis
-During recorded rides, Karoo BBrakers injects standard FIT Developer Fields at 1 Hz:
-- `BrakingDeceleration` ($\text{m/s}^2$)
-- `BrakingPower` ($\text{Watts}$)
-- `IsBraking` ($0/1\text{ flag}$)
-- `BrakeTemperature` ($^\circ\text{C}$)
-- `DescentEfficiency` ($\%$)
-- `GripMargin` ($\%$)
-- Summary Session fields: Total Events, Peak G, Absorbed kJ, and Pad Wear Score.
-
-Compatible with **Strava**, **Intervals.icu**, **GoldenCheetah**, and **WKO5**.
 
 ---
 

@@ -283,6 +283,35 @@
 
     <string name="title_fields_catalog">Catálogo Completo dos Campos de Dados</string>
 
+    <!-- WorldTour PRO Corner Radar, Grip & Peloton -->
+    <string name="type_corner_radar">Radar de Curva &amp; Velocidade no Ápice</string>
+    <string name="desc_corner_radar">Telemetria de entrada em curva, retenção no ápice e aceleração de saída</string>
+    <string name="type_metabolic_burn">Energia Metabólica Desperdiçada</string>
+    <string name="desc_metabolic_burn">Quilojoules metabólicos destruídos na travagem com base na eficiência muscular (21,5%)</string>
+    <string name="type_peloton_smoothness">Índice de Fluidez em Pelotão</string>
+    <string name="desc_peloton_smoothness">Eficiência no cone de aspiração (0-100%) e resistência ao efeito concertina</string>
+
+    <string name="alert_corner_braking_title">TRAVA ANTES DA CURVA!</string>
+    <string name="alert_corner_braking_detail">Curva a %1$dm: abranda de %2$.0f para %3$.0f km/h</string>
+    <string name="alert_grip_limit_title">LIMITE DE ADERÊNCIA DO PNEU!</string>
+    <string name="alert_grip_limit_detail">Reserva de aderência a %1$d%% com %2$.0f° de inclinação! Modula o travão para evitar escorregar.</string>
+
+    <string name="title_corner_warning">Aviso Preditivo de Travagem em Curva</string>
+    <string name="desc_corner_warning">Calcula a distância de desaceleração necessária antes de curvas apertadas</string>
+    <string name="title_grip_limit_alert">Aviso de Limite de Aderência Círculo de Kamm</string>
+    <string name="desc_grip_limit_alert">Avisa quando a inclinação e a travagem atingem o limite de aderência do pneu</string>
+
+    <string name="label_apex_speed">Velocidade Ápice</string>
+    <string name="label_apex_retention">Retenção Ápice</string>
+    <string name="label_corner_score">Pontuação Curva</string>
+    <string name="label_metabolic_kj">Perda Metabólica</string>
+    <string name="label_peloton_pei">Pelotão PEI</string>
+
+    <string name="science_topic7_title">7. Destruição Cinética vs kJ Metabólicos do Ciclista</string>
+    <string name="science_topic7_desc">Cada travagem destrói energia cinética (1/2·m·Δv²). Com um rendimento muscular de ~21,5%, recuperar 15 kJ de velocidade exige queimar cerca de 70 kJ de glicogénio. Travar com decisão poupa energia essencial para as subidas finais.</string>
+    <string name="science_topic8_title">8. Efeito Concertina no Pelotão e Índice PEI</string>
+    <string name="science_topic8_desc">Uma micro-travagem na frente amplifica-se para trás numa onda de choque. Os ciclistas na cauda sofrem paragens bruscas seguidas de sprints a 800W. O índice PEI (0-100%) avalia a fluidez em grupo para ensinar a poupar energia.</string>
+
     <!-- Apoio -->
     <string name="title_support">Apoia o Projeto</string>
     <string name="desc_support">O Karoo BBrakers é gratuito e de código aberto. Paga-me um café para apoiar futuras melhorias!</string>

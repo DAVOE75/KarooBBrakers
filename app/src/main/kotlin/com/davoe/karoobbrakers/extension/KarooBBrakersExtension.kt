@@ -36,11 +36,14 @@ import com.davoe.karoobbrakers.extension.datafields.DescentEfficiencyDataType
 import com.davoe.karoobbrakers.extension.datafields.GripMarginDataType
 import com.davoe.karoobbrakers.extension.datafields.PadLifeDataType
 import com.davoe.karoobbrakers.extension.datafields.WastedWattsDataType
+import com.davoe.karoobbrakers.extension.datafields.CornerRadarDataType
+import com.davoe.karoobbrakers.extension.datafields.MetabolicBurnDataType
+import com.davoe.karoobbrakers.extension.datafields.PelotonSmoothnessDataType
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
+class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.2.0") {
 
     private val karooSystem by lazy { KarooSystemService(this) }
     private val preferences by lazy { BrakePreferences(this) }
@@ -55,6 +58,8 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
     private var lastThermalAlertTimeMs = 0L
     private var lastGlazingAlertTimeMs = 0L
     private var lastPadWearAlertTimeMs = 0L
+    private var lastGripAlertTimeMs = 0L
+    private var lastCornerAlertTimeMs = 0L
 
     // FIT Developer Data Fields Definitions
     private val devFieldDecel = DeveloperField(
@@ -117,6 +122,24 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
         fieldName = "GripMargin",
         units = "percent",
     )
+    private val devFieldMetabolic = DeveloperField(
+        fieldDefinitionNumber = 10,
+        fitBaseTypeId = 132, // UInt16
+        fieldName = "MetabolicBurn",
+        units = "kJ",
+    )
+    private val devFieldPelotonSmoothness = DeveloperField(
+        fieldDefinitionNumber = 11,
+        fitBaseTypeId = 2, // UInt8
+        fieldName = "PelotonSmoothness",
+        units = "percent",
+    )
+    private val devFieldApexRetention = DeveloperField(
+        fieldDefinitionNumber = 12,
+        fitBaseTypeId = 2, // UInt8
+        fieldName = "ApexRetention",
+        units = "percent",
+    )
 
     override val types: List<DataTypeImpl> by lazy {
         listOf(
@@ -131,6 +154,9 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
             PadLifeDataType(extension, sensorFusion),
             WastedWattsDataType(extension, sensorFusion),
             GripMarginDataType(extension, sensorFusion),
+            CornerRadarDataType(extension, sensorFusion),
+            MetabolicBurnDataType(extension, sensorFusion),
+            PelotonSmoothnessDataType(extension, sensorFusion),
             BrakeGraphicalDataType(extension, sensorFusion, preferences),
             BrakeThermalGraphicalDataType(extension, sensorFusion, preferences),
             BrakeCockpitGraphicalDataType(extension, sensorFusion, preferences),
@@ -171,6 +197,22 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
             if (now - lastPadWearAlertTimeMs > 60000L) {
                 lastPadWearAlertTimeMs = now
                 triggerPadWearWarning(remainingPercent)
+            }
+        }
+
+        sensorFusion.onGripLimitWarningDetected = { marginPct, rollDeg ->
+            val now = System.currentTimeMillis()
+            if (now - lastGripAlertTimeMs > 6000L) {
+                lastGripAlertTimeMs = now
+                triggerGripLimitWarning(marginPct, rollDeg)
+            }
+        }
+
+        sensorFusion.onCornerBrakeWarningDetected = { distM, curKmh, tgtKmh ->
+            val now = System.currentTimeMillis()
+            if (now - lastCornerAlertTimeMs > 10000L) {
+                lastCornerAlertTimeMs = now
+                triggerCornerBrakeWarning(distM, curKmh, tgtKmh)
             }
         }
 
@@ -270,6 +312,9 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
             FieldValue(devFieldTemp, metrics.estimatedTempCelsius),
             FieldValue(devFieldDES, metrics.descentEfficiencyScore.toDouble()),
             FieldValue(devFieldGripMargin, metrics.gripMarginPercent.toDouble()),
+            FieldValue(devFieldMetabolic, metrics.metabolicKjBurned),
+            FieldValue(devFieldPelotonSmoothness, metrics.pelotonSmoothnessIndex.toDouble()),
+            FieldValue(devFieldApexRetention, metrics.apexSpeedRetentionPercent.toDouble()),
         )
         emitter.onNext(WriteToRecordMesg(values))
     }
@@ -402,6 +447,64 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.1.0") {
                 title = title,
                 detail = detail,
                 autoDismissMs = 6000L,
+                backgroundColor = android.R.color.holo_orange_dark,
+                textColor = android.R.color.white,
+            )
+        )
+    }
+
+    private fun triggerGripLimitWarning(marginPct: Int, rollDeg: Double) {
+        if (preferences.isBeeperEnabled()) {
+            karooSystem.dispatch(
+                PlayBeepPattern(
+                    listOf(
+                        PlayBeepPattern.Tone(2600, 80),
+                        PlayBeepPattern.Tone(null, 40),
+                        PlayBeepPattern.Tone(2600, 80),
+                    )
+                )
+            )
+        }
+
+        val title = getString(R.string.alert_grip_limit_title)
+        val detail = String.format(Locale.getDefault(), getString(R.string.alert_grip_limit_detail), marginPct, rollDeg)
+
+        karooSystem.dispatch(
+            InRideAlert(
+                id = "karoobbrakers_grip_limit_warning",
+                icon = R.drawable.ic_corner_radar,
+                title = title,
+                detail = detail,
+                autoDismissMs = 3500L,
+                backgroundColor = android.R.color.holo_red_dark,
+                textColor = android.R.color.white,
+            )
+        )
+    }
+
+    private fun triggerCornerBrakeWarning(distanceM: Int, currentKmh: Double, targetKmh: Double) {
+        if (preferences.isBeeperEnabled()) {
+            karooSystem.dispatch(
+                PlayBeepPattern(
+                    listOf(
+                        PlayBeepPattern.Tone(2100, 140),
+                        PlayBeepPattern.Tone(null, 50),
+                        PlayBeepPattern.Tone(2500, 200),
+                    )
+                )
+            )
+        }
+
+        val title = getString(R.string.alert_corner_braking_title)
+        val detail = String.format(Locale.getDefault(), getString(R.string.alert_corner_braking_detail), distanceM, currentKmh, targetKmh)
+
+        karooSystem.dispatch(
+            InRideAlert(
+                id = "karoobbrakers_corner_warning",
+                icon = R.drawable.ic_corner_radar,
+                title = title,
+                detail = detail,
+                autoDismissMs = 4000L,
                 backgroundColor = android.R.color.holo_orange_dark,
                 textColor = android.R.color.white,
             )

@@ -14,10 +14,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.math.abs
+import kotlin.math.asin
 import kotlin.math.atan2
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 class BrakeSensorFusion(
@@ -95,11 +97,35 @@ class BrakeSensorFusion(
     private var isBrakeDragActive = false
     private var currentWastedDragWatts = 0.0
 
+    // WorldTour Bioenergetics & Metabolic Energy
+    private var totalMetabolicKjBurned = 0.0
+
+    // WorldTour Peloton Smoothness Index (PEI 0-100)
+    private val pelotonBrakeTimestampsMs = mutableListOf<Long>()
+    private var currentPelotonSmoothnessIndex = 100
+
+    // WorldTour Predictive Corner Braking
+    private var isCornerBrakeWarningActive = false
+    private var targetBrakingDistanceMeters = 0
+    private var targetCornerSpeedKmh = 0.0
+    private var lastCornerWarningTimeMs = 0L
+
+    // WorldTour Kamm Friction Circle Alert
+    private var lastGripAlertTimeMs = 0L
+    private var isGripAlarmActive = false
+
+    // WorldTour Corner Apex Telemetry
+    private var lastCornerEntrySpeedKmh = 0.0
+    private var lastApexRetentionPercent = 100
+    private var lastCornerScore = 100
+
     // Callbacks for Karoo system alerts (beeper, banner)
     var onHardBrakeDetected: ((peakDecel: Double, gForce: Double) -> Unit)? = null
     var onThermalWarningDetected: ((brakeTypeName: String, tempCelsius: Double) -> Unit)? = null
     var onGlazingWarningDetected: ((tempCelsius: Double, durationSec: Double) -> Unit)? = null
     var onPadWearWarningDetected: ((remainingPercent: Int) -> Unit)? = null
+    var onGripLimitWarningDetected: ((marginPct: Int, rollDeg: Double) -> Unit)? = null
+    var onCornerBrakeWarningDetected: ((distanceM: Int, currentKmh: Double, targetKmh: Double) -> Unit)? = null
 
     private var lastGlazingAlertTimeMs = 0L
     private var lastPadWearAlertTimeMs = 0L
@@ -185,9 +211,52 @@ class BrakeSensorFusion(
         descentCleanEnergyAccum = 0.0
         descentDragEnergyAccum = 0.0
         rollingDescentEfficiency = 96.0
+        totalMetabolicKjBurned = 0.0
+        pelotonBrakeTimestampsMs.clear()
+        currentPelotonSmoothnessIndex = 100
+        isCornerBrakeWarningActive = false
+        targetBrakingDistanceMeters = 0
+        targetCornerSpeedKmh = 0.0
+        lastCornerEntrySpeedKmh = 0.0
+        lastApexRetentionPercent = 100
+        lastCornerScore = 100
         isCurrentlyBraking = false
         brakeBiteConfirmed = false
         _metrics.value = BrakeMetrics()
+    }
+
+    /**
+     * WorldTour Predictive Corner Braking calculation:
+     * Calculates required stopping distance based on curve radius, friction coefficient and current speed.
+     */
+    fun onNavigationTurnAhead(distanceMeters: Int, turnAngleDeg: Double) {
+        if (currentSpeedMs < 4.5) {
+            isCornerBrakeWarningActive = false
+            return
+        }
+        val currentKmh = currentSpeedMs * 3.6
+        val radiusM = (180.0 / turnAngleDeg.coerceIn(20.0, 180.0)) * 14.0
+        val mu = preferences.getSurfaceProfile().frictionMu
+        val safeSpeedMs = sqrt(mu * 9.80665 * radiusM * 0.70)
+        val safeSpeedKmh = safeSpeedMs * 3.6
+        targetCornerSpeedKmh = safeSpeedKmh
+
+        if (currentKmh > safeSpeedKmh + 6.0) {
+            val reqDecel = 2.4 // Controlled deceleration
+            val stopDistM = (currentSpeedMs.pow(2) - safeSpeedMs.pow(2)) / (2.0 * reqDecel)
+            targetBrakingDistanceMeters = stopDistM.toInt()
+
+            if (distanceMeters <= stopDistM + 25 && preferences.isCornerWarningAlertEnabled()) {
+                val now = System.currentTimeMillis()
+                if (now - lastCornerWarningTimeMs > 12000L) {
+                    lastCornerWarningTimeMs = now
+                    isCornerBrakeWarningActive = true
+                    onCornerBrakeWarningDetected?.invoke(distanceMeters, currentKmh, safeSpeedKmh)
+                }
+            }
+        } else {
+            isCornerBrakeWarningActive = false
+        }
     }
 
     /**
@@ -229,28 +298,56 @@ class BrakeSensorFusion(
         val brakeType = preferences.getBrakeType()
         val padCompound = preferences.getPadCompound()
 
-        // 1. Decouple Dynamic Linear Deceleration from Gravity & Incline
+        // 0. Stationary Lockout: If bike is stationary, parked, walking or sitting on a table (< 4.0 km/h)
+        // Eliminates 100% of false positives while stopped or testing on a desk!
+        val isMoving = currentSpeedMs >= 1.11 // >= 4.0 km/h
+        val isPedaling = currentCadenceRpm > 5.0 || currentPowerWatts > 25.0
+
+        if (!isMoving) {
+            if (isCurrentlyBraking) {
+                endBrakeEvent()
+            }
+            filteredDecelMs2 = 0.0
+            previousDecelMs2 = 0.0
+            _metrics.value = _metrics.value.copy(
+                currentDecelMs2 = 0.0,
+                currentGForce = 0.0,
+                currentBrakingPowerWatts = 0.0,
+                frontPowerWatts = 0.0,
+                rearPowerWatts = 0.0,
+                isBraking = false,
+                isCoasting = false,
+                isPedalingActive = isPedaling,
+                activeBrakingDurationMs = 0L,
+                gripUsedPercent = 0,
+                gripMarginPercent = 100,
+                isNearGripLimit = false,
+                isGripAlarmActive = false
+            )
+            return
+        }
+
+        // 1. Decouple Dynamic Linear Deceleration from Gravity & Incline Pitch
         val rawForwardDecel: Double = if (event.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION) {
-            val forwardLinear = -event.values[1].toDouble()
-            forwardLinear
+            -event.values[1].toDouble()
         } else {
             val beta = 0.94f
             gravityEstimate[0] = beta * gravityEstimate[0] + (1 - beta) * event.values[0]
             gravityEstimate[1] = beta * gravityEstimate[1] + (1 - beta) * event.values[1]
             gravityEstimate[2] = beta * gravityEstimate[2] + (1 - beta) * event.values[2]
 
-            val linY = -(event.values[1] - gravityEstimate[1]).toDouble()
-            linY
+            -(event.values[1] - gravityEstimate[1]).toDouble()
         }
 
-        // 2. Pedaling Lockout
-        val isPedaling = currentCadenceRpm > 5.0 || currentPowerWatts > 25.0
-        val isMoving = currentSpeedMs > 0.8 // Bike moving at least ~2.9 km/h
+        // Decouple uphill gravity drag: climbing steep gradients (+8% to +20%) must not register as braking!
+        val pitchRad = asin((-gravityEstimate[1] / 9.80665f).coerceIn(-0.6f, 0.6f).toDouble())
+        val inclineGravityComponent = 9.80665 * sin(pitchRad)
+        val pitchCompensatedForwardDecel = (rawForwardDecel - max(0.0, inclineGravityComponent)).coerceAtLeast(0.0)
 
         val rawDecelNonNegative = if (isPedaling) {
             0.0
         } else {
-            max(0.0, rawForwardDecel)
+            max(0.0, pitchCompensatedForwardDecel)
         }
 
         // 3. Two-Stage Filtering (Fast Attack, Road Chatter Rejection)
@@ -299,13 +396,16 @@ class BrakeSensorFusion(
         val hasBiteJerk = jerkMs3 > jerkBiteThreshold
 
         if (!isCurrentlyBraking) {
-            if ((isDecelAboveBite || (hasBiteJerk && netBrakeDecelMs2 >= releaseThreshold)) && !isPedaling) {
+            if ((isDecelAboveBite || (hasBiteJerk && netBrakeDecelMs2 >= releaseThreshold)) && !isPedaling && isMoving) {
                 isCurrentlyBraking = true
                 brakeBiteConfirmed = true
                 eventStartTimeMs = nowMs
                 currentEventPeakDecelMs2 = netBrakeDecelMs2
                 currentEventEnergyJoules = 0.0
                 totalBrakeEventsCount++
+
+                // Track brake tap for peloton smoothness index
+                pelotonBrakeTimestampsMs.add(nowMs)
             }
         } else {
             if (netBrakeDecelMs2 > currentEventPeakDecelMs2) {
@@ -321,6 +421,9 @@ class BrakeSensorFusion(
             val deltaEnergyJoules = instantaneousPowerWatts * dt
             currentEventEnergyJoules += deltaEnergyJoules
             totalEnergyAccumulatedKj += (deltaEnergyJoules / 1000.0)
+
+            // Bioenergetics: Metabolic energy burned (21.5% human gross efficiency)
+            totalMetabolicKjBurned += (deltaEnergyJoules / (1000.0 * 0.215))
 
             // Update cumulative pad odometer
             preferences.addCumulativePadEnergyKj(deltaEnergyJoules / 1000.0)
@@ -472,12 +575,23 @@ class BrakeSensorFusion(
         val gripMarginPercent = (100 - gripUsedPercent).coerceIn(0, 100)
         val isNearGripLimit = gripUsedPercent >= 88
 
+        // Kamm Circle Traction Limit Warning
+        val gripAlarmThreshold = if (surfaceProfile == SurfaceProfile.WET_ROAD) 22 else 15
+        isGripAlarmActive = gripMarginPercent <= gripAlarmThreshold && isMoving
+        if (isGripAlarmActive && preferences.isGripLimitAlertEnabled()) {
+            if (nowMs - lastGripAlertTimeMs > 8000L) {
+                lastGripAlertTimeMs = nowMs
+                onGripLimitWarningDetected?.invoke(gripMarginPercent, leanAngleDeg)
+            }
+        }
+
         // Trail Braking & Cornering Apex Tracker
         val isLeanedInCorner = leanAngleDeg > 12.0
         if (isLeanedInCorner) {
             if (!isCorneringActive) {
                 isCorneringActive = true
                 cornerEntrySpeedMs = currentSpeedMs
+                lastCornerEntrySpeedKmh = currentSpeedMs * 3.6
                 currentCornerMinSpeedMs = currentSpeedMs
                 cornerMaxLeanDeg = leanAngleDeg
                 wasBrakingBeforeLean = isCurrentlyBraking
@@ -500,8 +614,31 @@ class BrakeSensorFusion(
             lastApexSpeedKmh = currentCornerMinSpeedMs * 3.6
             val exitDelta = (currentSpeedMs - currentCornerMinSpeedMs) * 3.6
             lastExitDeltaKmh = max(0.0, exitDelta)
+            val cornerEntryKmh = cornerEntrySpeedMs * 3.6
+            lastApexRetentionPercent = if (cornerEntryKmh > 5.0) {
+                ((lastApexSpeedKmh / cornerEntryKmh) * 100.0).coerceIn(0.0, 100.0).toInt()
+            } else 100
+
+            lastCornerScore = if (currentTrailBrakeQuality == TrailBrakeQuality.PANIC_LEAN) {
+                50
+            } else {
+                (lastApexRetentionPercent * 0.70 + (if (lastExitDeltaKmh > 0.0) 30.0 else 15.0)).coerceIn(50.0, 100.0).toInt()
+            }
+
             isCorneringActive = false
             currentCornerMinSpeedMs = Double.MAX_VALUE
+        }
+
+        // Peloton Smoothness Index (PEI): 60-second rolling window
+        val cutoff60s = nowMs - 60000L
+        pelotonBrakeTimestampsMs.removeAll { it < cutoff60s }
+        val recentBrakeCount = pelotonBrakeTimestampsMs.size
+        currentPelotonSmoothnessIndex = when {
+            recentBrakeCount <= 1 -> 100
+            recentBrakeCount in 2..3 -> 90
+            recentBrakeCount in 4..5 -> 78
+            recentBrakeCount in 6..8 -> 65
+            else -> 48
         }
 
         val isTrailBraking = isCurrentlyBraking && isLeanedInCorner && activeBrakeDecel in 0.3..2.4 && wasBrakingBeforeLean
@@ -589,8 +726,17 @@ class BrakeSensorFusion(
             isGroupRidingFeathering = isPelotonFeathering,
             apexSpeedKmh = lastApexSpeedKmh,
             exitSpeedDeltaKmh = lastExitDeltaKmh,
+            cornerEntrySpeedKmh = lastCornerEntrySpeedKmh,
+            apexSpeedRetentionPercent = lastApexRetentionPercent,
+            cornerScore = lastCornerScore,
             descentEfficiencyScore = rollingDescentEfficiency.toInt(),
             isDescending = isDescending,
+            metabolicKjBurned = totalMetabolicKjBurned,
+            pelotonSmoothnessIndex = currentPelotonSmoothnessIndex,
+            isGripAlarmActive = isGripAlarmActive,
+            isCornerBrakeWarning = isCornerBrakeWarningActive,
+            targetBrakingDistanceMeters = targetBrakingDistanceMeters,
+            targetCornerSpeedKmh = targetCornerSpeedKmh,
         )
     }
 

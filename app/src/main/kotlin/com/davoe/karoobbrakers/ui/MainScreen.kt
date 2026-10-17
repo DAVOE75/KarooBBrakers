@@ -713,6 +713,134 @@ fun TelemetryTab(
             }
         }
 
+        // 4c. WorldTour PRO Corner Radar & Kamm Grip Limit Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(containerColor = DarkCard),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(R.string.type_corner_radar),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AccentCyan,
+                        modifier = Modifier.weight(1f, fill = false),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    val score = metrics.cornerScore
+                    val scoreColor = when {
+                        score >= 80f -> AccentGreen
+                        score >= 60f -> AccentOrange
+                        else -> TextSecondary
+                    }
+                    Text(
+                        text = "${stringResource(R.string.label_corner_score)}: ${score.toInt()}%",
+                        fontSize = 12.5.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = scoreColor,
+                        maxLines = 1,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    MetricMiniBox(
+                        label = stringResource(R.string.label_apex_speed),
+                        value = if (metrics.targetCornerSpeedKmh > 0) String.format(Locale.US, "%.1f km/h", metrics.targetCornerSpeedKmh) else "--",
+                        color = AccentCyan,
+                        modifier = Modifier.weight(1f)
+                    )
+                    MetricMiniBox(
+                        label = stringResource(R.string.label_apex_retention),
+                        value = if (metrics.apexSpeedRetentionPercent > 0) "${metrics.apexSpeedRetentionPercent.toInt()}%" else "--",
+                        color = AccentGreen,
+                        modifier = Modifier.weight(1f)
+                    )
+                    MetricMiniBox(
+                        label = stringResource(R.string.label_peloton_pei),
+                        value = "${metrics.pelotonSmoothnessIndex.toInt()}%",
+                        color = Color(0xFFAB47BC),
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                if (metrics.isCornerBrakeWarning) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(AccentOrange.copy(alpha = 0.2f))
+                            .border(1.dp, AccentOrange, RoundedCornerShape(6.dp))
+                            .padding(6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "[!]",
+                            color = AccentOrange,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(
+                                R.string.alert_corner_braking_detail,
+                                metrics.targetBrakingDistanceMeters,
+                                metrics.cornerEntrySpeedKmh,
+                                metrics.targetCornerSpeedKmh
+                            ),
+                            color = AccentOrange,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                }
+
+                if (metrics.isGripAlarmActive) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(AccentRed.copy(alpha = 0.2f))
+                            .border(1.dp, AccentRed, RoundedCornerShape(6.dp))
+                            .padding(6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "[!]",
+                            color = AccentRed,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(
+                                R.string.alert_grip_limit_detail,
+                                metrics.gripMarginPercent,
+                                metrics.leanAngleDeg
+                            ),
+                            color = AccentRed,
+                            fontSize = 11.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                }
+            }
+        }
+
         // 5. Dual Thermal & Rotor Monitor Card
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -827,6 +955,26 @@ fun TelemetryTab(
                 value = String.format(Locale.US, "%.1f pts", metrics.padWearScore),
                 subtitle = stringResource(R.string.label_wear_subtitle),
                 color = AccentRed,
+                modifier = Modifier.weight(1f),
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            MetricCard(
+                title = stringResource(R.string.type_metabolic_burn),
+                value = String.format(Locale.US, "%.1f kJ", metrics.metabolicKjBurned),
+                subtitle = String.format(Locale.US, "%.1f kcal", metrics.metabolicKjBurned / 4.184),
+                color = AccentOrange,
+                modifier = Modifier.weight(1f),
+            )
+            MetricCard(
+                title = stringResource(R.string.type_peloton_smoothness),
+                value = String.format(Locale.US, "%.0f%%", metrics.pelotonSmoothnessIndex),
+                subtitle = stringResource(R.string.label_peloton_pei),
+                color = Color(0xFFAB47BC),
                 modifier = Modifier.weight(1f),
             )
         }
@@ -1188,6 +1336,8 @@ fun SettingsTab(preferences: BrakePreferences) {
     val cumulativeEnergyKj by preferences.cumulativePadEnergyKjFlow.collectAsState()
     val glazingAlert by preferences.glazingAlertFlow.collectAsState()
     val descentEfficiencyAlert by preferences.descentEfficiencyAlertFlow.collectAsState()
+    val cornerWarning by preferences.cornerWarningFlow.collectAsState()
+    val gripLimitAlert by preferences.gripLimitAlertFlow.collectAsState()
 
     Column(
         modifier = Modifier
@@ -1914,6 +2064,20 @@ fun SettingsTab(preferences: BrakePreferences) {
                 )
 
                 SettingSwitchRow(
+                    title = stringResource(R.string.title_corner_warning),
+                    subtitle = stringResource(R.string.desc_corner_warning),
+                    checked = cornerWarning,
+                    onCheckedChange = { preferences.setCornerWarningEnabled(it) },
+                )
+
+                SettingSwitchRow(
+                    title = stringResource(R.string.title_grip_limit_alert),
+                    subtitle = stringResource(R.string.desc_grip_limit_alert),
+                    checked = gripLimitAlert,
+                    onCheckedChange = { preferences.setGripLimitAlertEnabled(it) },
+                )
+
+                SettingSwitchRow(
                     title = stringResource(R.string.alert_beeper),
                     subtitle = stringResource(R.string.desc_beeper),
                     checked = beeperEnabled,
@@ -2023,6 +2187,16 @@ fun GuideTab() {
                     title = stringResource(R.string.science_topic6_title),
                     explanation = stringResource(R.string.science_topic6_desc),
                 )
+
+                ScienceTopicItem(
+                    title = stringResource(R.string.science_topic7_title),
+                    explanation = stringResource(R.string.science_topic7_desc),
+                )
+
+                ScienceTopicItem(
+                    title = stringResource(R.string.science_topic8_title),
+                    explanation = stringResource(R.string.science_topic8_desc),
+                )
             }
         }
 
@@ -2052,6 +2226,9 @@ fun GuideTab() {
                 DataFieldItem(stringResource(R.string.type_wasted_watts), stringResource(R.string.desc_wasted_watts))
                 DataFieldItem(stringResource(R.string.type_grip_margin), stringResource(R.string.desc_grip_margin))
                 DataFieldItem(stringResource(R.string.type_brake_temperature), stringResource(R.string.desc_brake_temperature))
+                DataFieldItem(stringResource(R.string.type_corner_radar), stringResource(R.string.desc_corner_radar))
+                DataFieldItem(stringResource(R.string.type_metabolic_burn), stringResource(R.string.desc_metabolic_burn))
+                DataFieldItem(stringResource(R.string.type_peloton_smoothness), stringResource(R.string.desc_peloton_smoothness))
                 DataFieldItem(stringResource(R.string.type_graphical_brake), stringResource(R.string.desc_graphical_brake))
                 DataFieldItem(stringResource(R.string.type_graphical_thermal), stringResource(R.string.desc_graphical_thermal))
                 DataFieldItem(stringResource(R.string.type_graphical_cockpit), stringResource(R.string.desc_graphical_cockpit))
