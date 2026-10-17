@@ -174,7 +174,7 @@ adb install -r karoobbrakers.apk
 ---
 
 ## Développeur & Crédits
-- **Auteur** : hesiox ([DAVOE75](https://github.com/DAVOE75))
+- **Auteur** : hesiOX
 - **Matériel supporté** : Hammerhead Karoo 2 / Karoo 3 (Android 8.1 - 12+)
 - **SDK** : Hammerhead Karoo Extension SDK (`io.hammerhead.karooext`)
 - **Licence** : Licence MIT

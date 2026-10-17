@@ -2,7 +2,7 @@
 <ExtensionInfo
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="karoobbrakers"
-    version="1.1.0"
+    version="1.2.0"
     displayName="@string/extension_name"
     icon="@drawable/ic_brake_sense"
     scansDevices="false"

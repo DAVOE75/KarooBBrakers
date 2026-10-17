@@ -3,11 +3,11 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Metabolic Flame / Energy Burn Vector -->
+    <!-- Metabolic Energy Burn Flame -->
     <path
         android:fillColor="#FF5722"
-        android:pathData="M12,2 C10,6 6,9 6,14 A6,6 0 0,0 18,14 C18,9 14,6 12,2 Z" />
+        android:pathData="M12,2 C10,6 6,9 6,14 C6,17 9,20 12,20 C15,20 18,17 18,14 C18,9 14,6 12,2 Z" />
     <path
         android:fillColor="#FFEB3B"
-        android:pathData="M12,8 C11,10.5 9,12 9,15 A3,3 0 0,0 15,15 C15,12 13,10.5 12,8 Z" />
+        android:pathData="M12,9 C11,11 9,12 9,15 C9,16 10,17 12,17 C14,17 15,16 15,15 C15,12 13,11 12,9 Z" />
 </vector>

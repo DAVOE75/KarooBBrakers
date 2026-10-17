@@ -40,45 +40,47 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        karooSystem.connect {
-            // 1. Observe Speed (m/s)
-            streamJobs.add(
-                scope.launch {
-                    karooSystem.streamDataFlow(DataType.Type.SPEED).collect { state ->
-                        if (state is StreamState.Streaming) {
-                            state.dataPoint.singleValue?.let { speedMs ->
-                                sensorFusion.onSpeedUpdate(speedMs)
+        karooSystem.connect { connected ->
+            if (connected) {
+                // 1. Observe Speed (m/s)
+                streamJobs.add(
+                    scope.launch {
+                        karooSystem.streamDataFlow(DataType.Type.SPEED).collect { state ->
+                            if (state is StreamState.Streaming) {
+                                state.dataPoint.singleValue?.let { speedMs ->
+                                    sensorFusion.onSpeedUpdate(speedMs)
+                                }
                             }
                         }
                     }
-                }
-            )
+                )
 
-            // 2. Observe Cadence (RPM)
-            streamJobs.add(
-                scope.launch {
-                    karooSystem.streamDataFlow(DataType.Type.CADENCE).collect { state ->
-                        if (state is StreamState.Streaming) {
-                            state.dataPoint.singleValue?.let { rpm ->
-                                sensorFusion.onCadenceUpdate(rpm)
+                // 2. Observe Cadence (RPM)
+                streamJobs.add(
+                    scope.launch {
+                        karooSystem.streamDataFlow(DataType.Type.CADENCE).collect { state ->
+                            if (state is StreamState.Streaming) {
+                                state.dataPoint.singleValue?.let { rpm ->
+                                    sensorFusion.onCadenceUpdate(rpm)
+                                }
                             }
                         }
                     }
-                }
-            )
+                )
 
-            // 3. Observe Power (Watts)
-            streamJobs.add(
-                scope.launch {
-                    karooSystem.streamDataFlow(DataType.Type.POWER).collect { state ->
-                        if (state is StreamState.Streaming) {
-                            state.dataPoint.singleValue?.let { watts ->
-                                sensorFusion.onPowerUpdate(watts)
+                // 3. Observe Power (Watts)
+                streamJobs.add(
+                    scope.launch {
+                        karooSystem.streamDataFlow(DataType.Type.POWER).collect { state ->
+                            if (state is StreamState.Streaming) {
+                                state.dataPoint.singleValue?.let { watts ->
+                                    sensorFusion.onPowerUpdate(watts)
+                                }
                             }
                         }
                     }
-                }
-            )
+                )
+            }
         }
     }
 

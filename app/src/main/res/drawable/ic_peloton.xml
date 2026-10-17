@@ -7,20 +7,20 @@
     <path
         android:fillColor="#00000000"
         android:strokeColor="#00E676"
-        android:strokeWidth="1.8"
+        android:strokeWidth="2"
         android:strokeLineCap="round"
         android:pathData="M2,6 C8,6 10,12 16,12 C19,12 21,9 22,6" />
     <path
         android:fillColor="#00000000"
         android:strokeColor="#00E5FF"
-        android:strokeWidth="1.8"
+        android:strokeWidth="2"
         android:strokeLineCap="round"
         android:pathData="M2,12 C8,12 10,18 16,18 C19,18 21,15 22,12" />
     <!-- Cyclist Dots in Formation -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M6,6 A1.5,1.5 0 1,0 9,6 A1.5,1.5 0 0,0 6,6 Z" />
+        android:pathData="M6,5 L8,7 L6,9 L4,7 Z" />
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M14,12 A1.5,1.5 0 1,0 17,12 A1.5,1.5 0 0,0 14,12 Z" />
+        android:pathData="M14,11 L16,13 L14,15 L12,13 Z" />
 </vector>

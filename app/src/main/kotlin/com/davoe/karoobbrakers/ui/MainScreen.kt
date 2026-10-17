@@ -972,7 +972,7 @@ fun TelemetryTab(
             )
             MetricCard(
                 title = stringResource(R.string.type_peloton_smoothness),
-                value = String.format(Locale.US, "%.0f%%", metrics.pelotonSmoothnessIndex),
+                value = "${metrics.pelotonSmoothnessIndex}%",
                 subtitle = stringResource(R.string.label_peloton_pei),
                 color = Color(0xFFAB47BC),
                 modifier = Modifier.weight(1f),

@@ -217,8 +217,10 @@ class KarooBBrakersExtension : KarooExtension("karoobbrakers", "1.2.0") {
         }
 
         // Connect Karoo System Service
-        karooSystem.connect {
-            observeKarooTelemetry()
+        karooSystem.connect { connected ->
+            if (connected) {
+                observeKarooTelemetry()
+            }
         }
     }
 

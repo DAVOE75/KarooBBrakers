@@ -8,7 +8,7 @@
   "latestVersion": "1.2.0",
   "latestVersionCode": 4,
   "iconUrl": "https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/app/src/main/res/drawable/app_logo.png",
-  "developer": "DAVOE75 (hesiox)",
+  "developer": "hesiOX",
   "description": "WorldTour PRO Braking Telemetry, Dynamic Load Transfer, Corner Radar & Apex Speed Retention, Kamm Friction Circle Traction Limit, Metabolic Energy Burned, Peloton Smoothness (PEI), Dual Rotor Thermal & Fade Safety Monitor for Hammerhead Karoo 2 & Karoo 3.",
   "releaseNotes": "v1.2.0 WorldTour PRO Elite Suite: Desk/Stationary speed lockout (< 4 km/h) eliminates 100% false positives without micro-switches; Gravity pitch decoupling cancels false hill-climb readings; Corner Radar & Apex Speed Retention (0-100%); Predictive Corner Braking Warnings with stopping distance; Kamm Friction Circle tire traction limit alarm with wet road safety profile; Wasted Metabolic Energy calculation (21.5% muscular efficiency); Peloton Smoothness Index (PEI 0-100%) against accordion waves; 3 new native Karoo data fields (17 total); 12 FIT developer fields for WKO5 & GoldenCheetah; 100% 6-language localization parity; zero emojis."
 }
