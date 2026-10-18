@@ -140,13 +140,15 @@ object BrakeFieldRenderer {
             canvas.drawText(unit, numX + numWidth + spacing, unitBaseline, unitPaint)
         }
 
-        // 5. Línea de acento inferior
-        val barColor = accentBarColor ?: 0xFF19212E.toInt()
-        val barPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            this.color = barColor
-            this.strokeWidth = 3f
+        // 5. Marco perimetral completo para cubrir y personalizar los límites de datos
+        val borderColor = accentBarColor ?: 0xFF00E5FF.toInt()
+        val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            this.color = borderColor
+            this.style = Paint.Style.STROKE
+            this.strokeWidth = 2.5f
         }
-        canvas.drawLine(leftMargin, h - 3f, w - leftMargin, h - 3f, barPaint)
+        val borderRect = android.graphics.RectF(1.5f, 1.5f, w - 1.5f, h - 1.5f)
+        canvas.drawRoundRect(borderRect, 8f, 8f, borderPaint)
 
         return bitmap
     }

@@ -167,7 +167,7 @@ fun BrakeCockpitGlanceWidget(
 
         Spacer(modifier = GlanceModifier.height(1.dp))
 
-        // --- 2. Central High-Contrast Deceleration Readout (Barlow Condensed Bold 700) ---
+        // --- 2. Central High-Contrast Deceleration Readout (Barlow SemiBold 600) ---
         Row(
             verticalAlignment = Alignment.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -176,14 +176,14 @@ fun BrakeCockpitGlanceWidget(
                 androidx.glance.Image(
                     provider = androidx.glance.ImageProvider(decelBitmap),
                     contentDescription = null,
-                    modifier = GlanceModifier.height(46.dp),
+                    modifier = GlanceModifier.height(60.dp),
                 )
             } else {
                 Text(
                     text = if (isBraking) String.format(Locale.US, "%.1f", decelValue) else "0.0",
                     style = TextStyle(
                         color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
-                        fontSize = 38.sp,
+                        fontSize = 52.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = DataScreenFontCondensed,
                     ),
@@ -193,9 +193,9 @@ fun BrakeCockpitGlanceWidget(
             Text(
                 text = decelUnit,
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFF00E5FF)),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.White),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )

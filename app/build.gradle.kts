@@ -12,8 +12,8 @@ android {
         applicationId = "com.davoe.karoobbrakers"
         minSdk = 23
         targetSdk = 34
-        versionCode = 122
-        versionName = "1.2.2"
+        versionCode = 123
+        versionName = "1.2.3"
     }
 
     buildTypes {

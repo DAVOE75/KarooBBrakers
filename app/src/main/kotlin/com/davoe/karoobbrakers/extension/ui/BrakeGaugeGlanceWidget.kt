@@ -111,7 +111,7 @@ fun BrakeGaugeGlanceWidget(
 
         Spacer(modifier = GlanceModifier.height(1.dp))
 
-        // --- 2. Central High-Contrast Deceleration Readout (Barlow Condensed Bold 700) ---
+        // --- 2. Central High-Contrast Deceleration Readout (Barlow SemiBold 600) ---
         Row(
             verticalAlignment = Alignment.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -120,14 +120,14 @@ fun BrakeGaugeGlanceWidget(
                 androidx.glance.Image(
                     provider = androidx.glance.ImageProvider(decelBitmap),
                     contentDescription = null,
-                    modifier = GlanceModifier.height(48.dp),
+                    modifier = GlanceModifier.height(64.dp),
                 )
             } else {
                 Text(
                     text = if (isBraking) String.format(Locale.US, "%.1f", value) else "0.0",
                     style = TextStyle(
                         color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
-                        fontSize = 40.sp,
+                        fontSize = 56.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = DataScreenFontCondensed,
                     ),
@@ -137,9 +137,9 @@ fun BrakeGaugeGlanceWidget(
             Text(
                 text = unit,
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFF00E5FF)),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.White),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )

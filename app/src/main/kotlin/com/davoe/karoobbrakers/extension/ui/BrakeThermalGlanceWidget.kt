@@ -80,7 +80,7 @@ fun BrakeThermalGlanceWidget(
         modifier = GlanceModifier
             .fillMaxSize()
             .background(Color(0xFF080B10))
-            .padding(horizontal = 6.dp, vertical = 3.dp),
+            .padding(horizontal = 6.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -137,14 +137,14 @@ fun BrakeThermalGlanceWidget(
                     androidx.glance.Image(
                         provider = androidx.glance.ImageProvider(frontTempBitmap),
                         contentDescription = null,
-                        modifier = GlanceModifier.height(44.dp),
+                        modifier = GlanceModifier.height(60.dp),
                     )
                 } else {
                     Text(
                         text = String.format(Locale.US, "%.0f%s", frontTemp, unitSymbol),
                         style = TextStyle(
                             color = ColorProvider(frontColor),
-                            fontSize = 32.sp,
+                            fontSize = 44.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = DataScreenFontCondensed,
                         ),
@@ -156,7 +156,7 @@ fun BrakeThermalGlanceWidget(
             Box(
                 modifier = GlanceModifier
                     .width(1.dp)
-                    .height(36.dp)
+                    .height(48.dp)
                     .background(Color(0xFF2C3440))
             ) {}
 
@@ -178,14 +178,14 @@ fun BrakeThermalGlanceWidget(
                     androidx.glance.Image(
                         provider = androidx.glance.ImageProvider(rearTempBitmap),
                         contentDescription = null,
-                        modifier = GlanceModifier.height(44.dp),
+                        modifier = GlanceModifier.height(60.dp),
                     )
                 } else {
                     Text(
                         text = String.format(Locale.US, "%.0f%s", rearTemp, unitSymbol),
                         style = TextStyle(
                             color = ColorProvider(rearColor),
-                            fontSize = 32.sp,
+                            fontSize = 44.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = DataScreenFontCondensed,
                         ),
