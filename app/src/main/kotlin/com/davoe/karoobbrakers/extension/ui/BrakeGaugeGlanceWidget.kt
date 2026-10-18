@@ -91,9 +91,9 @@ fun BrakeGaugeGlanceWidget(
             Text(
                 text = finalStatusText,
                 style = TextStyle(
-                    color = ColorProvider(statusColor),
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(if (isBraking) statusColor else Color.White),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
@@ -101,9 +101,9 @@ fun BrakeGaugeGlanceWidget(
             Text(
                 text = String.format(Locale.US, "%s: %.2fG", peakLabel, peakG),
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFFFFD600)),
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.White),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
@@ -111,7 +111,7 @@ fun BrakeGaugeGlanceWidget(
 
         Spacer(modifier = GlanceModifier.height(1.dp))
 
-        // --- 2. Central High-Contrast Deceleration Readout (Barlow Condensed Bold 700 50% width) ---
+        // --- 2. Central High-Contrast Deceleration Readout (Barlow Condensed Bold 700) ---
         Row(
             verticalAlignment = Alignment.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -120,25 +120,25 @@ fun BrakeGaugeGlanceWidget(
                 androidx.glance.Image(
                     provider = androidx.glance.ImageProvider(decelBitmap),
                     contentDescription = null,
-                    modifier = GlanceModifier.height(28.dp),
+                    modifier = GlanceModifier.height(48.dp),
                 )
             } else {
                 Text(
                     text = if (isBraking) String.format(Locale.US, "%.1f", value) else "0.0",
                     style = TextStyle(
                         color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
-                        fontSize = 28.sp,
+                        fontSize = 40.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
             }
-            Spacer(modifier = GlanceModifier.width(3.dp))
+            Spacer(modifier = GlanceModifier.width(4.dp))
             Text(
                 text = unit,
                 style = TextStyle(
                     color = ColorProvider(Color(0xFF00E5FF)),
-                    fontSize = 11.sp,
+                    fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = DataScreenFontCondensed,
                 ),
@@ -186,13 +186,13 @@ fun BrakeGaugeGlanceWidget(
             Text(
                 text = "$frontLabel: $frontBias%",
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFF00E5FF)), // Cyan for Front
-                    fontSize = 9.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.White),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
-            Spacer(modifier = GlanceModifier.width(4.dp))
+            Spacer(modifier = GlanceModifier.width(6.dp))
             // Dual mini split bar
             Row(
                 modifier = GlanceModifier
@@ -214,13 +214,13 @@ fun BrakeGaugeGlanceWidget(
                         .background(if (isBraking) Color(0xFFFF9100) else Color(0xFF2C3440))
                 ) {}
             }
-            Spacer(modifier = GlanceModifier.width(4.dp))
+            Spacer(modifier = GlanceModifier.width(6.dp))
             Text(
                 text = "$rearLabel: $rearBias%",
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFFFF9100)), // Amber for Rear
-                    fontSize = 9.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.White),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )

@@ -22,15 +22,15 @@ import kotlin.math.max
  */
 object BrakeFieldRenderer {
 
-    private var cachedBarlowBold: Typeface? = null
+    private var cachedBarlowSemiBold: Typeface? = null
     private val bitmapCache = ConcurrentHashMap<String, Bitmap>()
 
-    fun getBarlowBold(context: Context): Typeface {
-        return cachedBarlowBold ?: run {
+    fun getBarlowSemiBold(context: Context): Typeface {
+        return cachedBarlowSemiBold ?: run {
             val tf = runCatching {
-                ResourcesCompat.getFont(context, R.font.barlow_condensed_bold)
+                ResourcesCompat.getFont(context, R.font.barlow_condensed_semibold)
             }.getOrNull() ?: Typeface.create("sans-serif-condensed", Typeface.BOLD)
-            cachedBarlowBold = tf
+            cachedBarlowSemiBold = tf
             tf
         }
     }
@@ -46,7 +46,7 @@ object BrakeFieldRenderer {
         value: String,
         unit: String,
         valueColor: Int = 0xFFFFFFFF.toInt(),
-        labelColor: Int = 0xFF00E5FF.toInt(),
+        labelColor: Int = 0xFFFFFFFF.toInt(),
         accentBarColor: Int? = null,
         alignment: io.hammerhead.karooext.models.ViewConfig.Alignment? = null,
         width: Int = 240,
@@ -61,10 +61,10 @@ object BrakeFieldRenderer {
         // 1. Fondo Dark Carbon de competición
         canvas.drawColor(0xFF090C12.toInt())
 
-        val typeface = getBarlowBold(context)
+        val typeface = getBarlowSemiBold(context)
 
         // 2. Encabezado / Etiqueta superior
-        val labelSize = (h * 0.13f).coerceIn(12f, 22f)
+        val labelSize = (h * 0.16f).coerceIn(13f, 26f)
         val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             this.typeface = typeface
             this.textSize = labelSize
@@ -72,8 +72,8 @@ object BrakeFieldRenderer {
             this.isSubpixelText = true
         }
 
-        val leftMargin = (w * 0.06f).coerceIn(10f, 24f)
-        val topMargin = (h * 0.20f).coerceIn(18f, 36f)
+        val leftMargin = (w * 0.04f).coerceIn(6f, 16f)
+        val topMargin = (h * 0.17f).coerceIn(14f, 30f)
 
         val upperLabel = label.uppercase()
         val labelWidth = labelPaint.measureText(upperLabel)
@@ -84,18 +84,19 @@ object BrakeFieldRenderer {
         }
         canvas.drawText(upperLabel, labelX.coerceAtLeast(leftMargin), topMargin, labelPaint)
 
-        // 3. Cifra principal en Barlow Condensed Bold 700 con escala horizontal al 50%
-        val numSize = (h * 0.58f).coerceIn(32f, 130f)
+        // 3. Cifra principal: Con peso 600 (SemiBold) y tamaño ampliado al 82% de la celda
+        val targetNumScaleX = if (value.length <= 3) 0.70f else 0.60f
+        val numSize = (h * 0.82f).coerceIn(40f, 180f)
         val numPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             this.typeface = typeface
             this.textSize = numSize
-            this.textScaleX = 0.5f // 50% ancho exacto Barlow Condensed
+            this.textScaleX = targetNumScaleX
             this.color = valueColor
             this.isSubpixelText = true
         }
 
         // 4. Unidad
-        val unitSize = (numSize * 0.28f).coerceIn(11f, 32f)
+        val unitSize = (numSize * 0.26f).coerceIn(12f, 36f)
         val unitPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             this.typeface = typeface
             this.textSize = unitSize
@@ -104,8 +105,9 @@ object BrakeFieldRenderer {
         }
 
         var numWidth = numPaint.measureText(value)
+        val spacing = if (unit.isNotEmpty()) 4f else 0f
         var unitWidth = if (unit.isNotEmpty()) unitPaint.measureText(unit) else 0f
-        var totalContentWidth = numWidth + (if (unit.isNotEmpty()) unitWidth + 6f else 0f)
+        var totalContentWidth = numWidth + spacing + unitWidth
         val maxAvailableWidth = w - (leftMargin * 2f)
 
         // Ajuste proporcional si el texto completo excede el ancho disponible de la celda
@@ -115,7 +117,7 @@ object BrakeFieldRenderer {
             unitPaint.textSize = unitSize * scale
             numWidth = numPaint.measureText(value)
             unitWidth = if (unit.isNotEmpty()) unitPaint.measureText(unit) else 0f
-            totalContentWidth = numWidth + (if (unit.isNotEmpty()) unitWidth + 6f else 0f)
+            totalContentWidth = numWidth + spacing + unitWidth
         }
 
         val numBounds = Rect()
@@ -129,13 +131,13 @@ object BrakeFieldRenderer {
             else -> leftMargin
         }.coerceAtLeast(leftMargin)
 
-        // Posicionamiento vertical centrado
-        val numBaseline = h * 0.82f
+        // Posicionamiento vertical: ajustado hacia abajo para aprovechar toda la vertical de la caja
+        val numBaseline = h * 0.90f
         canvas.drawText(value, numX, numBaseline, numPaint)
 
         if (unit.isNotEmpty()) {
-            val unitBaseline = numBaseline - (numHeight * 0.08f)
-            canvas.drawText(unit, numX + numWidth + 6f, unitBaseline, unitPaint)
+            val unitBaseline = numBaseline - (numHeight * 0.05f)
+            canvas.drawText(unit, numX + numWidth + spacing, unitBaseline, unitPaint)
         }
 
         // 5. Línea de acento inferior
@@ -160,12 +162,12 @@ object BrakeFieldRenderer {
         pixelHeight: Int = 48,
     ): Bitmap {
         val h = max(16, pixelHeight)
-        val typeface = getBarlowBold(context)
+        val typeface = getBarlowSemiBold(context)
 
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             this.typeface = typeface
             this.textSize = h * 0.95f
-            this.textScaleX = 0.5f // 50% ancho exacto
+            this.textScaleX = 0.65f // Proporción SemiBold 600 optimizada
             this.color = color
             this.isSubpixelText = true
         }
@@ -190,7 +192,7 @@ object BrakeFieldRenderer {
         val value: String,
         val unit: String,
         val valueColor: Int = 0xFFFFFFFF.toInt(),
-        val labelColor: Int = 0xFF00E5FF.toInt(),
+        val labelColor: Int = 0xFFFFFFFF.toInt(),
         val accentBarColor: Int? = null,
     )
 

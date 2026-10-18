@@ -3,12 +3,12 @@
   "name": "Karoo BBrakers",
   "packageName": "com.davoe.karoobbrakers",
   "extensionId": "com.davoe.karoobbrakers",
-  "latestApkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.1/karoobbrakers.apk",
-  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.1/karoobbrakers.apk",
-  "latestVersion": "1.2.1",
-  "latestVersionCode": 121,
+  "latestApkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.2/karoobbrakers.apk",
+  "apkUrl": "https://github.com/DAVOE75/KarooBBrakers/releases/download/v1.2.2/karoobbrakers.apk",
+  "latestVersion": "1.2.2",
+  "latestVersionCode": 122,
   "iconUrl": "https://raw.githubusercontent.com/DAVOE75/KarooBBrakers/main/app/src/main/res/drawable/app_logo.png",
   "developer": "hesiOX",
   "description": "WorldTour PRO Braking Telemetry, Dynamic Load Transfer, Corner Radar & Apex Speed Retention, Kamm Friction Circle Traction Limit, Metabolic Energy Burned, Peloton Smoothness (PEI), Dual Rotor Thermal & Fade Safety Monitor for Hammerhead Karoo 2 & Karoo 3.",
-  "releaseNotes": "v1.2.1 BigNum Typography & High-Definition Canvas Rendering: Migrated all 14 numeric data fields and 3 graphical widgets to native Canvas Bitmap rendering with Barlow Condensed Bold 700 at 50% width (textScaleX = 0.5f); ultra-crisp cockpit typography across all Karoo ride screens; subpixel antialiasing and zero binder transaction overhead."
+  "releaseNotes": "v1.2.2 Typography Optimization & Clean High-Visibility Cockpit: Switched primary font to Barlow Condensed SemiBold (weight 600) with expanded 82% cell height filling; set uniform high-contrast white titles across all telemetry tiles and glance widgets; dynamic color reaction strictly on braking and rotor thermal zones; resolved Karoo OS graphic header space consumption (showHeader = false) for double size telemetry readouts."
 }

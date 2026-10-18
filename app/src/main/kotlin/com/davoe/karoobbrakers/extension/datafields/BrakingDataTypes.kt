@@ -55,10 +55,15 @@ class CurrentBrakeDataType(
         val unit = preferences.getDecelSymbol()
         BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
             val value = String.format(Locale.US, "%.1f", preferences.formatDecelValue(metrics.currentDecelMs2))
-            val valColor = if (metrics.isBraking) {
-                if (metrics.currentDecelMs2 > 3.0) 0xFFFF1744.toInt() else 0xFFFFFFFF.toInt()
-            } else 0xFF78909C.toInt()
-            val accentColor = if (metrics.isBraking) 0xFFFF1744.toInt() else 0xFF00E5FF.toInt()
+            val valColor = when {
+                metrics.isBraking && metrics.currentDecelMs2 > 3.0 -> 0xFFFF1744.toInt() // Frenada fuerte -> Rojo
+                metrics.isBraking && metrics.currentDecelMs2 > 1.5 -> 0xFFFF9100.toInt() // Frenada media -> Naranja
+                metrics.isBraking -> 0xFFFFFFFF.toInt()                                   // Frenando -> Blanco brillante
+                else -> 0xFFFFFFFF.toInt()                                                // En reposo -> Blanco
+            }
+            val accentColor = if (metrics.isBraking) {
+                if (metrics.currentDecelMs2 > 3.0) 0xFFFF1744.toInt() else 0xFFFF9100.toInt()
+            } else 0xFF2C3440.toInt()
             TelemetryTileData(
                 label = label,
                 value = value,
@@ -100,8 +105,13 @@ class BrakingPowerDataType(
         val label = context.getString(R.string.type_braking_power)
         BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
             val value = String.format(Locale.US, "%.0f", metrics.currentBrakingPowerWatts)
-            val valColor = if (metrics.currentBrakingPowerWatts > 0.0) 0xFFFFFFFF.toInt() else 0xFF78909C.toInt()
-            val accentColor = if (metrics.currentBrakingPowerWatts > 400.0) 0xFFFF3D00.toInt() else 0xFFFF9100.toInt()
+            val valColor = when {
+                metrics.currentBrakingPowerWatts > 500.0 -> 0xFFFF1744.toInt() // Máxima potencia -> Rojo
+                metrics.currentBrakingPowerWatts > 250.0 -> 0xFFFF9100.toInt() // Potencia media -> Naranja
+                metrics.currentBrakingPowerWatts > 100.0 -> 0xFFFFD600.toInt() // Potencia suave -> Amarillo
+                else -> 0xFFFFFFFF.toInt()                                     // Reposo -> Blanco
+            }
+            val accentColor = if (metrics.currentBrakingPowerWatts > 0.0) valColor else 0xFF2C3440.toInt()
             TelemetryTileData(
                 label = label,
                 value = value,
@@ -145,12 +155,13 @@ class MaxBrakeDataType(
         val unit = preferences.getDecelSymbol()
         BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
             val value = String.format(Locale.US, "%.1f", preferences.formatDecelValue(metrics.peakDecelMs2))
+            val valColor = if (metrics.isBraking && metrics.peakDecelMs2 > 3.0) 0xFFFF1744.toInt() else 0xFFFFFFFF.toInt()
             TelemetryTileData(
                 label = label,
                 value = value,
                 unit = unit,
-                valueColor = 0xFFFFD600.toInt(),
-                accentBarColor = 0xFFFFD600.toInt(),
+                valueColor = valColor,
+                accentBarColor = 0xFF2C3440.toInt(),
             )
         }
     }
@@ -185,12 +196,13 @@ class BrakeEventsCountDataType(
     override fun startView(context: Context, config: ViewConfig, emitter: ViewEmitter) {
         val label = context.getString(R.string.type_brake_events)
         BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
+            val valColor = if (metrics.isBraking) 0xFF00E5FF.toInt() else 0xFFFFFFFF.toInt()
             TelemetryTileData(
                 label = label,
                 value = "${metrics.totalBrakeEvents}",
                 unit = "",
-                valueColor = 0xFFFFFFFF.toInt(),
-                accentBarColor = 0xFF00E5FF.toInt(),
+                valueColor = valColor,
+                accentBarColor = if (metrics.isBraking) 0xFF00E5FF.toInt() else 0xFF2C3440.toInt(),
             )
         }
     }
@@ -226,12 +238,13 @@ class BrakeEnergyDataType(
         val label = context.getString(R.string.type_brake_energy)
         BrakeFieldRenderer.startTelemetryView(context, config, emitter, sensorFusion) { metrics ->
             val value = String.format(Locale.US, "%.1f", metrics.totalEnergyKj)
+            val valColor = if (metrics.isBraking) 0xFFFF9100.toInt() else 0xFFFFFFFF.toInt()
             TelemetryTileData(
                 label = label,
                 value = value,
                 unit = "kJ",
-                valueColor = 0xFFFF9100.toInt(),
-                accentBarColor = 0xFFFF9100.toInt(),
+                valueColor = valColor,
+                accentBarColor = if (metrics.isBraking) 0xFFFF9100.toInt() else 0xFF2C3440.toInt(),
             )
         }
     }
@@ -271,8 +284,8 @@ class PadWearDataType(
                 label = label,
                 value = value,
                 unit = "pts",
-                valueColor = 0xFFFF5252.toInt(),
-                accentBarColor = 0xFFFF5252.toInt(),
+                valueColor = 0xFFFFFFFF.toInt(),
+                accentBarColor = 0xFF2C3440.toInt(),
             )
         }
     }
@@ -540,7 +553,7 @@ class BrakeGraphicalDataType(
         val scope = CoroutineScope(Dispatchers.Main)
         var lastRenderTimeMs = 0L
 
-        emitter.onNext(UpdateGraphicConfig(showHeader = true))
+        emitter.onNext(UpdateGraphicConfig(showHeader = false))
 
         viewJob = scope.launch {
             sensorFusion.metrics.collect { metrics ->
@@ -564,7 +577,7 @@ class BrakeGraphicalDataType(
 
                     val decelText = if (metrics.isBraking) String.format(Locale.US, "%.1f", displayVal) else "0.0"
                     val decelColor = if (metrics.isBraking) 0xFFFFFFFF.toInt() else 0xFF78909C.toInt()
-                    val decelBitmap = BrakeFieldRenderer.renderNumberBitmap(context, decelText, decelColor, pixelHeight = 56)
+                    val decelBitmap = BrakeFieldRenderer.renderNumberBitmap(context, decelText, decelColor, pixelHeight = 110)
 
                     val result = glance.compose(context, DpSize.Unspecified) {
                         BrakeGaugeGlanceWidget(
@@ -629,7 +642,7 @@ class BrakeThermalGraphicalDataType(
         val scope = CoroutineScope(Dispatchers.Main)
         var lastRenderTimeMs = 0L
 
-        emitter.onNext(UpdateGraphicConfig(showHeader = true))
+        emitter.onNext(UpdateGraphicConfig(showHeader = false))
 
         viewJob = scope.launch {
             sensorFusion.metrics.collect { metrics ->
@@ -669,13 +682,13 @@ class BrakeThermalGraphicalDataType(
                         context,
                         String.format(Locale.US, "%.0f%s", frontTemp, tempUnit.symbol),
                         colorForStatusInt(metrics.frontTempStatus),
-                        pixelHeight = 44,
+                        pixelHeight = 96,
                     )
                     val rearBitmap = BrakeFieldRenderer.renderNumberBitmap(
                         context,
                         String.format(Locale.US, "%.0f%s", rearTemp, tempUnit.symbol),
                         colorForStatusInt(metrics.rearTempStatus),
-                        pixelHeight = 44,
+                        pixelHeight = 96,
                     )
 
                     val result = glance.compose(context, DpSize.Unspecified) {
@@ -746,7 +759,7 @@ class BrakeCockpitGraphicalDataType(
         val scope = CoroutineScope(Dispatchers.Main)
         var lastRenderTimeMs = 0L
 
-        emitter.onNext(UpdateGraphicConfig(showHeader = true))
+        emitter.onNext(UpdateGraphicConfig(showHeader = false))
 
         viewJob = scope.launch {
             sensorFusion.metrics.collect { metrics ->
@@ -777,7 +790,7 @@ class BrakeCockpitGraphicalDataType(
 
                     val decelText = if (metrics.isBraking) String.format(Locale.US, "%.1f", displayDecel) else "0.0"
                     val decelColor = if (metrics.isBraking) 0xFFFFFFFF.toInt() else 0xFF78909C.toInt()
-                    val decelBitmap = BrakeFieldRenderer.renderNumberBitmap(context, decelText, decelColor, pixelHeight = 52)
+                    val decelBitmap = BrakeFieldRenderer.renderNumberBitmap(context, decelText, decelColor, pixelHeight = 100)
 
                     val result = glance.compose(context, DpSize.Unspecified) {
                         BrakeCockpitGlanceWidget(

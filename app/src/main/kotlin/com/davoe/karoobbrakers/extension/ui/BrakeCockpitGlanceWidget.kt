@@ -123,9 +123,9 @@ fun BrakeCockpitGlanceWidget(
             Text(
                 text = "$hudLabel | $finalStatusText",
                 style = TextStyle(
-                    color = ColorProvider(statusColor),
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(if (isBraking) statusColor else Color.White),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
@@ -136,8 +136,8 @@ fun BrakeCockpitGlanceWidget(
                     text = "DES $descentEfficiencyScore%",
                     style = TextStyle(
                         color = ColorProvider(if (descentEfficiencyScore >= 85) Color(0xFF00E676) else Color(0xFFFF9100)),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium,
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
@@ -145,9 +145,9 @@ fun BrakeCockpitGlanceWidget(
                 Text(
                     text = "#$eventsCount",
                     style = TextStyle(
-                        color = ColorProvider(Color(0xFF78909C)),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = ColorProvider(Color.White),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium,
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
@@ -157,9 +157,9 @@ fun BrakeCockpitGlanceWidget(
             Text(
                 text = String.format(Locale.US, "%s: %.2fG", peakLabel, peakG),
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFFFFD600)),
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.White),
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
@@ -167,7 +167,7 @@ fun BrakeCockpitGlanceWidget(
 
         Spacer(modifier = GlanceModifier.height(1.dp))
 
-        // --- 2. Central High-Contrast Deceleration Readout (Barlow Condensed Bold 700 50% width) ---
+        // --- 2. Central High-Contrast Deceleration Readout (Barlow Condensed Bold 700) ---
         Row(
             verticalAlignment = Alignment.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -176,25 +176,25 @@ fun BrakeCockpitGlanceWidget(
                 androidx.glance.Image(
                     provider = androidx.glance.ImageProvider(decelBitmap),
                     contentDescription = null,
-                    modifier = GlanceModifier.height(26.dp),
+                    modifier = GlanceModifier.height(46.dp),
                 )
             } else {
                 Text(
                     text = if (isBraking) String.format(Locale.US, "%.1f", decelValue) else "0.0",
                     style = TextStyle(
                         color = ColorProvider(if (isBraking) Color.White else Color(0xFF78909C)),
-                        fontSize = 26.sp,
+                        fontSize = 38.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
             }
-            Spacer(modifier = GlanceModifier.width(2.dp))
+            Spacer(modifier = GlanceModifier.width(3.dp))
             Text(
                 text = decelUnit,
                 style = TextStyle(
                     color = ColorProvider(Color(0xFF00E5FF)),
-                    fontSize = 11.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = DataScreenFontCondensed,
                 ),
@@ -244,18 +244,18 @@ fun BrakeCockpitGlanceWidget(
                 Text(
                     text = "$powerLabel: ",
                     style = TextStyle(
-                        color = ColorProvider(Color(0xFF90A4AE)),
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = ColorProvider(Color.White),
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Medium,
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
                 Text(
                     text = if (isBraking) String.format(Locale.US, "%.0fW", powerWatts) else "0W",
                     style = TextStyle(
-                        color = ColorProvider(if (isBraking) Color(0xFF00E5FF) else Color(0xFF78909C)),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
+                        color = ColorProvider(if (isBraking) Color(0xFF00E5FF) else Color.White),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium,
                         fontFamily = DataScreenFontCondensed,
                     ),
                 )
@@ -267,20 +267,20 @@ fun BrakeCockpitGlanceWidget(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = "$frontLabel:",
-                    style = TextStyle(color = ColorProvider(Color(0xFF00E5FF)), fontSize = 9.sp, fontWeight = FontWeight.Bold, fontFamily = DataScreenFontCondensed),
+                    style = TextStyle(color = ColorProvider(Color.White), fontSize = 10.sp, fontWeight = FontWeight.Medium, fontFamily = DataScreenFontCondensed),
                 )
                 Text(
                     text = String.format(Locale.US, "%.0f°", frontTemp),
-                    style = TextStyle(color = ColorProvider(frontColor), fontSize = 10.sp, fontWeight = FontWeight.Bold, fontFamily = DataScreenFontCondensed),
+                    style = TextStyle(color = ColorProvider(frontColor), fontSize = 11.sp, fontWeight = FontWeight.Bold, fontFamily = DataScreenFontCondensed),
                 )
-                Spacer(modifier = GlanceModifier.width(4.dp))
+                Spacer(modifier = GlanceModifier.width(5.dp))
                 Text(
                     text = "$rearLabel:",
-                    style = TextStyle(color = ColorProvider(Color(0xFFFF9100)), fontSize = 9.sp, fontWeight = FontWeight.Bold, fontFamily = DataScreenFontCondensed),
+                    style = TextStyle(color = ColorProvider(Color.White), fontSize = 10.sp, fontWeight = FontWeight.Medium, fontFamily = DataScreenFontCondensed),
                 )
                 Text(
                     text = String.format(Locale.US, "%.0f°", rearTemp),
-                    style = TextStyle(color = ColorProvider(rearColor), fontSize = 10.sp, fontWeight = FontWeight.Bold, fontFamily = DataScreenFontCondensed),
+                    style = TextStyle(color = ColorProvider(rearColor), fontSize = 11.sp, fontWeight = FontWeight.Bold, fontFamily = DataScreenFontCondensed),
                 )
             }
         }

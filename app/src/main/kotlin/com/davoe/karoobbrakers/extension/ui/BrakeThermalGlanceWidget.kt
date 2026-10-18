@@ -93,9 +93,9 @@ fun BrakeThermalGlanceWidget(
             Text(
                 text = "$heatLabel | $finalStatusText",
                 style = TextStyle(
-                    color = ColorProvider(overallColor),
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(if (tempStatus == TempStatus.CRITICAL || tempStatus == TempStatus.HOT) overallColor else Color.White),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
@@ -103,9 +103,9 @@ fun BrakeThermalGlanceWidget(
             Text(
                 text = String.format(Locale.US, "%s: %.0f%s", maxLabel, peakTemp, unitSymbol),
                 style = TextStyle(
-                    color = ColorProvider(Color(0xFFFFD600)),
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
+                    color = ColorProvider(Color.White),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
@@ -127,8 +127,8 @@ fun BrakeThermalGlanceWidget(
                 Text(
                     text = frontLabel,
                     style = TextStyle(
-                        color = ColorProvider(Color(0xFF00E5FF)),
-                        fontSize = 9.sp,
+                        color = ColorProvider(Color.White),
+                        fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = DataScreenFontCondensed,
                     ),
@@ -137,14 +137,14 @@ fun BrakeThermalGlanceWidget(
                     androidx.glance.Image(
                         provider = androidx.glance.ImageProvider(frontTempBitmap),
                         contentDescription = null,
-                        modifier = GlanceModifier.height(20.dp),
+                        modifier = GlanceModifier.height(44.dp),
                     )
                 } else {
                     Text(
                         text = String.format(Locale.US, "%.0f%s", frontTemp, unitSymbol),
                         style = TextStyle(
                             color = ColorProvider(frontColor),
-                            fontSize = 20.sp,
+                            fontSize = 32.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = DataScreenFontCondensed,
                         ),
@@ -156,7 +156,7 @@ fun BrakeThermalGlanceWidget(
             Box(
                 modifier = GlanceModifier
                     .width(1.dp)
-                    .height(24.dp)
+                    .height(36.dp)
                     .background(Color(0xFF2C3440))
             ) {}
 
@@ -168,8 +168,8 @@ fun BrakeThermalGlanceWidget(
                 Text(
                     text = rearLabel,
                     style = TextStyle(
-                        color = ColorProvider(Color(0xFFFF9100)),
-                        fontSize = 9.sp,
+                        color = ColorProvider(Color.White),
+                        fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = DataScreenFontCondensed,
                     ),
@@ -178,14 +178,14 @@ fun BrakeThermalGlanceWidget(
                     androidx.glance.Image(
                         provider = androidx.glance.ImageProvider(rearTempBitmap),
                         contentDescription = null,
-                        modifier = GlanceModifier.height(20.dp),
+                        modifier = GlanceModifier.height(44.dp),
                     )
                 } else {
                     Text(
                         text = String.format(Locale.US, "%.0f%s", rearTemp, unitSymbol),
                         style = TextStyle(
                             color = ColorProvider(rearColor),
-                            fontSize = 20.sp,
+                            fontSize = 32.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = DataScreenFontCondensed,
                         ),
@@ -194,7 +194,7 @@ fun BrakeThermalGlanceWidget(
             }
         }
 
-        Spacer(modifier = GlanceModifier.height(2.dp))
+        Spacer(modifier = GlanceModifier.height(4.dp))
 
         // --- 3. Heat Zone Progress Bar (4 segments: Green -> Cyan -> Amber -> Red) ---
         Row(
@@ -239,17 +239,24 @@ fun BrakeThermalGlanceWidget(
                 text = String.format(Locale.US, "%s: %.0f%s", safetyLimitLabel, criticalTemp, unitSymbol),
                 style = TextStyle(
                     color = ColorProvider(if (tempStatus == TempStatus.CRITICAL) Color(0xFFFF1744) else Color(0xFF78909C)),
-                    fontSize = 9.sp,
+                    fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = DataScreenFontCondensed,
                 ),
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
+            val compactBrakeName = brakeTypeName
+                .replace("Frenos de Disco (Hidráulico / Mecánico)", "Disco")
+                .replace("Frenos de Zapata - Llanta de Carbono", "Zapata Carbono")
+                .replace("Frenos de Zapata - Llanta de Aluminio", "Zapata Alu")
+                .replace("Disc Brakes (Hydraulic / Mechanical)", "Disc")
+                .replace("Rim Brakes - Carbon Wheel Track", "Rim Carbon")
+                .replace("Rim Brakes - Aluminum Wheel Track", "Rim Alu")
             Text(
-                text = brakeTypeName,
+                text = compactBrakeName,
                 style = TextStyle(
                     color = ColorProvider(Color(0xFF90A4AE)),
-                    fontSize = 9.sp,
+                    fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = DataScreenFontCondensed,
                 ),
