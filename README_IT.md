@@ -32,6 +32,20 @@ L'analisi moderna delle prestazioni ciclistiche si è concentrata quasi unicamen
 
 ---
 
+## Anteprime del Cockpit e Telemetria in Corsa
+
+<p align="center">
+  <img src="art/02_overview_hard_braking.png" width="31%" alt="HUD Cockpit Frenata Decisa" />
+  <img src="art/01_grid8_hard_braking.png" width="31%" alt="Griglia Telemetrica a 8 Campi" />
+  <img src="art/04_overview_trail_braking.png" width="31%" alt="Trail-Braking & Punteggio DES WorldTour" />
+</p>
+
+<p align="center">
+  <em>A sinistra: Cockpit HUD live e Monitor Termico doppio rotore durante una staccata decisa in tornante | Al centro: Griglia da competizione a 8 campi con bordi perimetrali cromatici reattivi | A destra: Rilevamento pro di Trail-Braking e punteggio di Efficienza in Discesa WorldTour (DES 97%).</em>
+</p>
+
+---
+
 ## Fisica, Algoritmi & Ingegneria WorldTour
 
 ### 1. Blocco da Fermo & Immunità ai Falsi Positivi (< 4 km/h)

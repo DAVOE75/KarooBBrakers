@@ -32,6 +32,20 @@ L'analyse de performance cycliste moderne s'est longtemps concentrée sur les ca
 
 ---
 
+## Aperçus du Cockpit et de la Télémétrie en Course
+
+<p align="center">
+  <img src="art/02_overview_hard_braking.png" width="31%" alt="HUD Cockpit de Freinage Appuyé" />
+  <img src="art/01_grid8_hard_braking.png" width="31%" alt="Grille de Télémétrie à 8 Champs" />
+  <img src="art/04_overview_trail_braking.png" width="31%" alt="Trail-Braking & Score DES WorldTour" />
+</p>
+
+<p align="center">
+  <em>À gauche : HUD Cockpit en direct et Moniteur Thermique double rotor lors d'une forte décélération en épingle | Au centre : Grille de compétition à 8 champs avec bordures réactives par couleur | À droite : Détection pro du Trail-Braking et Score d'Efficacité en Descente WorldTour (DES 97%).</em>
+</p>
+
+---
+
 ## Physique, Algorithmes & Ingénierie WorldTour
 
 ### 1. Verrouillage à l'Arrêt & Immunité aux Faux Positifs (< 4 km/h)

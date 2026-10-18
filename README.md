@@ -32,6 +32,20 @@ Modern cycling performance analysis has focused almost exclusively on power mete
 
 ---
 
+## In-Ride Cockpit & Telemetry Previews
+
+<p align="center">
+  <img src="art/02_overview_hard_braking.png" width="31%" alt="Hard Braking Overview HUD" />
+  <img src="art/01_grid8_hard_braking.png" width="31%" alt="8-Cell Telemetry Data Grid" />
+  <img src="art/04_overview_trail_braking.png" width="31%" alt="Trail-Braking & WorldTour DES" />
+</p>
+
+<p align="center">
+  <em>Left: Live Cockpit HUD & Dual Rotor Thermal Monitor during hard hairpin deceleration | Center: 8-cell high-contrast competition grid with color-coded perimeter bounds | Right: Pro Trail-Braking detection & WorldTour Descent Efficiency Score (DES 97%).</em>
+</p>
+
+---
+
 ## Core Physics & WorldTour Engineering
 
 ### 1. Stationary Zero-Lockout & False Positive Immunity (< 4 km/h)

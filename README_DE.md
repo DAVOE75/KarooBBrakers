@@ -32,6 +32,20 @@ Traditionelle Leistungsanalysen im Radsport beschränken sich meist auf Wattmess
 
 ---
 
+## Cockpit- & Telemetrie-Vorschau während der Fahrt
+
+<p align="center">
+  <img src="art/02_overview_hard_braking.png" width="31%" alt="Starke Bremsung Cockpit-HUD" />
+  <img src="art/01_grid8_hard_braking.png" width="31%" alt="8-Felder Telemetrie-Kachel" />
+  <img src="art/04_overview_trail_braking.png" width="31%" alt="Trail-Braking & WorldTour DES" />
+</p>
+
+<p align="center">
+  <em>Links: Live Cockpit-HUD & Dual-Rotor-Wärmemonitor bei starker Verzögerung vor einer Kehre | Mitte: 8-Felder-Wettkampfraster mit farbcodierten Umrandungen | Rechts: Pro Trail-Braking-Erkennung & WorldTour Abfahrtseffizienz (DES 97%).</em>
+</p>
+
+---
+
 ## Physik, Algorithmen & WorldTour-Technik
 
 ### 1. Stillstandssperre & Fehlalarm-Immunität (< 4 km/h)

@@ -32,6 +32,20 @@ El rendimiento ciclista moderno se ha centrado históricamente en el potencióme
 
 ---
 
+## Vistas Previas del Cockpit y Telemetría en Ruta
+
+<p align="center">
+  <img src="art/02_overview_hard_braking.png" width="31%" alt="HUD de Frenada Fuerte y Monitores" />
+  <img src="art/01_grid8_hard_braking.png" width="31%" alt="Mosaico de 8 Celdas de Telemetría" />
+  <img src="art/04_overview_trail_braking.png" width="31%" alt="Trail-Braking y Eficiencia DES WorldTour" />
+</p>
+
+<p align="center">
+  <em>Izquierda: Cockpit HUD integral y Monitor Térmico dual durante deceleración fuerte en horquilla | Centro: Mosaico de 8 campos de competición con marcos perimetrales reactivos por color | Derecha: Detección pro de Trail-Braking y puntuación WorldTour DES (97%).</em>
+</p>
+
+---
+
 ## Ciencia, Física y Algoritmos WorldTour PRO
 
 ### 1. Bloqueo en Parado e Inmunidad a Falsos Positivos (< 4 km/h)

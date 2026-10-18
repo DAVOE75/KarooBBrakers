@@ -32,6 +32,20 @@ A análise moderna do desempenho no ciclismo concentrou-se quase exclusivamente 
 
 ---
 
+## Pré-visualizações do Cockpit e Telemetria em Corrida
+
+<p align="center">
+  <img src="art/02_overview_hard_braking.png" width="31%" alt="HUD Cockpit de Travagem Forte" />
+  <img src="art/01_grid8_hard_braking.png" width="31%" alt="Grelha de Telemetria de 8 Campos" />
+  <img src="art/04_overview_trail_braking.png" width="31%" alt="Trail-Braking & Pontuação DES WorldTour" />
+</p>
+
+<p align="center">
+  <em>Esquerda: Cockpit HUD em direto e Monitor Térmico duplo durante travagem forte em curva apertada | Centro: Grelha de competição de 8 campos com margens perimétricas reativas por cor | Direita: Deteção pro de Trail-Braking e pontuação de Eficiência em Descida WorldTour (DES 97%).</em>
+</p>
+
+---
+
 ## Física, Algoritmos & Engenharia WorldTour
 
 ### 1. Bloqueio em Parado & Imunidade a Falsos Positivos (< 4 km/h)
